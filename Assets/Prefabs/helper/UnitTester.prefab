@@ -11,6 +11,18 @@ Prefab:
       propertyPath: playerid
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LinearDrag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Offset.y
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1663932284128932}
@@ -25,6 +37,8 @@ GameObject:
   - component: {fileID: 4968981011135142}
   - component: {fileID: 114703876120940950}
   - component: {fileID: 114648591150994072}
+  - component: {fileID: 50576122713196350}
+  - component: {fileID: 58430309456103940}
   m_Layer: 0
   m_Name: UnitTester
   m_TagString: Untagged
@@ -45,6 +59,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50576122713196350
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 5
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &58430309456103940
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.5}
+  serializedVersion: 2
+  m_Radius: 0.5
 --- !u!114 &114648591150994072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -69,5 +118,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Template: {fileID: 11400000, guid: be0b68278b282454191622f569e54a74, type: 2}
-  speedX: 0
-  speedY: 0
