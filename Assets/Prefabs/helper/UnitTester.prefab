@@ -21,7 +21,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Offset.y
-      value: -0.01
+      value: -0.07
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_AngularDrag
@@ -33,7 +33,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Radius
-      value: 0.155
+      value: 0.001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
@@ -51,6 +51,7 @@ GameObject:
   - component: {fileID: 114648591150994072}
   - component: {fileID: 50576122713196350}
   - component: {fileID: 58430309456103940}
+  - component: {fileID: 114336905853933496}
   m_Layer: 0
   m_Name: UnitTester
   m_TagString: Untagged
@@ -103,9 +104,21 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.01}
+  m_Offset: {x: 0, y: -0.07}
   serializedVersion: 2
-  m_Radius: 0.155
+  m_Radius: 0.001
+--- !u!114 &114336905853933496
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693d0b93986c4f5abe1ac02fbbe45568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0
 --- !u!114 &114648591150994072
 MonoBehaviour:
   m_ObjectHideFlags: 1
