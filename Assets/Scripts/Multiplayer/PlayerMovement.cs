@@ -18,8 +18,8 @@ public class PlayerMovement : MonoBehaviour
         {
             var horizontal = Input.GetAxis("Horizontal" + playerid);
             var vertical = Input.GetAxis("Vertical" + playerid);
-            var sprint = Input.GetButton("Sprint" + playerid);
-            
+            var sprint = Input.GetButtonUp("Sprint" + playerid);
+
             GetComponent<UnitLogic>().move(horizontal, vertical, sprint);
         }
     }
