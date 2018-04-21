@@ -48,9 +48,37 @@ public class UnitLogic : MonoBehaviour
         body.AddForce(new Vector2(dx, dy));
     }
 
-    public void useTool()
+    public void interact()
     {
-        throw new System.NotImplementedException();
+        var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), 0.5f,
+            new Vector2(0, 0));
+
+        int minIdx = -1;
+        float minDist = 99999;
+        int idx = 0;
+        Interactable bestInteractable = null;
+        foreach (var hit in hits)
+        {
+            var collider = hit.collider;
+            var interactable = collider.GetComponentInChildren<Interactable>();
+            float dist = (collider.transform.position - this.transform.position).sqrMagnitude;
+            if (dist < minDist)
+            {
+                minDist = dist;
+                minIdx = idx;
+                bestInteractable = interactable;
+            }
+
+            idx++;
+        }
+
+        if (minIdx >= 0 && bestInteractable != null)
+        {
+            if (bestInteractable.CanInteract(this))
+            {
+                bestInteractable.interact(this);
+            }
+        }
     }
 
     public void attackA()

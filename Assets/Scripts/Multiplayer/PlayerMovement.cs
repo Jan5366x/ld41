@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour
             var attackB = Input.GetButtonDown("AttackB" + playerid);
             if (useTool)
             {
-                logic.useTool();
+                logic.interact();
             } else if (attackA)
             {
                 logic.attackA();
