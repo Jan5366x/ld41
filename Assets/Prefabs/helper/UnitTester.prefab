@@ -21,7 +21,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Offset.y
-      value: -0.07
+      value: -0.14
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_AngularDrag
@@ -33,9 +33,26 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Radius
-      value: 0.001
+      value: 0.155
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 0}
+      propertyPath: m_Size.x
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Size.y
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: offset
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Direction
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1663932284128932}
   m_IsPrefabParent: 0
@@ -50,8 +67,8 @@ GameObject:
   - component: {fileID: 114703876120940950}
   - component: {fileID: 114648591150994072}
   - component: {fileID: 50576122713196350}
-  - component: {fileID: 58430309456103940}
   - component: {fileID: 114336905853933496}
+  - component: {fileID: 70783373698287960}
   m_Layer: 0
   m_Name: UnitTester
   m_TagString: Untagged
@@ -92,8 +109,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &58430309456103940
-CircleCollider2D:
+--- !u!70 &70783373698287960
+CapsuleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -104,9 +121,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.07}
-  serializedVersion: 2
-  m_Radius: 0.001
+  m_Offset: {x: 0, y: -0.14}
+  m_Size: {x: 0.09, y: 0.02}
+  m_Direction: 1
 --- !u!114 &114336905853933496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693d0b93986c4f5abe1ac02fbbe45568, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 0
+  offset: 1
 --- !u!114 &114648591150994072
 MonoBehaviour:
   m_ObjectHideFlags: 1

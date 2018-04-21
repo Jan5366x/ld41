@@ -18,8 +18,8 @@ MonoBehaviour:
   Intelligence: 6
   Stamina: 6
   Agility: 6
-  MaxSpeed: 500
-  Acceleration: 50
+  MaxSpeed: 100
+  Acceleration: 10
   IsEnemy: 0
   IsInteractable: 0
   IsShowName: 1
