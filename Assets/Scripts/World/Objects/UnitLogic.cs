@@ -1,4 +1,4 @@
-﻿﻿using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,6 +28,38 @@ public class UnitLogic : MonoBehaviour
     public void move(float dx, float dy, bool sprint)
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
-        body.AddForce(new Vector2(dx * Template.Acceleration, dy * Template.Acceleration));
+        if (Mathf.Abs(dx) > Mathf.Abs(dy))
+        {
+            dy = 0;
+        }
+        else if (Mathf.Abs(dx) < Mathf.Abs(dy))
+        {
+            dx = 0;
+        }
+
+        dx *= Template.Acceleration;
+        dy *= Template.Acceleration;
+        if (sprint)
+        {
+            dx *= (1 + Random.value * 0.2f);
+            dy *= (1 + Random.value * 0.2f);
+        }
+
+        body.AddForce(new Vector2(dx, dy));
+    }
+
+    public void useTool()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void attackA()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void attackB()
+    {
+        throw new System.NotImplementedException();
     }
 }
