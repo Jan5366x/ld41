@@ -18,9 +18,24 @@ public class PlayerMovement : MonoBehaviour
         {
             var horizontal = Input.GetAxis("Horizontal" + playerid);
             var vertical = Input.GetAxis("Vertical" + playerid);
-            var sprint = Input.GetButtonUp("Sprint" + playerid);
+            var sprint = Input.GetButton("Sprint" + playerid);
 
-            GetComponent<UnitLogic>().move(horizontal, vertical, sprint);
+            var logic = GetComponent<UnitLogic>();
+            logic.move(horizontal, vertical, sprint);
+            
+            var useTool = Input.GetButtonDown("UseTool" + playerid);
+            var attackA = Input.GetButtonDown("AttackA" + playerid);
+            var attackB = Input.GetButtonDown("AttackB" + playerid);
+            if (useTool)
+            {
+                logic.useTool();
+            } else if (attackA)
+            {
+                logic.attackA();
+            } else if (attackB)
+            {
+                logic.attackB();
+            }
         }
     }
 }

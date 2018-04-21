@@ -47,4 +47,19 @@ public class UnitLogic : MonoBehaviour
 
         body.AddForce(new Vector2(dx, dy));
     }
+
+    public void useTool()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void attackA()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void attackB()
+    {
+        throw new System.NotImplementedException();
+    }
 }
