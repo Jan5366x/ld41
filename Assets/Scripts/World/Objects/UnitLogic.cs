@@ -15,10 +15,10 @@ public class UnitLogic : MonoBehaviour
     public float MaxSpeed;
     public float CoolDown;
 
-    public GameObject _presentation;
-    public GameObject _target;
-    public GameObject _targetMarker;
-    public Inventory _inventory;
+    public GameObject Presentation;
+    public GameObject Target;
+    public GameObject TargetMarker;
+    public Inventory Inventory;
 
     private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
 
@@ -27,13 +27,14 @@ public class UnitLogic : MonoBehaviour
     void Start()
     {
         // instantiate the presentation object
-        _presentation = Instantiate(Template.Presentation, transform);
-        _targetMarker = Instantiate(Template.TargetMarker, transform);
-        _inventory = gameObject.AddComponent<Inventory>();
+        Presentation = Instantiate(Template.Presentation, transform);
+        TargetMarker = Instantiate(Template.TargetMarker, transform);
+        Inventory = gameObject.AddComponent<Inventory>();
 
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
         MaxSpeed = Template.MaxSpeed;
+        SetTarget(null);
     }
 
     // Update is called once per frame
@@ -54,13 +55,10 @@ public class UnitLogic : MonoBehaviour
         Mana = Mathf.Min(Mana + Template.ManaRegeneration * Time.deltaTime, Template.MaxMana);
     }
 
-    public GameObject Presentation
-    {
-        get { return _presentation; }
-    }
-
     public void Move(float dx, float dy, bool sprint)
     {
+        if (IsDead())
+            return;
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         if (Mathf.Abs(dx) > Mathf.Abs(dy))
         {
@@ -83,8 +81,17 @@ public class UnitLogic : MonoBehaviour
         body.AddForce(new Vector2(dx, dy));
     }
 
+    public void StopMovement()
+    {
+        Rigidbody2D body = GetComponent<Rigidbody2D>();
+        body.velocity = new Vector2(0,0);
+    }
+
     public void Interact()
     {
+        if (IsDead())
+            return;
+
         var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
             new Vector2(0, 0));
 
@@ -123,25 +130,37 @@ public class UnitLogic : MonoBehaviour
 
     public void AttackLeft()
     {
-        var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        if (IsDead())
+            return;
+
+        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
         Attack(item);
     }
 
     public void AttackRight()
     {
-        var item = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        if (IsDead())
+            return;
+
+        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
         Attack(item);
     }
-    
+
     public void AttackLeft(UnitLogic unit)
     {
-        var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        if (IsDead())
+            return;
+
+        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
         Attack(unit, item);
     }
 
     public void AttackRight(UnitLogic unit)
     {
-        var item = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        if (IsDead())
+            return;
+
+        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
         Attack(unit, item);
     }
 
@@ -161,7 +180,7 @@ public class UnitLogic : MonoBehaviour
 
         CoolDown = damageScript == null ? 1 : damageScript.CoolDown;
     }
-    
+
     private void Attack(UnitLogic unit, GameObject weapon)
     {
         if (CoolDown > 0)
@@ -174,13 +193,17 @@ public class UnitLogic : MonoBehaviour
         {
             AttackUnit(unit, damageScript);
         }
+
         var units = getHitUnits(damageScript);
-        
+
         CoolDown = damageScript == null ? 1 : damageScript.CoolDown;
     }
 
     public void AttackUnit(UnitLogic other, Weapon weapon)
     {
+        if (IsDead())
+            return;
+
         if (other && CoolDown <= 0)
         {
             if (weapon && weapon.Magic)
@@ -222,7 +245,7 @@ public class UnitLogic : MonoBehaviour
         Array hitUnits = new Array();
         if (weapon != null && weapon.Magic)
         {
-            hitUnits.Add(_target);
+            hitUnits.Add(Target);
         }
         else
         {
@@ -283,7 +306,7 @@ public class UnitLogic : MonoBehaviour
     {
         if (IsDead())
             return;
-        
+
         HP -= damage;
         if (IsDead())
         {
@@ -297,12 +320,15 @@ public class UnitLogic : MonoBehaviour
 
     public void Die()
     {
-        _presentation = Instantiate(Template.DeathPrefab, transform);
+        Presentation = Instantiate(Template.DeathPrefab, transform);
         Debug.LogError("I Should be dead by now");
     }
 
     public void SwitchTarget()
     {
+        if (IsDead())
+            return;
+
         var range = GetMaxWeaponRange();
         var unitsInRange = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), range * 10,
             new Vector2(0, 0));
@@ -323,7 +349,7 @@ public class UnitLogic : MonoBehaviour
                 continue;
             }
 
-            if (hitUnit.gameObject == this || hitUnit.gameObject == _target)
+            if (hitUnit.gameObject == this || hitUnit.gameObject == Target)
             {
                 continue;
             }
@@ -340,7 +366,7 @@ public class UnitLogic : MonoBehaviour
 
     public float GetWeaponRangeLeft()
     {
-        var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
         var weapon = item != null ? item.GetComponent<Weapon>() : null;
         var range = weapon != null ? weapon.Range : Template.HandRange;
         return range;
@@ -348,7 +374,7 @@ public class UnitLogic : MonoBehaviour
 
     public float GetWeaponRangeRight()
     {
-        var item = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
         var weapon = item != null ? item.GetComponent<Weapon>() : null;
         var range = weapon != null ? weapon.Range : Template.HandRange;
         return range;
@@ -361,8 +387,16 @@ public class UnitLogic : MonoBehaviour
 
     public void SetTarget(GameObject target)
     {
-        _target = target;
-        _targetMarker.transform.SetParent(_target.transform, false);
+        Target = target;
+        if (Target != null)
+        {
+            TargetMarker.transform.SetParent(Target.transform, false);
+            TargetMarker.SetActive(true);
+        }
+        else
+        {
+            TargetMarker.SetActive(false);
+        }
     }
 
     public void ReceiveEffect(EffectLogic weaponEffect, float weaponEffectDuration)

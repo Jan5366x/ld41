@@ -14,8 +14,8 @@ MonoBehaviour:
   UnitName: Player
   MaxHealth: 100
   MaxMana: 100
-  HPRegeneration: 0
-  ManaRegeneration: 0
+  HPRegeneration: 0.1
+  ManaRegeneration: 0.1
   Strength: 6
   Intelligence: 6
   Stamina: 6
@@ -28,9 +28,8 @@ MonoBehaviour:
   IsShowName: 1
   Presentation: {fileID: 1067876819364298, guid: db783c857c27abe408f2b1c07782fc6c,
     type: 2}
-  DamageSprite: {fileID: 1053790543902196, guid: 089c3de80e73a4e369d4b9dc4f059de1,
+  DeathPrefab: {fileID: 1595415496569820, guid: a30113be39f66479f9c25b1b13182ddf,
     type: 2}
-  DieSprite: {fileID: 1053790543902196, guid: 089c3de80e73a4e369d4b9dc4f059de1, type: 2}
   TargetMarker: {fileID: 1876147113329590, guid: f63e0a823537f463c84b01965ff98807,
     type: 2}
   HandRange: 0.32

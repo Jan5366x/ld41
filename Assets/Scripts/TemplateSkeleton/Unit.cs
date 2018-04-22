@@ -27,7 +27,6 @@ public class Unit : ScriptableObject
     public bool IsShowName;
     
     public GameObject Presentation;
-    public GameObject DamageSprite;
     public GameObject DeathPrefab;
     public GameObject TargetMarker;
     public float HandRange = 0.32f;

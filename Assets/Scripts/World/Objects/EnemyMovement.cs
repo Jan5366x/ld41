@@ -11,12 +11,52 @@ public class EnemyMovement : MonoBehaviour
     private UnitLogic Self;
     private UnitLogic Target;
     private Vector3 SpawnPosition;
+    private Vector3 TargetPosition;
     private bool GoHome = false;
+
+    private float durationStuck;
 
     private void Start()
     {
         Self = GetComponentInChildren<UnitLogic>();
         SpawnPosition = new Vector2(transform.position.x, transform.position.y);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        durationStuck = 0;
+    }
+
+    private void OnCollisionStay2D(Collision2D other)
+    {
+        if (other == null)
+            return;
+        var otherUnit = other.gameObject.GetComponent<UnitLogic>();
+        if (otherUnit || !Self)
+            return;
+
+        Vector2 direction;
+        if ((int) durationStuck % 20 < 10)
+        {
+            direction = Vector2.Perpendicular(TargetPosition - transform.position);
+        }
+        else
+        {
+            direction = Vector2.Perpendicular(transform.position - TargetPosition);
+        }
+
+        direction.Normalize();
+
+
+        Self.Move(direction.x, direction.y, false);
+        durationStuck += Time.deltaTime;
+        print("OUCH");
+    }
+
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        durationStuck = 0;
     }
 
     private void Update()
@@ -43,14 +83,16 @@ public class EnemyMovement : MonoBehaviour
                 Target = null;
                 GoHome = true;
             }
-            else if (distance < Self.Template.HandRange)
+            else if (Mathf.Abs(distance) < 1e-6)
             {
                 GoHome = false;
+                Self.StopMovement();
             }
 
             if (GoHome)
             {
-                Self.Move(SpawnPosition.x - transform.position.x, SpawnPosition.y - transform.position.y, true);
+                TargetPosition = SpawnPosition;
+                Move();
             }
             else
             {
@@ -70,8 +112,11 @@ public class EnemyMovement : MonoBehaviour
                     SetNewTarget(hits, 100f);
                 }
 
-                Self.Move(Target.transform.position.x - transform.position.x,
-                    Target.transform.position.y - transform.position.y, false);
+                if (Target != null)
+                {
+                    TargetPosition = Target.transform.position;
+                    Move();
+                }
             }
         }
     }
@@ -124,5 +169,10 @@ public class EnemyMovement : MonoBehaviour
         }
 
         return didAttack;
+    }
+
+    private void Move()
+    {
+        Self.Move(TargetPosition.x - transform.position.x, TargetPosition.y - transform.position.y, false);
     }
 }
