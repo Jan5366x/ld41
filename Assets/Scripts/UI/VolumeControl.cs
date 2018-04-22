@@ -7,11 +7,16 @@ namespace UI
 	public class VolumeControl: MonoBehaviour {
 
 		public Slider VolumeSlider;
-		public AudioMixer VolumeAudio;
-		public void VolumeController()
+		public GameObject ListenerSource;
+
+
+		
+
+		public void UpdateVolume()
 		{
 
-			VolumeAudio.SetFloat("Master", VolumeSlider.value);
+			AudioListener.volume = VolumeSlider.value;
+			
 		}
 		
 	
