@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityScript.Lang;
+using Array = UnityScript.Lang.Array;
+using Random = UnityEngine.Random;
 
 public class UnitLogic : MonoBehaviour
 {
@@ -11,9 +13,9 @@ public class UnitLogic : MonoBehaviour
     public float HP;
     public float Mana;
 
-    private GameObject _presentation;
-    private GameObject _target;
-    private GameObject _targetMarker;
+    public GameObject _presentation;
+    public GameObject _target;
+    public GameObject _targetMarker;
     public Inventory _inventory;
 
     // Use this for initialization
@@ -64,13 +66,14 @@ public class UnitLogic : MonoBehaviour
 
     public void Interact()
     {
-        var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), 0.5f,
+        var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
             new Vector2(0, 0));
 
         int minIdx = -1;
         float minDist = 99999;
         int idx = 0;
         Interactable bestInteractable = null;
+        print("------");
         foreach (var hit in hits)
         {
             var collider = hit.collider;
@@ -93,13 +96,16 @@ public class UnitLogic : MonoBehaviour
                 bestInteractable.interact(this);
             }
         }
+        else
+        {
+            print("+++++++");
+            SwitchTarget();
+        }
     }
 
     public void AttackA()
     {
-        Debug.Log("++++," + _inventory.ToString());
         var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
-        Debug.Log("----,", item);
         Attack(item);
     }
 
@@ -189,7 +195,7 @@ public class UnitLogic : MonoBehaviour
         {
             Die();
         }
-        
+
         print(GetComponentInChildren<ShowDamage>());
 
         GetComponentInChildren<ShowDamage>().Show(damage);
@@ -201,9 +207,59 @@ public class UnitLogic : MonoBehaviour
         Debug.LogError("I Should be dead by now");
     }
 
+    public void SwitchTarget()
+    {
+        var range = GetMaxWeaponRange();
+        var unitsInRange = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), range * 10,
+            new Vector2(0, 0));
+        Array targets = new Array();
+
+
+        for (int i = 0; i < unitsInRange.Length; i++)
+        {
+            var collider = unitsInRange[i].collider;
+            var hitUnit = collider.GetComponentInChildren<UnitLogic>();
+            if (!hitUnit)
+            {
+                continue;
+            }
+
+            if (!hitUnit.Template.IsEnemy)
+            {
+                continue;
+            }
+
+            if (hitUnit.gameObject == this || hitUnit.gameObject == _target)
+            {
+                continue;
+            }
+
+            targets.Add(collider.gameObject);
+        }
+
+        if (targets.length > 0)
+        {
+            int idx = (int) (Random.value * targets.length);
+            SetTarget((GameObject) targets[idx]);
+        }
+    }
+
+    public float GetMaxWeaponRange()
+    {
+        var itemA = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var itemB = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var weaponA = itemA != null ? itemA.GetComponent<Weapon>() : null;
+        var weaponB = itemA != null ? itemB.GetComponent<Weapon>() : null;
+
+        var rangeA = weaponA != null ? weaponA.Range : Template.HandRange;
+        var rangeB = weaponB != null ? weaponB.Range : Template.HandRange;
+
+        return Mathf.Max(rangeA, rangeB);
+    }
+
     public void SetTarget(GameObject target)
     {
         _target = target;
-        _targetMarker.transform.SetParent(_target.transform);
+        _targetMarker.transform.SetParent(_target.transform, false);
     }
 }

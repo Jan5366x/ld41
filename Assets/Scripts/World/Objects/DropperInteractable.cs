@@ -55,10 +55,13 @@ public class DropperInteractable : Interactable
 
     private void SpawnItem(GameObject obj)
     {
-        float dx = (Random.value * SpreadX) - SpreadX / 2f;
-        float dy = (Random.value * SpreadY) - SpreadY / 2f;
+        if (obj)
+        {
+            float dx = (Random.value * SpreadX) - SpreadX / 2f;
+            float dy = (Random.value * SpreadY) - SpreadY / 2f;
 
-        var i = Instantiate(obj, transform);
-        i.transform.Translate(dx, dy, 0);
+            var i = Instantiate(obj, transform);
+            i.transform.Translate(dx, dy, 0);
+        }
     }
 }
