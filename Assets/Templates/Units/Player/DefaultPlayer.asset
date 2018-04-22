@@ -23,5 +23,11 @@ MonoBehaviour:
   IsEnemy: 0
   IsInteractable: 0
   IsShowName: 1
-  Presentation: {fileID: 1776276564255896, guid: db783c857c27abe408f2b1c07782fc6c,
+  Presentation: {fileID: 1067876819364298, guid: db783c857c27abe408f2b1c07782fc6c,
     type: 2}
+  DamageSprite: {fileID: 1053790543902196, guid: 089c3de80e73a4e369d4b9dc4f059de1,
+    type: 2}
+  DieSprite: {fileID: 1053790543902196, guid: 089c3de80e73a4e369d4b9dc4f059de1, type: 2}
+  TargetMarker: {fileID: 1053790543902196, guid: 089c3de80e73a4e369d4b9dc4f059de1,
+    type: 2}
+  HandRange: 0.32
