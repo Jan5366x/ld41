@@ -16,5 +16,12 @@ public class InventoryItem : MonoBehaviour
     void Update () {
 		
     }
-	
+
+	public InventoryItem Copy()
+	{
+		InventoryItem ii = gameObject.AddComponent<InventoryItem>();
+		ii.obj = obj;
+		ii.quantity = quantity;
+		return ii;
+	}
 }

@@ -92,4 +92,15 @@ public class Inventory : MonoBehaviour
 
         return Items[slot].quantity;
     }
+    
+    public Inventory Copy()
+    {
+        Inventory iv = gameObject.AddComponent<Inventory>();
+        for (int i = 0; i < COUNT_SLOT; i++)
+        {
+            iv.Items[i] = Items[i].Copy();
+        }
+
+        return iv;
+    }
 }
