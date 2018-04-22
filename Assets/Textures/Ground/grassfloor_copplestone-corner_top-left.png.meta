@@ -1,9 +1,9 @@
 fileFormatVersion: 2
-guid: b8c84ebfd70dc48a38d0fb62e18f5f7e
+guid: ddcd1fb35cca87e4f8db7c410d668da8
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
-  serializedVersion: 5
+  serializedVersion: 6
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -21,6 +21,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -31,7 +33,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: -1
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: 1
     wrapW: 1
@@ -73,7 +75,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 1d88ccfbf8a554318aa9b0d2fce98e9d
+    spriteID: fe9176ba68e011647ae6f4ced8edafb5
     vertices: []
     indices: 
     edges: []
