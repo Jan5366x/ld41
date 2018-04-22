@@ -16,6 +16,7 @@ namespace UI
 		{
 
 			AudioListener.volume = VolumeSlider.value;
+			PlayerPrefs.SetFloat("MasterVolumeLevel", VolumeSlider.value);
 			
 		}
 		
