@@ -9,6 +9,9 @@ public class Unit : ScriptableObject
     
     public int MaxHealth;
     public int MaxMana;
+
+    public float HPRegeneration;
+    public float ManaRegeneration;
     
     public int Strength;
     public int Intelligence;
@@ -19,8 +22,13 @@ public class Unit : ScriptableObject
     public float Acceleration;
     
     public bool IsEnemy;
+    public bool IsPlayer;
     public bool IsInteractable;
     public bool IsShowName;
     
     public GameObject Presentation;
+    public GameObject DeathPrefab;
+    public GameObject TargetMarker;
+    public float HandRange = 0.32f;
+    public float FollowRange = 1f;
 }

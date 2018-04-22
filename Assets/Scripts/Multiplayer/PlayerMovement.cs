@@ -21,20 +21,27 @@ public class PlayerMovement : MonoBehaviour
             var sprint = Input.GetButton("Sprint" + playerid);
 
             var logic = GetComponent<UnitLogic>();
-            logic.move(horizontal, vertical, sprint);
-            
+            if (Mathf.Abs(horizontal) > 1e-6 || Mathf.Abs(vertical) > 1e-6)
+            {
+                logic.Move(horizontal, vertical, sprint);
+            }
+            else
+            {
+                logic.StopMovement();
+            }
+
             var useTool = Input.GetButtonDown("UseTool" + playerid);
             var attackA = Input.GetButtonDown("AttackA" + playerid);
             var attackB = Input.GetButtonDown("AttackB" + playerid);
             if (useTool)
             {
-                logic.useTool();
+                logic.Interact();
             } else if (attackA)
             {
-                logic.attackA();
+                logic.AttackLeft();
             } else if (attackB)
             {
-                logic.attackB();
+                logic.AttackRight();
             }
         }
     }

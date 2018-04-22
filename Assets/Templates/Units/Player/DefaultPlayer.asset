@@ -14,14 +14,23 @@ MonoBehaviour:
   UnitName: Player
   MaxHealth: 100
   MaxMana: 100
+  HPRegeneration: 0.1
+  ManaRegeneration: 0.1
   Strength: 6
   Intelligence: 6
   Stamina: 6
   Agility: 6
-  MaxSpeed: 500
-  Acceleration: 50
+  MaxSpeed: 100
+  Acceleration: 10
   IsEnemy: 0
+  IsPlayer: 1
   IsInteractable: 0
   IsShowName: 1
-  Presentation: {fileID: 1776276564255896, guid: db783c857c27abe408f2b1c07782fc6c,
+  Presentation: {fileID: 1067876819364298, guid: db783c857c27abe408f2b1c07782fc6c,
     type: 2}
+  DeathPrefab: {fileID: 1595415496569820, guid: a30113be39f66479f9c25b1b13182ddf,
+    type: 2}
+  TargetMarker: {fileID: 1876147113329590, guid: f63e0a823537f463c84b01965ff98807,
+    type: 2}
+  HandRange: 0.32
+  FollowRange: 1
