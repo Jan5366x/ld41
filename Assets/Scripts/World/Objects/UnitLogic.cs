@@ -12,11 +12,15 @@ public class UnitLogic : MonoBehaviour
 
     public float HP;
     public float Mana;
+    public float MaxSpeed;
+    public float CoolDown;
 
     public GameObject _presentation;
     public GameObject _target;
     public GameObject _targetMarker;
     public Inventory _inventory;
+
+    private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
 
     // Use this for initialization
 
@@ -29,11 +33,25 @@ public class UnitLogic : MonoBehaviour
 
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
+        MaxSpeed = Template.MaxSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
+        print("+++" + activeEffects);
+        foreach (var effect in activeEffects.Keys)
+        {
+            effect.apply(this);
+            activeEffects[effect] -= Time.deltaTime;
+        }
+
+        activeEffects = activeEffects.Where(pair => pair.Value > 0)
+            .ToDictionary(item => item.Key, value => value.Value);
+        CoolDown -= Time.deltaTime;
+
+        HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);
+        Mana = Mathf.Min(Mana + Template.ManaRegeneration * Time.deltaTime, Template.MaxMana);
     }
 
     public GameObject Presentation
@@ -41,7 +59,7 @@ public class UnitLogic : MonoBehaviour
         get { return _presentation; }
     }
 
-    public void move(float dx, float dy, bool sprint)
+    public void Move(float dx, float dy, bool sprint)
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         if (Mathf.Abs(dx) > Mathf.Abs(dy))
@@ -55,6 +73,7 @@ public class UnitLogic : MonoBehaviour
 
         dx *= Template.Acceleration;
         dy *= Template.Acceleration;
+
         if (sprint)
         {
             dx *= (1 + Random.value * 0.2f);
@@ -73,7 +92,7 @@ public class UnitLogic : MonoBehaviour
         float minDist = 99999;
         int idx = 0;
         Interactable bestInteractable = null;
-        print("------");
+
         foreach (var hit in hits)
         {
             var collider = hit.collider;
@@ -98,32 +117,104 @@ public class UnitLogic : MonoBehaviour
         }
         else
         {
-            print("+++++++");
             SwitchTarget();
         }
     }
 
-    public void AttackA()
+    public void AttackLeft()
     {
         var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
         Attack(item);
     }
 
-    public void AttackB()
+    public void AttackRight()
     {
         var item = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
         Attack(item);
     }
+    
+    public void AttackLeft(UnitLogic unit)
+    {
+        var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        Attack(unit, item);
+    }
+
+    public void AttackRight(UnitLogic unit)
+    {
+        var item = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        Attack(unit, item);
+    }
 
     private void Attack(GameObject weapon)
     {
+        if (CoolDown > 0)
+        {
+            return;
+        }
+
         var damageScript = weapon == null ? null : weapon.GetComponent<Weapon>();
-        var damage = damageScript == null ? 1 : damageScript.Damage;
         var units = getHitUnits(damageScript);
         foreach (var unit in units)
         {
-            unit.ReceiveDamage(damage);
+            AttackUnit(unit, damageScript);
         }
+
+        CoolDown = damageScript == null ? 1 : damageScript.CoolDown;
+    }
+    
+    private void Attack(UnitLogic unit, GameObject weapon)
+    {
+        if (CoolDown > 0)
+        {
+            return;
+        }
+
+        var damageScript = weapon == null ? null : weapon.GetComponent<Weapon>();
+        if (unit)
+        {
+            AttackUnit(unit, damageScript);
+        }
+        var units = getHitUnits(damageScript);
+        
+        CoolDown = damageScript == null ? 1 : damageScript.CoolDown;
+    }
+
+    public void AttackUnit(UnitLogic other, Weapon weapon)
+    {
+        if (other && CoolDown <= 0)
+        {
+            if (weapon && weapon.Magic)
+            {
+                FireProjectile(weapon, other);
+            }
+            else
+            {
+                HitMeele(weapon, other);
+            }
+        }
+    }
+
+    private void HitMeele(Weapon weapon, UnitLogic target)
+    {
+        if (target)
+        {
+            float damage = weapon != null ? weapon.Damage : 1;
+            EffectLogic effect = weapon != null ? weapon.Effect : null;
+            float effectDuration = weapon != null ? weapon.EffectDuration : 0;
+            target.ReceiveDamage(damage);
+            target.ReceiveEffect(effect, effectDuration);
+        }
+    }
+
+    private void FireProjectile(Weapon weapon, UnitLogic target)
+    {
+        if (weapon == null)
+            return;
+
+        var projectile = Instantiate(weapon.Projectile, transform);
+        var projectileScript = projectile.GetComponentInChildren<ProjectileLogic>();
+        projectileScript.Target = target.gameObject;
+        projectileScript.Weapon = weapon;
     }
 
     private UnitLogic[] getHitUnits(Weapon weapon)
@@ -190,8 +281,11 @@ public class UnitLogic : MonoBehaviour
 
     public void ReceiveDamage(float damage)
     {
+        if (IsDead())
+            return;
+        
         HP -= damage;
-        if (HP < 0)
+        if (IsDead())
         {
             Die();
         }
@@ -203,7 +297,7 @@ public class UnitLogic : MonoBehaviour
 
     public void Die()
     {
-        _presentation = Instantiate(Template.DieSprite, transform);
+        _presentation = Instantiate(Template.DeathPrefab, transform);
         Debug.LogError("I Should be dead by now");
     }
 
@@ -244,22 +338,48 @@ public class UnitLogic : MonoBehaviour
         }
     }
 
+    public float GetWeaponRangeLeft()
+    {
+        var item = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var weapon = item != null ? item.GetComponent<Weapon>() : null;
+        var range = weapon != null ? weapon.Range : Template.HandRange;
+        return range;
+    }
+
+    public float GetWeaponRangeRight()
+    {
+        var item = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var weapon = item != null ? item.GetComponent<Weapon>() : null;
+        var range = weapon != null ? weapon.Range : Template.HandRange;
+        return range;
+    }
+
     public float GetMaxWeaponRange()
     {
-        var itemA = _inventory.GetObject(Inventory.HAND_LEFT_SLOT);
-        var itemB = _inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
-        var weaponA = itemA != null ? itemA.GetComponent<Weapon>() : null;
-        var weaponB = itemA != null ? itemB.GetComponent<Weapon>() : null;
-
-        var rangeA = weaponA != null ? weaponA.Range : Template.HandRange;
-        var rangeB = weaponB != null ? weaponB.Range : Template.HandRange;
-
-        return Mathf.Max(rangeA, rangeB);
+        return Mathf.Max(GetWeaponRangeLeft(), GetWeaponRangeRight());
     }
 
     public void SetTarget(GameObject target)
     {
         _target = target;
         _targetMarker.transform.SetParent(_target.transform, false);
+    }
+
+    public void ReceiveEffect(EffectLogic weaponEffect, float weaponEffectDuration)
+    {
+        if (weaponEffect && weaponEffectDuration > 0)
+        {
+            if (!activeEffects.ContainsKey(weaponEffect))
+            {
+                activeEffects.Add(weaponEffect, 0);
+            }
+
+            activeEffects[weaponEffect] += weaponEffectDuration;
+        }
+    }
+
+    public bool IsDead()
+    {
+        return HP < 0;
     }
 }

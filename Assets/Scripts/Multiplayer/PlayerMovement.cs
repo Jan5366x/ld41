@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
             var sprint = Input.GetButton("Sprint" + playerid);
 
             var logic = GetComponent<UnitLogic>();
-            logic.move(horizontal, vertical, sprint);
+            logic.Move(horizontal, vertical, sprint);
             
             var useTool = Input.GetButtonDown("UseTool" + playerid);
             var attackA = Input.GetButtonDown("AttackA" + playerid);
@@ -31,10 +31,10 @@ public class PlayerMovement : MonoBehaviour
                 logic.Interact();
             } else if (attackA)
             {
-                logic.AttackA();
+                logic.AttackLeft();
             } else if (attackB)
             {
-                logic.AttackB();
+                logic.AttackRight();
             }
         }
     }
