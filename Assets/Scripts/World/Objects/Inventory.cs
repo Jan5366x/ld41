@@ -13,15 +13,20 @@ public class Inventory : MonoBehaviour
     public const int OFFSET_SLOT = 6;
     public const int COUNT_SLOT = 20;
 
-    public InventoryItem[] Items = new InventoryItem[COUNT_SLOT];
+    public InventoryItem[] Items;
 
     // Use this for initialization
-    void Start()
+    public void Start()
     {
+        Items = new InventoryItem[COUNT_SLOT];
+        for (int i = 0; i < COUNT_SLOT; i++)
+        {
+            Items[i] = gameObject.AddComponent<InventoryItem>();
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
     }
 

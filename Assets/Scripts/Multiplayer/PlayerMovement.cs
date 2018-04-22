@@ -28,13 +28,13 @@ public class PlayerMovement : MonoBehaviour
             var attackB = Input.GetButtonDown("AttackB" + playerid);
             if (useTool)
             {
-                logic.interact();
+                logic.Interact();
             } else if (attackA)
             {
-                logic.attackA();
+                logic.AttackA();
             } else if (attackB)
             {
-                logic.attackB();
+                logic.AttackB();
             }
         }
     }
