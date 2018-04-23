@@ -1,11 +1,7 @@
 fileFormatVersion: 2
-guid: 2c1b08619f2af714bb1cc6fb5e0fa13c
+guid: d03225298d3100c409a2e3638e0db284
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: torch_001_0
-    21300002: torch_001_1
-    21300004: torch_001_2
-    21300006: torch_001_3
+  fileIDToRecycleName: {}
   externalObjects: {}
   serializedVersion: 6
   mipmaps:
@@ -44,7 +40,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -119,91 +115,11 @@ TextureImporter:
     androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: torch_001_0
-      rect:
-        serializedVersion: 2
-        x: 12
-        y: 0
-        width: 9
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 88897b810710ef346aaad62525646480
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: torch_001_1
-      rect:
-        serializedVersion: 2
-        x: 44
-        y: 0
-        width: 9
-        height: 29
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7383eabad7e62914585bd96d7a114e14
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: torch_001_2
-      rect:
-        serializedVersion: 2
-        x: 76
-        y: 0
-        width: 9
-        height: 30
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d336b7bb144c4e745afc7600b9ffd051
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: torch_001_3
-      rect:
-        serializedVersion: 2
-        x: 108
-        y: 0
-        width: 9
-        height: 31
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fb1142eceab911c489cca2c1e134b031
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 2149681d7f7884745bbde3727c83bcdd
+    spriteID: 82268479edd0a1642a8d7f08f9cca101
     vertices: []
     indices: 
     edges: []
