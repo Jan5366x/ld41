@@ -9,4 +9,5 @@ public class Item : ScriptableObject {
     public Effect ItemEffect;
     public int BasePrice;
     public Sprite DisplaySprite;
+    public float ArmorResistence;
 }

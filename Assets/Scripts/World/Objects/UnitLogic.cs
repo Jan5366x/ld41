@@ -78,6 +78,25 @@ public class UnitLogic : MonoBehaviour
         }
     }
 
+    public float GetArmorResistence()
+    {
+        float armorResistence = 1;
+        for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
+        {
+            var item = Inventory.GetObject(i);
+            if (item != null)
+            {
+                var iitem = item.GetComponentInChildren<Item>();
+                if (iitem)
+                {
+                    armorResistence += iitem.ArmorResistence;
+                }
+            }
+        }
+
+        return armorResistence;
+    }
+
     public void Move(float dx, float dy, bool sprint)
     {
         if (IsDead())
@@ -342,6 +361,13 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
+        var resistence = GetArmorResistence();
+        if (resistence < 1)
+        {
+            resistence = 1;
+        }
+
+        damage /= resistence;
         HP -= damage;
         if (IsDead())
         {
