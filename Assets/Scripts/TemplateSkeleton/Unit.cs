@@ -12,6 +12,9 @@ public class Unit : ScriptableObject
 
     public float HPRegeneration;
     public float ManaRegeneration;
+    public float StaminaRegeneration;
+    public float StaminaUsage;
+    public float StaminaMinUsage;
     
     public int Strength;
     public int Intelligence;

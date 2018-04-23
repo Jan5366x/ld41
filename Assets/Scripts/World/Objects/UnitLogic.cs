@@ -13,6 +13,8 @@ public class UnitLogic : MonoBehaviour
     public float HP;
     public float Mana;
     public float MaxSpeed;
+    public float Stamina;
+    public bool StaminaEmpty;
     public float CoolDown;
 
     public GameObject Presentation;
@@ -34,6 +36,7 @@ public class UnitLogic : MonoBehaviour
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
         MaxSpeed = Template.MaxSpeed;
+        Stamina = Template.Stamina;
         SetTarget(null);
     }
 
@@ -53,6 +56,16 @@ public class UnitLogic : MonoBehaviour
 
         HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);
         Mana = Mathf.Min(Mana + Template.ManaRegeneration * Time.deltaTime, Template.MaxMana);
+        Stamina = Mathf.Min(Stamina + Template.StaminaRegeneration * Time.deltaTime, Template.Stamina);
+        if (Stamina <= 0)
+        {
+            StaminaEmpty = true;
+        }
+
+        if (StaminaEmpty && Stamina > Template.StaminaMinUsage)
+        {
+            StaminaEmpty = false;
+        }
     }
 
     public void Move(float dx, float dy, bool sprint)
@@ -74,8 +87,13 @@ public class UnitLogic : MonoBehaviour
 
         if (sprint)
         {
-            dx *= (1 + Random.value * 0.2f);
-            dy *= (1 + Random.value * 0.2f);
+            var usage = Template.StaminaUsage / Template.Strength * Time.deltaTime;
+            if (!StaminaEmpty)
+            {
+                dx *= (1 + Random.value * 0.2f);
+                dy *= (1 + Random.value * 0.2f);
+                Stamina -= usage;
+            }
         }
 
         body.AddForce(new Vector2(dx, dy));
@@ -84,7 +102,7 @@ public class UnitLogic : MonoBehaviour
     public void StopMovement()
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
-        body.velocity = new Vector2(0,0);
+        body.velocity = new Vector2(0, 0);
     }
 
     public void Interact()

@@ -13,6 +13,8 @@ public class ViewInventory : MonoBehaviour
 
     private static readonly Color Black = new Color(0, 0, 0);
     private static readonly Color Red = new Color(1f, 0, 0);
+    private static readonly Color Green = new Color(0, 1f, 0f);
+    private static readonly Color DarkGreen = new Color(0, 0.6f, 0f);
     private static readonly Color Blue = new Color(0, 0, 1f);
 
     private Inventory _inventory;
@@ -37,6 +39,7 @@ public class ViewInventory : MonoBehaviour
     {
         DrawHPBar();
         DrawManaBar();
+        DrawStaminaBar();
         DrawLeftWeapon();
         DrawRightWeapon();
     }
@@ -78,6 +81,17 @@ public class ViewInventory : MonoBehaviour
             unit.Mana / unit.Template.MaxMana,
             Black,
             Blue
+        );
+    }
+    
+    protected void DrawStaminaBar()
+    {
+        DrawFilledBorderRect(
+            new Rect(ViewRect.right - 110, 25, 100, 6),
+            1,
+            unit.Stamina / unit.Template.Stamina,
+            Black,
+            unit.Stamina < unit.Template.StaminaMinUsage ? DarkGreen : Green
         );
     }
 

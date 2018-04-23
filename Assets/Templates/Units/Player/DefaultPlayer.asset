@@ -16,6 +16,9 @@ MonoBehaviour:
   MaxMana: 100
   HPRegeneration: 0.1
   ManaRegeneration: 0.1
+  StaminaRegeneration: 0.1
+  StaminaUsage: 5
+  StaminaMinUsage: 2
   Strength: 6
   Intelligence: 6
   Stamina: 6
