@@ -31,6 +31,17 @@ public class BuyInventory : MonoBehaviour
     public float moveDelay = 0.0001f;
     public bool show = false;
 
+    public Rect getTruncatedInnerRect(int border)
+    {
+        int w = (int) Mathf.Min(1024, ViewRect.width - 2 * border);
+        int h = (int) Mathf.Min(1024, ViewRect.height - 2 * border);
+
+        int cx = (int) ViewRect.center.x;
+        int cy = (int) ViewRect.center.y;
+
+        return new Rect(cx - w / 2, cy - h / 2, w, h);
+    }
+
     public Inventory MyInventory
     {
         get
@@ -105,17 +116,18 @@ public class BuyInventory : MonoBehaviour
 
     private int GetItemDrawCount()
     {
-        int offsetLeft = 160;
-        int offsetTop = 160;
-        int offsetBottom = 160;
+        Rect rect = getTruncatedInnerRect(150);
+        int offsetLeft = 10;
+        int offsetTop = 100;
+        int offsetBottom = 100;
         int widthPreview = 64;
         int widthInnerBorder = 10;
-        int widthRight = (int) (ViewRect.width - (2 * offsetLeft + widthPreview + widthInnerBorder));
+        int widthRight = (int) (rect.width - (2 * offsetLeft + widthPreview + widthInnerBorder));
         int heightItem = 64;
         int heightInnerBorder = 10;
         for (int idx = 0; idx < Inventory.COUNT_SLOT; idx++)
         {
-            if ((offsetTop + heightItem) > (ViewRect.bottom - offsetBottom))
+            if ((offsetTop + heightItem) > (rect.bottom - offsetBottom))
             {
                 return idx - 1;
             }
@@ -128,19 +140,20 @@ public class BuyInventory : MonoBehaviour
 
     private void DrawInventory()
     {
-        int offsetLeft = 160;
-        int offsetTop = 160;
-        int offsetBottom = 160;
+        Rect rect = getTruncatedInnerRect(150);
+        int offsetLeft = 10;
+        int offsetTop = 100;
+        int offsetBottom = 100;
         int widthPreview = 64;
         int widthInnerBorder = 10;
-        int widthRight = (int) (ViewRect.width - (2 * offsetLeft + widthPreview + widthInnerBorder));
+        int widthRight = (int) (rect.width - (2 * offsetLeft + widthPreview + widthInnerBorder));
         int heightItem = 64;
         int heightInnerBorder = 10;
         for (int idx = itemDrawOffset; idx < Inventory.COUNT_SLOT; idx++)
         {
-            if ((offsetTop + heightItem) < (ViewRect.bottom - offsetBottom))
+            if ((offsetTop + heightItem) < (rect.bottom - offsetBottom))
             {
-                Rect previewRect = new Rect(ViewRect.left + offsetLeft, ViewRect.top + offsetTop, widthPreview,
+                Rect previewRect = new Rect(rect.left + offsetLeft, rect.top + offsetTop, widthPreview,
                     heightItem);
                 IMUIHelper.DrawFilledRect(previewRect, idx == itemSelectIdx ? LightGrey : Grey);
                 if (_inventory != null)
@@ -159,7 +172,7 @@ public class BuyInventory : MonoBehaviour
                 }
 
                 IMUIHelper.DrawFilledRect(
-                    new Rect(ViewRect.left + offsetLeft + widthPreview + widthInnerBorder, ViewRect.top + offsetTop,
+                    new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder, rect.top + offsetTop,
                         widthRight, heightItem),
                     idx == itemSelectIdx ? LightGrey : Grey);
             }
@@ -170,9 +183,10 @@ public class BuyInventory : MonoBehaviour
 
     private void DrawInventoryBorder()
     {
+        Rect rect = getTruncatedInnerRect(150);
         IMUIHelper.DrawFilledRect(
             new Rect(
-                ViewRect.left + 150, ViewRect.top + 150, ViewRect.width - 300, ViewRect.height - 300
+                rect.left, rect.top, rect.width, rect.height
             ), Brown);
     }
 

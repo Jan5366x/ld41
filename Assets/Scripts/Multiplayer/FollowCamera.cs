@@ -18,8 +18,6 @@ public class FollowCamera : MonoBehaviour
         float dy = toFollow.transform.position.y - transform.position.y;
         float mag = Mathf.Sqrt(dx * dx + dy * dy);
 
-        print("zzzzzzzzzzzzzzzzzz" + mag + " " + dx + " " + dy);
-
         if (mag > 1f ) //s need to go faster, but still leave some room
         {
             dx *= (1 - 1f / mag);

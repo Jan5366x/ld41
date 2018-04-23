@@ -27,6 +27,8 @@ public class UnitLogic : MonoBehaviour
     public SellInventory sellInventory;
     public BuyInventory buyInventory;
 
+    public bool AnyInventoryShown = false;
+
     private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
     public int Money;
 
@@ -80,6 +82,8 @@ public class UnitLogic : MonoBehaviour
     {
         if (IsDead())
             return;
+        if (AnyInventoryShown)
+            return;
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         if (Mathf.Abs(dx) > Mathf.Abs(dy))
         {
@@ -117,6 +121,11 @@ public class UnitLogic : MonoBehaviour
     {
         if (IsDead())
             return;
+        if (AnyInventoryShown)
+        {
+            CloseInventories();
+            return;
+        }
 
         var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
             new Vector2(0, 0));
@@ -339,8 +348,6 @@ public class UnitLogic : MonoBehaviour
             Die();
         }
 
-        print(GetComponentInChildren<ShowDamage>());
-
         GetComponentInChildren<ShowDamage>().Show(damage);
     }
 
@@ -472,16 +479,41 @@ public class UnitLogic : MonoBehaviour
 
     public void ShowInventory()
     {
+        CloseInventories();
         viewInventory.Show(Inventory);
+        AnyInventoryShown = true;
     }
 
     public void BuyInventory(UnitLogic other)
     {
+        CloseInventories();
+
         buyInventory.Show(other.Inventory);
+        AnyInventoryShown = true;
     }
 
     public void SellInventory(UnitLogic other)
     {
+        CloseInventories();
+
         sellInventory.Show(Inventory);
+        AnyInventoryShown = true;
+    }
+
+    public void ShowMessage(String message, float duration)
+    {
+        CloseInventories();
+
+        viewHUD.ShowText(message, duration);
+        AnyInventoryShown = true;
+    }
+
+    public void CloseInventories()
+    {
+        AnyInventoryShown = false;
+        viewInventory.Hide();
+        buyInventory.Hide();
+        sellInventory.Hide();
+        viewHUD.ShowText("", -1);
     }
 }

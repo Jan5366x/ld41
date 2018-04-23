@@ -19,6 +19,17 @@ public class ViewHUD : MonoBehaviour
     private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f);
     private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f);
 
+    public Rect getTruncatedInnerRect(int border)
+    {
+        int w = (int) Mathf.Min(1024, ViewRect.width - 2 * border);
+        int h = (int) Mathf.Min(1024, ViewRect.height - 2 * border);
+
+        int cx = (int) ViewRect.center.x;
+        int cy = (int) ViewRect.center.y;
+
+        return new Rect(cx - w / 2, cy - h / 2, w, h);
+    }
+    
     public void ShowText(String text, float duration)
     {
         this.text = text;
@@ -49,12 +60,13 @@ public class ViewHUD : MonoBehaviour
 
     private void DrawText()
     {
+        Rect rect = getTruncatedInnerRect(150);
         IMUIHelper.DrawFilledRect(
-            new Rect(ViewRect.left + 150, ViewRect.top + 150, ViewRect.width - 300, ViewRect.height - 300),
+            new Rect(rect.left, rect.top, rect.width, rect.height),
             Brown
         );
         GUI.Label(
-            new Rect(ViewRect.left + 160, ViewRect.top + 160, ViewRect.width - 320, ViewRect.height - 320),
+            new Rect(rect.left + 10, rect.top + 10, rect.width - 20, rect.height - 20),
             text
         );
     }

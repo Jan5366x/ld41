@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Events;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
@@ -38,7 +39,6 @@ public class PlayerSpawner : MonoBehaviour
         {
             width = w;
             height = h;
-            print("+++++++++resized");
             if (isInitialized)
             {
                 UpdatePanes();
@@ -163,6 +163,11 @@ public class PlayerSpawner : MonoBehaviour
                     sellInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
                     sellInventory.unit = unit;
                     sellInventory.playerIdx = idx;
+
+                    unit.viewHUD = viewHUD;
+                    unit.viewInventory = viewInventory;
+                    unit.buyInventory = buyInventory;
+                    unit.sellInventory = sellInventory;
                 }
 
                 idx++;
