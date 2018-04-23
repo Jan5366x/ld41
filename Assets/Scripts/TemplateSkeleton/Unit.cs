@@ -36,4 +36,5 @@ public class Unit : ScriptableObject
     public float FollowRange = 1f;
 
     public Item BaseBody;
+    public Item BaseHair;
 }

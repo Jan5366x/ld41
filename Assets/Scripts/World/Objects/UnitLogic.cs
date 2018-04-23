@@ -25,6 +25,7 @@ public class UnitLogic : MonoBehaviour
     public const float AnimationFrameTime = 0.3f;
     public float RemainingAnimationTime;
     public SpriteAnimator baseAnimator;
+    public SpriteAnimator hairAnimator;
     public SpriteAnimator headAnimator;
     public SpriteAnimator bodyAnimator;
     public SpriteAnimator legsAnimator;
@@ -63,6 +64,7 @@ public class UnitLogic : MonoBehaviour
         try
         {
             baseAnimator = Presentation.GetComponent<SpriteAnimator>();
+            hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
             headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
             bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
             legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
@@ -120,6 +122,7 @@ public class UnitLogic : MonoBehaviour
     private void UpdatePresentation()
     {
         UpdateAnimator(baseAnimator, Template.BaseBody);
+        UpdateAnimator(hairAnimator, Template.BaseHair);
         UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
         UpdateAnimator(bodyAnimator, Inventory.BODY_SLOT);
         UpdateAnimator(legsAnimator, Inventory.LEG_SLOT);
@@ -144,6 +147,8 @@ public class UnitLogic : MonoBehaviour
     {
         if (baseAnimator)
             baseAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (hairAnimator)
+            hairAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
         if (headAnimator)
             headAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
         if (bodyAnimator)
@@ -162,6 +167,8 @@ public class UnitLogic : MonoBehaviour
     {
         if (baseAnimator)
             baseAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (hairAnimator)
+            hairAnimator.GetComponent<SpriteAnimator>().NextSprite();
         if (headAnimator)
             headAnimator.GetComponent<SpriteAnimator>().NextSprite();
         if (bodyAnimator)
