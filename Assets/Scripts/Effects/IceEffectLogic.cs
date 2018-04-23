@@ -11,6 +11,7 @@ public class IceEffectLogic : EffectLogic
 
     public override void apply(UnitLogic player, float duration)
     {
+        showPrefab("Effects\\IceEffect", duration);
         object[] param = new object[2] {player, duration};
         StartCoroutine("FreezePlayer", param);
     }

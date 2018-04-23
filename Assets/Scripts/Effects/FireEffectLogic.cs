@@ -13,6 +13,7 @@ public class FireEffectLogic : EffectLogic
 
     public override void apply(UnitLogic player, float duration)
     {
+        showPrefab("Effects\\FireEffect", duration);
         object[] param = new object[2] {player, duration};
         StartCoroutine("dealDamage", param);
     }

@@ -480,6 +480,8 @@ public class UnitLogic : MonoBehaviour
         }
 
         GetComponentInChildren<ShowDamage>().Show(damage);
+        var blood = gameObject.AddComponent<BloodEffectLogic>();
+        blood.apply(this, 1);
     }
 
     public void Die()
