@@ -38,3 +38,4 @@ MonoBehaviour:
   HandRange: 1
   FollowRange: 3
   BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
+  BaseHair: {fileID: 11400000, guid: ee76d568886f14956815e716b53bcc06, type: 2}

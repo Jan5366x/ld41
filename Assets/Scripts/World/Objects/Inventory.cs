@@ -45,7 +45,7 @@ public class Inventory
         for (int _slot = 0; _slot < OFFSET_SLOT; _slot++)
         {
             var equip = obj.Obj.GetComponentInChildren<EquipSlot>();
-            if (equip == null || !equip.CanEquip(slot))
+            if (equip == null || !equip.CanEquip(_slot))
             {
                 continue;
             }
