@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ViewInventory : MonoBehaviour
+public class SellInventory : MonoBehaviour
 {
     public Rect ViewRect;
     public UnitLogic unit;
@@ -13,20 +13,7 @@ public class ViewInventory : MonoBehaviour
 
     public void handleSelectSlot(int slot)
     {
-        switch (slot)
-        {
-            case Inventory.HEAD_SLOT:
-            case Inventory.BODY_SLOT:
-            case Inventory.LEG_SLOT:
-            case Inventory.FOOT_SLOT:
-            case Inventory.HAND_LEFT_SLOT:
-            case Inventory.HAND_RIGHT_SLOT:
-                _inventory.Unequip(slot);
-                break;
-            default:
-                _inventory.Equip(slot);
-                break;
-        }
+        unit.Sell(slot);
     }
 
     private static readonly Color Black = new Color(0, 0, 0);

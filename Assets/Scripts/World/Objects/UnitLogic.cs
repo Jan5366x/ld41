@@ -23,6 +23,7 @@ public class UnitLogic : MonoBehaviour
     public Inventory Inventory;
 
     private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
+    public int Money;
 
     // Use this for initialization
 
@@ -33,7 +34,7 @@ public class UnitLogic : MonoBehaviour
         TargetMarker = Instantiate(Template.TargetMarker, transform);
         if (Inventory == null)
         {
-            Inventory = gameObject.AddComponent<Inventory>();
+            Inventory = new Inventory();
         }
 
         HP = Template.MaxHealth;
@@ -435,5 +436,33 @@ public class UnitLogic : MonoBehaviour
     public bool IsDead()
     {
         return HP < 0;
+    }
+
+    public void Buy(InventoryItem item)
+    {
+        
+        if (item == null || item.Template == null)
+        {
+            return;
+        }
+
+        var price = item.Template.BasePrice;
+        if (price <= Money)
+        {
+            item.Quantity -= 1;
+            Money -= price;
+        }
+    }
+
+    public void Sell(int slot)
+    {
+        var item = Inventory.Items[slot];
+        if (item == null || item.Template == null)
+        {
+            return;
+        }
+
+        var price = item.Template.BasePrice * 0.75;
+        Inventory.Drop(slot, 1);
     }
 }

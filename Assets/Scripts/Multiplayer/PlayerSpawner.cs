@@ -145,15 +145,30 @@ public class PlayerSpawner : MonoBehaviour
                     //panes[idx].transform.localPosition.Set(xx, yy, -1);
                     var paneCamera = panes[idx].GetComponentInChildren<Camera>();
                     paneCamera.rect = new Rect(xx, yy, ww, hh);
-                    var viewInventory = panes[idx].GetComponentInChildren<ViewInventory>();
                     var unit = panes[idx].GetComponentInChildren<UnitLogic>();
+
+                    var viewInventory = panes[idx].GetComponentInChildren<ViewInventory>();
                     viewInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
                     viewInventory.unit = unit;
                     viewInventory.playerIdx = idx;
                     if (isInitialized)
                     {
-                        viewInventory.Show(unit.Inventory);
+                        //viewInventory.Show(unit.Inventory);
                     }
+
+                    var viewHUD = panes[idx].GetComponentInChildren<ViewHUD>();
+                    viewHUD.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    viewHUD.unit = unit;
+                    viewHUD.ShowText("djbsdhbhbshdshbdbsh\r\njhsdbjsnbfbdhfjdbhfhbjd", 20);
+
+                    var buyInventory = panes[idx].GetComponentInChildren<BuyInventory>();
+                    buyInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    buyInventory.unit = unit;
+                    buyInventory.playerIdx = idx;
+                    var sellInventory = panes[idx].GetComponentInChildren<SellInventory>();
+                    sellInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    sellInventory.unit = unit;
+                    sellInventory.playerIdx = idx;
                 }
 
                 idx++;

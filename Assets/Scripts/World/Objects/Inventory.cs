@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+public class Inventory
 {
     public const int HEAD_SLOT = 0;
     public const int BODY_SLOT = 1;
@@ -13,40 +13,55 @@ public class Inventory : MonoBehaviour
     public const int OFFSET_SLOT = 6;
     public const int COUNT_SLOT = 20;
 
-    public InventoryItem[] Items;
+    public InventoryItem[] Items ;
 
     // Use this for initialization
-    public void Start()
+    public Inventory()
     {
         Items = new InventoryItem[COUNT_SLOT];
         for (int i = 0; i < COUNT_SLOT; i++)
         {
-            Items[i] = gameObject.AddComponent<InventoryItem>();
+            Items[i] = new InventoryItem();
         }
     }
-
-    // Update is called once per frame
-    public void Update()
-    {
-    }
-
-    public void Equip(int slot, GameObject obj)
+    
+    public void Equip(int slot)
     {
         if (slot < 0 || slot >= COUNT_SLOT)
         {
             return;
         }
 
-        if (Items[slot].quantity == 0)
+        var obj = Items[slot];
+        if (obj == null || obj.Obj == null)
         {
-            Items[slot].obj = obj;
-            Items[slot].quantity = 1;
+            return;
         }
-        else
+
+        bool wasEquipped = false;
+        for (int _slot = 0; _slot < OFFSET_SLOT; _slot++)
         {
-            if (Items[slot].obj == obj)
+            var equip = obj.Obj.GetComponentInChildren<EquipSlot>();
+            if (equip == null || !equip.CanEquip(slot))
             {
-                Items[slot].quantity += 1;
+                continue;
+            }
+            Swap(slot, _slot);
+            wasEquipped = true;
+            break;
+        }
+
+        if (!wasEquipped)
+        {
+            var use = obj.Obj.GetComponentInChildren<UseSlot>();
+            if (use != null)
+            {
+                use.OnUse();
+                obj.Quantity -= 1;
+                if (obj.Quantity == 0)
+                {
+                    obj.Obj = null;
+                }
             }
         }
     }
@@ -58,19 +73,79 @@ public class Inventory : MonoBehaviour
             return;
         }
 
-        Items[slot].obj = null;
-        Items[slot].quantity = slot;
+        for (int _slot = OFFSET_SLOT; _slot < COUNT_SLOT; _slot++)
+        {
+            if (Items[_slot].Obj == null)
+            {
+                Items[_slot] = Items[slot].Copy();
+                Items[slot].Obj = null;
+                Items[slot].Quantity = 0;
+            }
+        }
+    }
+
+    public void Take(GameObject obj)
+    {
+        for (int slot = 0; slot < COUNT_SLOT; slot++)
+        {
+            if (slot < OFFSET_SLOT)
+            {
+                var equip = obj.GetComponentInChildren<EquipSlot>();
+                if (equip == null || !equip.CanEquip(slot))
+                {
+                    continue;
+                }
+            }
+            
+            if (Items[slot].Quantity == 0)
+            {
+                Items[slot].Obj = obj;
+                Items[slot].Quantity = 1;
+            }
+            else
+            {
+                if (Items[slot].Obj == obj)
+                {
+                    Items[slot].Quantity += 1;
+                }
+            }
+        }
+    }
+
+    public void Drop(int slot)
+    {
+        if (slot < 0 || slot >= COUNT_SLOT)
+        {
+            return;
+        }
+
+        Items[slot].Obj = null;
+        Items[slot].Quantity = slot;
+    }
+    
+    public void Drop(int slot, int count)
+    {
+        if (slot < 0 || slot >= COUNT_SLOT)
+        {
+            return;
+        }
+
+        Items[slot].Quantity -= count;
+        if (Items[slot].Quantity <= 0)
+        {
+            Items[slot].Obj = null;
+        }
     }
 
     public void Swap(int slotA, int slotB)
     {
-        GameObject tmpObj = Items[slotA].obj;
-        int quantity = Items[slotA].quantity;
+        GameObject tmpObj = Items[slotA].Obj;
+        int quantity = Items[slotA].Quantity;
 
-        Items[slotA].obj = Items[slotB].obj;
-        Items[slotA].quantity = Items[slotB].quantity;
-        Items[slotB].obj = tmpObj;
-        Items[slotB].quantity = quantity;
+        Items[slotA] = Items[slotB].Copy();
+        Items[slotB] = Items[slotB].Copy();
+        Items[slotB].Obj = tmpObj;
+        Items[slotB].Quantity = quantity;
     }
 
     public GameObject GetObject(int slot)
@@ -80,7 +155,7 @@ public class Inventory : MonoBehaviour
             return null;
         }
 
-        return Items[slot].obj;
+        return Items[slot].Obj;
     }
 
     public int GetQuantity(int slot)
@@ -90,12 +165,12 @@ public class Inventory : MonoBehaviour
             return -1;
         }
 
-        return Items[slot].quantity;
+        return Items[slot].Quantity;
     }
     
     public Inventory Copy()
     {
-        Inventory iv = gameObject.AddComponent<Inventory>();
+        Inventory iv = new Inventory();
         for (int i = 0; i < COUNT_SLOT; i++)
         {
             iv.Items[i] = Items[i].Copy();
