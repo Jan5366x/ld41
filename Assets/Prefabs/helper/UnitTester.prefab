@@ -70,6 +70,9 @@ GameObject:
   - component: {fileID: 114336905853933496}
   - component: {fileID: 70783373698287960}
   - component: {fileID: 114223129173590740}
+  - component: {fileID: 114123335572798482}
+  - component: {fileID: 114850603007664152}
+  - component: {fileID: 114719901655304996}
   m_Layer: 0
   m_Name: UnitTester
   m_TagString: Untagged
@@ -125,6 +128,27 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.14}
   m_Size: {x: 0.09, y: 0.02}
   m_Direction: 1
+--- !u!114 &114123335572798482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d0d48a791204bf387f8a05b32ea613d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ViewRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  unit: {fileID: 0}
+  playerIdx: 0
+  moveDelayRemaining: 0
+  moveDelay: 0.0001
 --- !u!114 &114223129173590740
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,6 +160,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8341b5bcf42f4385ab90f62541691cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ViewRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  unit: {fileID: 0}
+  playerIdx: 0
+  moveDelayRemaining: 0
+  moveDelay: 0.0001
 --- !u!114 &114336905853933496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -175,8 +209,49 @@ MonoBehaviour:
   HP: 0
   Mana: 0
   MaxSpeed: 0
+  Stamina: 0
+  StaminaEmpty: 0
   CoolDown: 0
   Presentation: {fileID: 0}
   Target: {fileID: 0}
   TargetMarker: {fileID: 0}
-  Inventory: {fileID: 0}
+  Money: 0
+--- !u!114 &114719901655304996
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc888e7fcabc4c448de0eacaef167467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ViewRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  unit: {fileID: 0}
+--- !u!114 &114850603007664152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36bb198710d5429d83a9b3852a96f8b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ViewRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+  unit: {fileID: 0}
+  playerIdx: 0
+  moveDelayRemaining: 0
+  moveDelay: 0.0001

@@ -13,6 +13,8 @@ public class UnitLogic : MonoBehaviour
     public float HP;
     public float Mana;
     public float MaxSpeed;
+    public float Stamina;
+    public bool StaminaEmpty;
     public float CoolDown;
 
     public GameObject Presentation;
@@ -20,7 +22,15 @@ public class UnitLogic : MonoBehaviour
     public GameObject TargetMarker;
     public Inventory Inventory;
 
+    public ViewHUD viewHUD;
+    public ViewInventory viewInventory;
+    public SellInventory sellInventory;
+    public BuyInventory buyInventory;
+
+    public bool AnyInventoryShown = false;
+
     private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
+    public int Money;
 
     // Use this for initialization
 
@@ -29,18 +39,21 @@ public class UnitLogic : MonoBehaviour
         // instantiate the presentation object
         Presentation = Instantiate(Template.Presentation, transform);
         TargetMarker = Instantiate(Template.TargetMarker, transform);
-        Inventory = gameObject.AddComponent<Inventory>();
+        if (Inventory == null)
+        {
+            Inventory = new Inventory();
+        }
 
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
         MaxSpeed = Template.MaxSpeed;
+        Stamina = Template.Stamina;
         SetTarget(null);
     }
 
     // Update is called once per frame
     void Update()
     {
-        print("+++" + activeEffects);
         foreach (var effect in activeEffects.Keys)
         {
             effect.apply(this);
@@ -53,11 +66,42 @@ public class UnitLogic : MonoBehaviour
 
         HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);
         Mana = Mathf.Min(Mana + Template.ManaRegeneration * Time.deltaTime, Template.MaxMana);
+        Stamina = Mathf.Min(Stamina + Template.StaminaRegeneration * Time.deltaTime, Template.Stamina);
+        if (Stamina <= 0)
+        {
+            StaminaEmpty = true;
+        }
+
+        if (StaminaEmpty && Stamina > Template.StaminaMinUsage)
+        {
+            StaminaEmpty = false;
+        }
+    }
+
+    public float GetArmorResistence()
+    {
+        float armorResistence = 1;
+        for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
+        {
+            var item = Inventory.GetObject(i);
+            if (item != null)
+            {
+                var iitem = item.GetComponentInChildren<Item>();
+                if (iitem)
+                {
+                    armorResistence += iitem.ArmorResistence;
+                }
+            }
+        }
+
+        return armorResistence;
     }
 
     public void Move(float dx, float dy, bool sprint)
     {
         if (IsDead())
+            return;
+        if (AnyInventoryShown)
             return;
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         if (Mathf.Abs(dx) > Mathf.Abs(dy))
@@ -74,8 +118,13 @@ public class UnitLogic : MonoBehaviour
 
         if (sprint)
         {
-            dx *= (1 + Random.value * 0.2f);
-            dy *= (1 + Random.value * 0.2f);
+            var usage = Template.StaminaUsage / Template.Strength * Time.deltaTime;
+            if (!StaminaEmpty)
+            {
+                dx *= (1 + Random.value * 0.2f);
+                dy *= (1 + Random.value * 0.2f);
+                Stamina -= usage;
+            }
         }
 
         body.AddForce(new Vector2(dx, dy));
@@ -84,13 +133,18 @@ public class UnitLogic : MonoBehaviour
     public void StopMovement()
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
-        body.velocity = new Vector2(0,0);
+        body.velocity = new Vector2(0, 0);
     }
 
     public void Interact()
     {
         if (IsDead())
             return;
+        if (AnyInventoryShown)
+        {
+            CloseInventories();
+            return;
+        }
 
         var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
             new Vector2(0, 0));
@@ -307,13 +361,18 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
+        var resistence = GetArmorResistence();
+        if (resistence < 1)
+        {
+            resistence = 1;
+        }
+
+        damage /= resistence;
         HP -= damage;
         if (IsDead())
         {
             Die();
         }
-
-        print(GetComponentInChildren<ShowDamage>());
 
         GetComponentInChildren<ShowDamage>().Show(damage);
     }
@@ -415,5 +474,72 @@ public class UnitLogic : MonoBehaviour
     public bool IsDead()
     {
         return HP < 0;
+    }
+
+    public void Buy(InventoryItem item)
+    {
+        if (item == null || item.Template == null)
+        {
+            return;
+        }
+
+        var price = item.Template.BasePrice;
+        if (price <= Money)
+        {
+            item.Quantity -= 1;
+            Money -= price;
+        }
+    }
+
+    public void Sell(int slot)
+    {
+        var item = Inventory.Items[slot];
+        if (item == null || item.Template == null)
+        {
+            return;
+        }
+
+        var price = item.Template.BasePrice * 0.75;
+        Inventory.Drop(slot, 1);
+    }
+
+    public void ShowInventory()
+    {
+        CloseInventories();
+        viewInventory.Show(Inventory);
+        AnyInventoryShown = true;
+    }
+
+    public void BuyInventory(UnitLogic other)
+    {
+        CloseInventories();
+
+        buyInventory.Show(other.Inventory);
+        AnyInventoryShown = true;
+    }
+
+    public void SellInventory(UnitLogic other)
+    {
+        CloseInventories();
+
+        sellInventory.Show(Inventory);
+        AnyInventoryShown = true;
+    }
+
+    public void ShowMessage(String message, float duration)
+    {
+        CloseInventories();
+
+        viewHUD.ShowText(message, duration);
+        AnyInventoryShown = true;
+    }
+
+    public void CloseInventories()
+    {
+        AnyInventoryShown = false;
+        viewInventory.Hide();
+        buyInventory.Hide();
+        sellInventory.Hide();
+        viewHUD.ShowText("", -1);
     }
 }

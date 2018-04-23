@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Events;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
@@ -27,8 +28,8 @@ public class PlayerSpawner : MonoBehaviour
         {
             if (!isInitialized)
             {
-                isInitialized = true;
                 SetupPanes();
+                isInitialized = true;
             }
         }
 
@@ -38,7 +39,6 @@ public class PlayerSpawner : MonoBehaviour
         {
             width = w;
             height = h;
-            print("+++++++++resized");
             if (isInitialized)
             {
                 UpdatePanes();
@@ -145,9 +145,29 @@ public class PlayerSpawner : MonoBehaviour
                     //panes[idx].transform.localPosition.Set(xx, yy, -1);
                     var paneCamera = panes[idx].GetComponentInChildren<Camera>();
                     paneCamera.rect = new Rect(xx, yy, ww, hh);
+                    var unit = panes[idx].GetComponentInChildren<UnitLogic>();
+
+                    var viewHUD = panes[idx].GetComponentInChildren<ViewHUD>();
+                    viewHUD.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    viewHUD.unit = unit;
+
                     var viewInventory = panes[idx].GetComponentInChildren<ViewInventory>();
                     viewInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
-                    viewInventory.unit = panes[idx].GetComponentInChildren<UnitLogic>();
+                    viewInventory.unit = unit;
+                    viewInventory.playerIdx = idx;
+                    var buyInventory = panes[idx].GetComponentInChildren<BuyInventory>();
+                    buyInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    buyInventory.unit = unit;
+                    buyInventory.playerIdx = idx;
+                    var sellInventory = panes[idx].GetComponentInChildren<SellInventory>();
+                    sellInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    sellInventory.unit = unit;
+                    sellInventory.playerIdx = idx;
+
+                    unit.viewHUD = viewHUD;
+                    unit.viewInventory = viewInventory;
+                    unit.buyInventory = buyInventory;
+                    unit.sellInventory = sellInventory;
                 }
 
                 idx++;
