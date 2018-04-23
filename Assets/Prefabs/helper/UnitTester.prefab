@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 50576122713196350}
   - component: {fileID: 114336905853933496}
   - component: {fileID: 70783373698287960}
+  - component: {fileID: 114223129173590740}
   m_Layer: 0
   m_Name: UnitTester
   m_TagString: Untagged
@@ -124,6 +125,17 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.14}
   m_Size: {x: 0.09, y: 0.02}
   m_Direction: 1
+--- !u!114 &114223129173590740
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663932284128932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8341b5bcf42f4385ab90f62541691cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114336905853933496
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -160,3 +172,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Template: {fileID: 11400000, guid: be0b68278b282454191622f569e54a74, type: 2}
+  HP: 0
+  Mana: 0
+  MaxSpeed: 0
+  CoolDown: 0
+  Presentation: {fileID: 0}
+  Target: {fileID: 0}
+  TargetMarker: {fileID: 0}
+  Inventory: {fileID: 0}

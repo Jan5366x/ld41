@@ -9,12 +9,15 @@ public class PlayerSpawner : MonoBehaviour
     public GameObject panelPrefab;
     public GameObject playerPrefab;
     private bool isInitialized;
+    private int width, height;
 
     // Use this for initialization
     void Start()
     {
         panes = new GameObject[4] {null, null, null, null};
         isInitialized = false;
+        width = 0;
+        height = 0;
     }
 
     // Update is called once per frame
@@ -28,20 +31,67 @@ public class PlayerSpawner : MonoBehaviour
                 SetupPanes();
             }
         }
+
+        int w = Screen.width;
+        int h = Screen.height;
+        if (width != w || height != h)
+        {
+            width = w;
+            height = h;
+            print("+++++++++resized");
+            if (isInitialized)
+            {
+                UpdatePanes();
+            }
+        }
     }
 
     void SetupPanes()
     {
         controllers = Input.GetJoystickNames();
-        SetupPanes(Mathf.Max(1, controllers.Length));
+        SetupPanes(NumPanes());
+        UpdatePanes();
+    }
+
+    private void UpdatePanes()
+    {
+        UpdatePanes(NumPanes());
+    }
+
+    private int NumPanes()
+    {
+        return Mathf.Max(2, controllers.Length);
     }
 
     void SetupPanes(int numPanes)
     {
-        int width = Screen.width;
-        int height = Screen.height;
+        //numPanes = 1
+        // => Alles an 1
+        //numPanes = 2
+        // => Split X
+        //numPanes = 3
+        // => Split Y
+        // => Split upper X
+        //numPanes = 4
+        // => Split Y
+        // => Split X (upper/lower)
 
+        for (int idx = 0; idx < numPanes; idx++)
+        {
+            GameObject player;
+            if (panes[idx] == null)
+            {
+                panes[idx] = Instantiate(panelPrefab, transform);
+                player = Instantiate(playerPrefab, panes[idx].transform);
+                panes[idx].GetComponentInChildren<ViewInventory>().ViewRect = new Rect();
+                panes[idx].GetComponentInChildren<FollowCamera>().toFollow = player;
+                panes[idx].GetComponentInChildren<PlayerMovement>().playerid = idx;
+            }
+        }
+    }
 
+    void UpdatePanes(int numPanes)
+    {
         //numPanes = 1
         // => Alles an 1
         //numPanes = 2
@@ -58,18 +108,6 @@ public class PlayerSpawner : MonoBehaviour
         {
             for (int x = 0; x < 2; x++)
             {
-                GameObject player;
-                if (idx < numPanes && panes[idx] == null)
-                {
-                    panes[idx] = Instantiate(panelPrefab, transform);
-                    player = Instantiate(playerPrefab, panes[idx].transform);
-                    Debug.Log("+++++");
-                    Debug.Log(panes);
-                    Debug.Log(player);
-                    panes[idx].GetComponentInChildren<FollowCamera>().toFollow = player;
-                    panes[idx].GetComponentInChildren<PlayerMovement>().playerid = idx;
-                }
-
                 if (panes[idx] != null)
                 {
                     float xx = 0;
@@ -106,8 +144,10 @@ public class PlayerSpawner : MonoBehaviour
 
                     //panes[idx].transform.localPosition.Set(xx, yy, -1);
                     var paneCamera = panes[idx].GetComponentInChildren<Camera>();
-                    Debug.Log(xx + " " + yy + " " + ww + " " + hh);
                     paneCamera.rect = new Rect(xx, yy, ww, hh);
+                    var viewInventory = panes[idx].GetComponentInChildren<ViewInventory>();
+                    viewInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
+                    viewInventory.unit = panes[idx].GetComponentInChildren<UnitLogic>();
                 }
 
                 idx++;
