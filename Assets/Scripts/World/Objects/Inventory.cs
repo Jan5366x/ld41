@@ -28,7 +28,7 @@ public class Inventory
         PresentationChanged = false;
     }
 
-    public void Equip(int slot)
+    public void Equip(int slot, UnitLogic player)
     {
         if (slot < 0 || slot >= COUNT_SLOT)
         {
@@ -60,7 +60,7 @@ public class Inventory
             var use = obj.Obj.GetComponentInChildren<UseSlot>();
             if (use != null)
             {
-                use.OnUse();
+                use.OnUse(player);
                 obj.Quantity -= 1;
                 if (obj.Quantity == 0)
                 {

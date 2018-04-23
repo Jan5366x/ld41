@@ -495,6 +495,10 @@ public class UnitLogic : MonoBehaviour
     {
         Presentation = Instantiate(Template.DeathPrefab, transform);
         Debug.LogError("I Should be dead by now");
+        if (Template.DeathDrop)
+        {
+            Instantiate(Template.DeathDrop, transform);
+        }
     }
 
     public bool SwitchTarget()

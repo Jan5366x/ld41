@@ -24,7 +24,7 @@ public class ViewInventory : MonoBehaviour
                 _inventory.Unequip(slot);
                 break;
             default:
-                _inventory.Equip(slot);
+                _inventory.Equip(slot, unit);
                 break;
         }
     }

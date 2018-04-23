@@ -37,4 +37,5 @@ public class Unit : ScriptableObject
 
     public Item BaseBody;
     public Item BaseHair;
+    public GameObject DeathDrop;
 }

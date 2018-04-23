@@ -3,5 +3,5 @@ using UnityEngine;
 
 public abstract class UseSlot : MonoBehaviour
 {
-    public abstract void OnUse();
+    public abstract void OnUse(UnitLogic player);
 }
