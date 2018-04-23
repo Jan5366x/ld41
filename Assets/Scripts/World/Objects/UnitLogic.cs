@@ -41,6 +41,8 @@ public class UnitLogic : MonoBehaviour
     public bool AnyInventoryShown = false;
 
     public int Money;
+    public PauseScreen pauseScreen;
+
 
     // Use this for initialization
 
@@ -62,6 +64,7 @@ public class UnitLogic : MonoBehaviour
 
         try
         {
+            pauseScreen = GameObject.FindGameObjectWithTag("Finish").GetComponent<PauseScreen>();
             baseAnimator = Presentation.GetComponent<SpriteAnimator>();
             hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
             headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
@@ -80,6 +83,11 @@ public class UnitLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (pauseScreen && pauseScreen.IsShow)
+        {
+            return;
+        }
+
         CoolDown -= Time.deltaTime;
 
         HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);

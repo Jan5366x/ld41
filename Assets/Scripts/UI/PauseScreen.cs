@@ -3,12 +3,12 @@ using UnityEngine.SceneManagement;
 
 public class PauseScreen : MonoBehaviour
 {
-    public Rect getTruncatedInnerRect(int size)
+    public Rect getTruncatedInnerRect(int width, int height)
     {
         int cx = Screen.width / 2;
         int cy = Screen.height / 2;
 
-        return new Rect(cx - size, cy - size, 2 * size, 2 * size);
+        return new Rect(cx - width / 2, cy - height / 2, width, height);
     }
 
     private int SelectedMenuEntry = 0;
@@ -18,38 +18,49 @@ public class PauseScreen : MonoBehaviour
     private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f);
     private static readonly Color Brown = new Color(0.42f, 0.21f, 0.13f);
 
+    public float MoveDelayRemaining;
+    public float MoveDelay = 0.1f;
 
     private void Update()
     {
-        if (Input.GetButton("Cancel"))
+        if (MoveDelayRemaining < 0)
         {
-            IsShow = !IsShow;
-        }
-
-        if (IsShow)
-        {
-            if (Input.GetButton("UseTool0"))
+            if (Input.GetButton("Cancel"))
             {
-                switch (SelectedMenuEntry)
+                IsShow = !IsShow;
+                MoveDelayRemaining = MoveDelay;
+            }
+
+            if (IsShow)
+            {
+                if (Input.GetButton("Submit"))
                 {
-                    case 0:
-                        Hide();
-                        break;
-                    case 1:
-                        Exit();
-                        break;
+                    switch (SelectedMenuEntry)
+                    {
+                        case 0:
+                            Hide();
+                            MoveDelayRemaining = MoveDelay;
+                            break;
+                        case 1:
+                            Exit();
+                            break;
+                    }
+                }
+
+                if (Input.GetAxis("Vertical") > 0)
+                {
+                    SelectedMenuEntry = Mathf.Max(SelectedMenuEntry - 1, 0);
+                    MoveDelayRemaining = MoveDelay;
+                }
+                else if (Input.GetAxis("Vertical") < 0)
+                {
+                    SelectedMenuEntry = Mathf.Min(SelectedMenuEntry + 1, 1);
+                    MoveDelayRemaining = MoveDelay;
                 }
             }
-
-            if (Input.GetAxis("Vertical") > 0)
-            {
-                SelectedMenuEntry = Mathf.Min(SelectedMenuEntry - 1, 0);
-            }
-            else if (Input.GetAxis("Vertical") < 0)
-            {
-                SelectedMenuEntry = Mathf.Max(SelectedMenuEntry + 1, 0);
-            }
         }
+
+        MoveDelayRemaining -= Time.deltaTime;
     }
 
     private void OnGUI()
@@ -78,7 +89,7 @@ public class PauseScreen : MonoBehaviour
 
     private void DrawBackground()
     {
-        Rect rect = getTruncatedInnerRect(155);
+        Rect rect = getTruncatedInnerRect(160, 150);
         IMUIHelper.DrawFilledRect(rect, Brown);
         if (backgroundSprite != null)
         {
@@ -88,7 +99,7 @@ public class PauseScreen : MonoBehaviour
 
     private void DrawMenu()
     {
-        Rect rect = getTruncatedInnerRect(150);
+        Rect rect = getTruncatedInnerRect(150, 140);
         int dy = 25;
 
         Rect upperRect = new Rect(rect.left, rect.top + dy, rect.width, dy);
