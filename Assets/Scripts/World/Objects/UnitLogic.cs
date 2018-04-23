@@ -25,6 +25,7 @@ public class UnitLogic : MonoBehaviour
     public const float AnimationFrameTime = 0.3f;
     public float RemainingAnimationTime;
     public SpriteAnimator baseAnimator;
+    public SpriteAnimator hairAnimator;
     public SpriteAnimator headAnimator;
     public SpriteAnimator bodyAnimator;
     public SpriteAnimator legsAnimator;
@@ -63,6 +64,7 @@ public class UnitLogic : MonoBehaviour
         try
         {
             baseAnimator = Presentation.GetComponent<SpriteAnimator>();
+            hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
             headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
             bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
             legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
@@ -120,6 +122,7 @@ public class UnitLogic : MonoBehaviour
     private void UpdatePresentation()
     {
         UpdateAnimator(baseAnimator, Template.BaseBody);
+        UpdateAnimator(hairAnimator, Template.BaseHair);
         UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
         UpdateAnimator(bodyAnimator, Inventory.BODY_SLOT);
         UpdateAnimator(legsAnimator, Inventory.LEG_SLOT);
@@ -130,20 +133,7 @@ public class UnitLogic : MonoBehaviour
 
     private void UpdateAnimator(SpriteAnimator animator, int slot)
     {
-        if (animator == null)
-            return;
-        var obj = Inventory.GetObject(slot);
-        Item item = null;
-        if (obj != null)
-        {
-            var itemlogic = obj.GetComponent<ItemLogic>();
-            if (itemlogic != null)
-            {
-                item = itemlogic.Template;
-            }
-        }
-
-        animator.SetItem(item);
+        UpdateAnimator(animator, Inventory.GetItem(slot));
     }
 
     private void UpdateAnimator(SpriteAnimator animator, Item item)
@@ -157,6 +147,8 @@ public class UnitLogic : MonoBehaviour
     {
         if (baseAnimator)
             baseAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (hairAnimator)
+            hairAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
         if (headAnimator)
             headAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
         if (bodyAnimator)
@@ -175,6 +167,8 @@ public class UnitLogic : MonoBehaviour
     {
         if (baseAnimator)
             baseAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (hairAnimator)
+            hairAnimator.GetComponent<SpriteAnimator>().NextSprite();
         if (headAnimator)
             headAnimator.GetComponent<SpriteAnimator>().NextSprite();
         if (bodyAnimator)
@@ -187,7 +181,6 @@ public class UnitLogic : MonoBehaviour
             handAAnimator.GetComponent<SpriteAnimator>().NextSprite();
         if (handBAnimator)
             handBAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        
     }
 
     public float GetArmorResistence()
@@ -195,14 +188,10 @@ public class UnitLogic : MonoBehaviour
         float armorResistence = 1;
         for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
         {
-            var item = Inventory.GetObject(i);
+            var item = Inventory.GetItem(i);
             if (item != null)
             {
-                var iitem = item.GetComponentInChildren<Item>();
-                if (iitem)
-                {
-                    armorResistence += iitem.ArmorResistence;
-                }
+                armorResistence += item.ArmorResistence;
             }
         }
 
@@ -627,7 +616,7 @@ public class UnitLogic : MonoBehaviour
             return;
         }
 
-        var price = item.Template.BasePrice * 0.75;
+        var price = item.Template.BasePrice * Item.SellModifier;
         Inventory.Drop(slot, 1);
     }
 
@@ -641,7 +630,7 @@ public class UnitLogic : MonoBehaviour
 
         other.Take(Inventory.Items[slot]);
 
-        var price = item.Template.BasePrice * 0.75;
+        var price = item.Template.BasePrice * Item.SellModifier;
         Inventory.Drop(slot, 1);
     }
 

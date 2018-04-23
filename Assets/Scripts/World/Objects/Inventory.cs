@@ -103,10 +103,12 @@ public class Inventory
                 var equip = obj.GetComponentInChildren<EquipSlot>();
                 if (equip == null || !equip.CanEquip(slot))
                 {
-                    Unequip(slot);
-                    Items[slot].Obj = obj;
-                    Items[slot].Quantity = 1;
                     continue;
+                }
+
+                if (equip.CanEquip(slot))
+                {
+                    Unequip(slot);
                 }
             }
 
@@ -129,31 +131,9 @@ public class Inventory
 
     public void Take(InventoryItem item)
     {
-        for (int slot = 0; slot < COUNT_SLOT; slot++)
+        if (item != null)
         {
-            if (slot < OFFSET_SLOT)
-            {
-                var equip = item.Obj.GetComponentInChildren<EquipSlot>();
-                if (equip == null || !equip.CanEquip(slot))
-                {
-                    continue;
-                }
-            }
-
-            if (Items[slot].Quantity == 0)
-            {
-                Items[slot].Obj = item.Obj;
-                Items[slot].Quantity = 1;
-                return;
-            }
-            else
-            {
-                if (Items[slot].Obj == item.Obj)
-                {
-                    Items[slot].Quantity += 1;
-                    return;
-                }
-            }
+            Take(item.Obj);
         }
     }
 
@@ -211,6 +191,23 @@ public class Inventory
         }
 
         return Items[slot].Quantity;
+    }
+
+    public Item GetItem(int slot)
+    {
+        if (slot < 0 || slot >= COUNT_SLOT)
+        {
+            return null;
+        }
+
+        var obj = Items[slot].Obj;
+        if (obj == null)
+            return null;
+
+        var script = obj.GetComponent<ItemLogic>();
+        if (script == null)
+            return null;
+        return script.Template;
     }
 
     public Inventory Copy()

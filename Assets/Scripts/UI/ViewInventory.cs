@@ -35,14 +35,17 @@ public class ViewInventory : MonoBehaviour
     private static readonly Color DarkGreen = new Color(0, 0.6f, 0f);
     private static readonly Color Blue = new Color(0, 0, 1f);
     private static readonly Color Brown = new Color(0.42f, 0.21f, 0.13f);
-    private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f);
-    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f);
+    private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f);
 
     private Inventory _inventory;
 
     public float MoveDelayRemaining;
     public float MoveDelay = 0.1f;
     public bool show = false;
+
+    public Sprite[] reservedSlotsPreview;
+    public Sprite backgroundSprite;
 
     public Rect getTruncatedInnerRect(int border)
     {
@@ -167,28 +170,83 @@ public class ViewInventory : MonoBehaviour
         {
             if ((offsetTop + heightItem) < (rect.height - offsetBottom))
             {
+                var item = MyInventory.GetItem(idx);
+                if (item != null)
+                {
+                }
+
                 Rect previewRect = new Rect(rect.left + offsetLeft, rect.top + offsetTop, widthPreview,
                     heightItem);
                 IMUIHelper.DrawFilledRect(previewRect, idx == itemSelectIdx ? LightGrey : Grey);
+
                 if (_inventory != null)
                 {
-                    var previewObj = MyInventory.GetObject(idx);
-                    if (previewObj)
+                    bool didDrawPreview = false;
+                    var previewItem = MyInventory.GetItem(idx);
+                    if (previewItem)
                     {
-                        var previewSpriteRenderer = previewObj.GetComponent<SpriteRenderer>();
-                        if (previewSpriteRenderer)
+                        var previewSprite = previewItem.PreviewSmall;
+                        if (previewSprite)
                         {
-                            GUI.DrawTexture(previewRect, previewSpriteRenderer.sprite.texture, ScaleMode.ScaleToFit);
+                            GUI.DrawTexture(previewRect, previewSprite.texture, ScaleMode.ScaleAndCrop);
+                            didDrawPreview = true;
                         }
+                    }
 
+                    if (!didDrawPreview)
+                    {
+                        if (idx < Inventory.OFFSET_SLOT && idx < reservedSlotsPreview.Length)
+                        {
+                            GUI.DrawTexture(previewRect, reservedSlotsPreview[idx].texture, ScaleMode.ScaleAndCrop);
+                        }
+                    }
+
+                    if (previewItem)
+                    {
                         GUI.Label(previewRect, "" + _inventory.GetQuantity(idx));
                     }
                 }
 
-                IMUIHelper.DrawFilledRect(
-                    new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder, rect.top + offsetTop,
-                        widthRight, heightItem),
-                    idx == itemSelectIdx ? LightGrey : Grey);
+                var infoRect = new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder, rect.top + offsetTop,
+                    widthRight, heightItem);
+                IMUIHelper.DrawFilledRect(infoRect, idx == itemSelectIdx ? LightGrey : Grey);
+
+                infoRect = new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder + 10, rect.top + offsetTop,
+                    widthRight - 20, heightItem);
+
+                if (item)
+                {
+                    string text = "" + item.ItemName;
+                    var obj = MyInventory.GetObject(idx);
+                    if (obj)
+                    {
+                        var weapon = obj.GetComponent<Weapon>();
+                        if (weapon)
+                        {
+                            text += "\r\nType: ";
+                            text += weapon.Magic ? "Magic" : "Meele";
+                            text += "\tDamage:";
+                            text += (int) weapon.Damage;
+                            text += "\tRange:";
+                            text += (int) weapon.Range;
+                            text += "\tCooldown:";
+                            text += (int) weapon.CoolDown;
+                            if (weapon.Effect)
+                            {
+                                text += "\tEffect:";
+                                text += weapon.Effect.getName();
+                            }
+                        }
+                        else if (item.ArmorResistence > 1)
+                        {
+                            text += "\r\nType: Armor";
+                            text += "\r\nArmorPoints: ";
+                            text += (int) item.ArmorResistence;
+                        }
+                    }
+
+                    GUI.Label(infoRect, text);
+                }
             }
 
             offsetTop += heightItem + heightInnerBorder;
@@ -198,10 +256,11 @@ public class ViewInventory : MonoBehaviour
     private void DrawInventoryBorder()
     {
         Rect rect = getTruncatedInnerRect(150);
-        IMUIHelper.DrawFilledRect(
-            new Rect(
-                rect.left, rect.top, rect.width, rect.height
-            ), Brown);
+        IMUIHelper.DrawFilledRect(rect, Brown);
+        if (backgroundSprite != null)
+        {
+            GUI.DrawTexture(rect, backgroundSprite.texture, ScaleMode.ScaleAndCrop);
+        }
     }
 
     public void Show(Inventory iv)
