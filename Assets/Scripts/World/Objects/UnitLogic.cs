@@ -31,7 +31,10 @@ public class UnitLogic : MonoBehaviour
         // instantiate the presentation object
         Presentation = Instantiate(Template.Presentation, transform);
         TargetMarker = Instantiate(Template.TargetMarker, transform);
-        Inventory = gameObject.AddComponent<Inventory>();
+        if (Inventory == null)
+        {
+            Inventory = gameObject.AddComponent<Inventory>();
+        }
 
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
@@ -43,7 +46,6 @@ public class UnitLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print("+++" + activeEffects);
         foreach (var effect in activeEffects.Keys)
         {
             effect.apply(this);

@@ -27,8 +27,8 @@ public class PlayerSpawner : MonoBehaviour
         {
             if (!isInitialized)
             {
-                isInitialized = true;
                 SetupPanes();
+                isInitialized = true;
             }
         }
 
@@ -146,8 +146,14 @@ public class PlayerSpawner : MonoBehaviour
                     var paneCamera = panes[idx].GetComponentInChildren<Camera>();
                     paneCamera.rect = new Rect(xx, yy, ww, hh);
                     var viewInventory = panes[idx].GetComponentInChildren<ViewInventory>();
+                    var unit = panes[idx].GetComponentInChildren<UnitLogic>();
                     viewInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
-                    viewInventory.unit = panes[idx].GetComponentInChildren<UnitLogic>();
+                    viewInventory.unit = unit;
+                    viewInventory.playerIdx = idx;
+                    if (isInitialized)
+                    {
+                        viewInventory.Show(unit.Inventory);
+                    }
                 }
 
                 idx++;
