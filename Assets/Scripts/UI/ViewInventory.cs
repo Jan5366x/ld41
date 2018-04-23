@@ -36,7 +36,7 @@ public class ViewInventory : MonoBehaviour
     private static readonly Color Blue = new Color(0, 0, 1f);
     private static readonly Color Brown = new Color(0.42f, 0.21f, 0.13f);
     private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f, 0.5f);
-    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f    );
+    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f);
 
     private Inventory _inventory;
 
@@ -170,6 +170,11 @@ public class ViewInventory : MonoBehaviour
         {
             if ((offsetTop + heightItem) < (rect.height - offsetBottom))
             {
+                var item = MyInventory.GetItem(idx);
+                if (item != null)
+                {
+                }
+
                 Rect previewRect = new Rect(rect.left + offsetLeft, rect.top + offsetTop, widthPreview,
                     heightItem);
                 IMUIHelper.DrawFilledRect(previewRect, idx == itemSelectIdx ? LightGrey : Grey);
@@ -202,10 +207,46 @@ public class ViewInventory : MonoBehaviour
                     }
                 }
 
-                IMUIHelper.DrawFilledRect(
-                    new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder, rect.top + offsetTop,
-                        widthRight, heightItem),
-                    idx == itemSelectIdx ? LightGrey : Grey);
+                var infoRect = new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder, rect.top + offsetTop,
+                    widthRight, heightItem);
+                IMUIHelper.DrawFilledRect(infoRect, idx == itemSelectIdx ? LightGrey : Grey);
+
+                infoRect = new Rect(rect.left + offsetLeft + widthPreview + widthInnerBorder + 10, rect.top + offsetTop,
+                    widthRight - 20, heightItem);
+
+                if (item)
+                {
+                    string text = "" + item.ItemName;
+                    var obj = MyInventory.GetObject(idx);
+                    if (obj)
+                    {
+                        var weapon = obj.GetComponent<Weapon>();
+                        if (weapon)
+                        {
+                            text += "\r\nType: ";
+                            text += weapon.Magic ? "Magic" : "Meele";
+                            text += "\tDamage:";
+                            text += (int) weapon.Damage;
+                            text += "\tRange:";
+                            text += (int) weapon.Range;
+                            text += "\tCooldown:";
+                            text += (int) weapon.CoolDown;
+                            if (weapon.Effect)
+                            {
+                                text += "\tEffect:";
+                                text += weapon.Effect.getName();
+                            }
+                        }
+                        else if (item.ArmorResistence > 1)
+                        {
+                            text += "\r\nType: Armor";
+                            text += "\r\nArmorPoints: ";
+                            text += (int) item.ArmorResistence;
+                        }
+                    }
+
+                    GUI.Label(infoRect, text);
+                }
             }
 
             offsetTop += heightItem + heightInnerBorder;

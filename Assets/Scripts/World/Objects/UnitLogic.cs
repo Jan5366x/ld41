@@ -609,7 +609,7 @@ public class UnitLogic : MonoBehaviour
             return;
         }
 
-        var price = item.Template.BasePrice * 0.75;
+        var price = item.Template.BasePrice * Item.SellModifier;
         Inventory.Drop(slot, 1);
     }
 
@@ -623,7 +623,7 @@ public class UnitLogic : MonoBehaviour
 
         other.Take(Inventory.Items[slot]);
 
-        var price = item.Template.BasePrice * 0.75;
+        var price = item.Template.BasePrice * Item.SellModifier;
         Inventory.Drop(slot, 1);
     }
 

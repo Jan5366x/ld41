@@ -13,4 +13,5 @@ public class Item : ScriptableObject {
     public float ArmorResistence;
     public Sprite PreviewSmall;
     public Sprite PreviewLarge;
+    public static float SellModifier = 0.75f;
 }

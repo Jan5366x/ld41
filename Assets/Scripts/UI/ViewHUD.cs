@@ -16,8 +16,10 @@ public class ViewHUD : MonoBehaviour
     private static readonly Color DarkGreen = new Color(0, 0.6f, 0f);
     private static readonly Color Blue = new Color(0, 0, 1f);
     private static readonly Color Brown = new Color(0.42f, 0.21f, 0.13f);
-    private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f);
-    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f);
+    private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f    );
+    
+    public Sprite backgroundSprite;
 
     public Rect getTruncatedInnerRect(int border)
     {
@@ -59,14 +61,16 @@ public class ViewHUD : MonoBehaviour
     private void DrawText()
     {
         Rect rect = getTruncatedInnerRect(150);
-        IMUIHelper.DrawFilledRect(
-            new Rect(rect.left, rect.top, rect.width, rect.height),
-            Brown
-        );
-        GUI.Label(
-            new Rect(rect.left + 10, rect.top + 10, rect.width - 20, rect.height - 20),
-            text
-        );
+        IMUIHelper.DrawFilledRect(rect, Brown);
+        if (backgroundSprite != null)
+        {
+            GUI.DrawTexture(rect, backgroundSprite.texture, ScaleMode.ScaleAndCrop);
+        }
+
+        rect = getTruncatedInnerRect(160);
+        IMUIHelper.DrawFilledRect(rect, Grey);
+        rect = getTruncatedInnerRect(170);
+        GUI.Label(rect, text);
     }
 
     private void DrawMoney()
