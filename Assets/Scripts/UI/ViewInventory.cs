@@ -18,7 +18,7 @@ public class ViewInventory : MonoBehaviour
             case Inventory.HEAD_SLOT:
             case Inventory.BODY_SLOT:
             case Inventory.LEG_SLOT:
-            case Inventory.FOOT_SLOT:
+            case Inventory.BOOT_SLOT:
             case Inventory.HAND_LEFT_SLOT:
             case Inventory.HAND_RIGHT_SLOT:
                 _inventory.Unequip(slot);

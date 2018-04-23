@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,6 @@ public class Item : ScriptableObject {
     public string ItemName;
     public Effect ItemEffect;
     public int BasePrice;
-    public Sprite DisplaySprite;
+    public Sprite[] Sprites;
     public float ArmorResistence;
 }

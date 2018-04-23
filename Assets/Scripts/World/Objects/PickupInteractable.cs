@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class PickupInteractable : Interactable
 {
+    public GameObject obj;
     public override void interact(UnitLogic player)
     {
         if (!CanInteract(player))
@@ -13,7 +14,7 @@ public class PickupInteractable : Interactable
             return;
         }
         
-        player.Inventory.Take(gameObject);
-        gameObject.SetActive(false);
+        player.Inventory.Take(obj);
+        Destroy(gameObject);
     }
 }

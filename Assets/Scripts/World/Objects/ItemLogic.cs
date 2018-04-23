@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemLogic : MonoBehaviour {
+public class ItemLogic : MonoBehaviour
+{
+	public Item Template;
 
 	// Use this for initialization
 	void Start () {

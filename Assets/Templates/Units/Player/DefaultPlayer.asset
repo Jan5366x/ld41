@@ -37,3 +37,4 @@ MonoBehaviour:
     type: 2}
   HandRange: 1
   FollowRange: 3
+  BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}

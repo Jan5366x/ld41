@@ -7,13 +7,14 @@ public class Inventory
     public const int HEAD_SLOT = 0;
     public const int BODY_SLOT = 1;
     public const int LEG_SLOT = 2;
-    public const int FOOT_SLOT = 3;
+    public const int BOOT_SLOT = 3;
     public const int HAND_LEFT_SLOT = 4;
     public const int HAND_RIGHT_SLOT = 5;
     public const int OFFSET_SLOT = 6;
     public const int COUNT_SLOT = 20;
 
     public InventoryItem[] Items;
+    public bool PresentationChanged;
 
     // Use this for initialization
     public Inventory()
@@ -23,6 +24,8 @@ public class Inventory
         {
             Items[i] = new InventoryItem();
         }
+
+        PresentationChanged = false;
     }
 
     public void Equip(int slot)
@@ -65,6 +68,10 @@ public class Inventory
                 }
             }
         }
+        else
+        {
+            PresentationChanged = true;
+        }
     }
 
     public void Unequip(int slot)
@@ -81,6 +88,7 @@ public class Inventory
                 Items[_slot] = Items[slot].Copy();
                 Items[slot].Obj = null;
                 Items[slot].Quantity = 0;
+                PresentationChanged = true;
                 return;
             }
         }
@@ -95,6 +103,9 @@ public class Inventory
                 var equip = obj.GetComponentInChildren<EquipSlot>();
                 if (equip == null || !equip.CanEquip(slot))
                 {
+                    Unequip(slot);
+                    Items[slot].Obj = obj;
+                    Items[slot].Quantity = 1;
                     continue;
                 }
             }
