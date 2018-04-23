@@ -5,10 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public int playerid;
+    public PauseScreen pauseScreen;
+
 
     // Use this for initialization
     void Start()
     {
+        pauseScreen = GameObject.FindGameObjectWithTag("Finish").GetComponent<PauseScreen>();
     }
 
     // Update is called once per frame
@@ -26,7 +29,7 @@ public class PlayerMovement : MonoBehaviour
             var attackA = Input.GetButtonDown("AttackA" + playerid);
             var attackB = Input.GetButtonDown("AttackB" + playerid);
 
-            if (!isMenu)
+            if (!isMenu && !pauseScreen.IsShow)
             {
                 if (Mathf.Abs(horizontal) > 1e-6 || Mathf.Abs(vertical) > 1e-6)
                 {

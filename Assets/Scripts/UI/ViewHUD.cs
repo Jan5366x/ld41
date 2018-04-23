@@ -9,6 +9,8 @@ public class ViewHUD : MonoBehaviour
     public UnitLogic unit;
     private String text;
     private float ShowTextDuration;
+    private bool GameOver;
+    private GUIStyle GameOverStyle;
 
     private static readonly Color Black = new Color(0, 0, 0);
     private static readonly Color Red = new Color(1f, 0, 0);
@@ -17,8 +19,8 @@ public class ViewHUD : MonoBehaviour
     private static readonly Color Blue = new Color(0, 0, 1f);
     private static readonly Color Brown = new Color(0.42f, 0.21f, 0.13f);
     private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f, 0.5f);
-    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f    );
-    
+    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f);
+
     public Sprite backgroundSprite;
 
     public Rect getTruncatedInnerRect(int border)
@@ -38,6 +40,13 @@ public class ViewHUD : MonoBehaviour
         ShowTextDuration = duration;
     }
 
+    private void Start()
+    {
+        GameOverStyle = new GUIStyle();
+        GameOverStyle.fontSize = 64;
+        GameOverStyle.fontStyle = FontStyle.Bold;
+        GameOverStyle.alignment = TextAnchor.MiddleCenter;
+    }
 
     private void Update()
     {
@@ -52,10 +61,31 @@ public class ViewHUD : MonoBehaviour
         DrawLeftWeapon();
         DrawRightWeapon();
         DrawMoney();
+        if (GameOver)
+        {
+            DrawGameOver();
+        }
+
         if (ShowTextDuration >= 0)
         {
             DrawText();
         }
+    }
+
+    private void DrawGameOver()
+    {
+        Rect rect = getTruncatedInnerRect(150);
+        IMUIHelper.DrawFilledRect(rect, Brown);
+        if (backgroundSprite != null)
+        {
+            GUI.DrawTexture(rect, backgroundSprite.texture, ScaleMode.ScaleAndCrop);
+        }
+
+        rect = getTruncatedInnerRect(160);
+        IMUIHelper.DrawFilledRect(rect, Grey);
+        rect = getTruncatedInnerRect(170);
+
+        GUI.Label(rect, "Game Over\r\nScrore: " + unit.Money, GameOverStyle);
     }
 
     private void DrawText()
