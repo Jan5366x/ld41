@@ -53,7 +53,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Iterations: 20
-  delta: 0.01
+  delta: 0.04
   wait: 0.1
 --- !u!212 &212988461521245728
 SpriteRenderer:

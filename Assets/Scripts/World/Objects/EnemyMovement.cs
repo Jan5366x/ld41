@@ -50,7 +50,6 @@ public class EnemyMovement : MonoBehaviour
 
         Self.Move(direction.x, direction.y, false);
         durationStuck += Time.deltaTime;
-        print("OUCH");
     }
 
 

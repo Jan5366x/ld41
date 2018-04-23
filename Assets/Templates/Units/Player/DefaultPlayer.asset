@@ -35,5 +35,5 @@ MonoBehaviour:
     type: 2}
   TargetMarker: {fileID: 1876147113329590, guid: f63e0a823537f463c84b01965ff98807,
     type: 2}
-  HandRange: 0.32
-  FollowRange: 1
+  HandRange: 1
+  FollowRange: 3

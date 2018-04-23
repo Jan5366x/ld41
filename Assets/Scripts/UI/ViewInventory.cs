@@ -40,8 +40,8 @@ public class ViewInventory : MonoBehaviour
 
     private Inventory _inventory;
 
-    public float moveDelayRemaining;
-    public float moveDelay = 0.0001f;
+    public float MoveDelayRemaining;
+    public float MoveDelay = 0.1f;
     public bool show = false;
 
     public Rect getTruncatedInnerRect(int border)
@@ -85,19 +85,19 @@ public class ViewInventory : MonoBehaviour
     {
         if (show)
         {
-            moveDelayRemaining -= Time.deltaTime;
-            if (moveDelayRemaining <= 0)
+            MoveDelayRemaining -= Time.deltaTime;
+            if (MoveDelayRemaining <= 0)
             {
                 int drawCount = GetItemDrawCount();
                 if (Input.GetAxis("Vertical" + playerIdx) < 0)
                 {
                     itemSelectIdx = Math.Min(itemSelectIdx + 1, Inventory.COUNT_SLOT - 1);
-                    moveDelayRemaining = moveDelay;
+                    MoveDelayRemaining = MoveDelay;
                 }
                 else if (Input.GetAxis("Vertical" + playerIdx) > 0)
                 {
                     itemSelectIdx = Math.Max(itemSelectIdx - 1, 0);
-                    moveDelayRemaining = moveDelay;
+                    MoveDelayRemaining = MoveDelay;
                 }
 
                 if (itemDrawOffset > itemSelectIdx)
@@ -109,11 +109,12 @@ public class ViewInventory : MonoBehaviour
                     itemDrawOffset = Math.Min(Math.Min(itemDrawOffset + 1, itemSelectIdx),
                         Inventory.COUNT_SLOT - 1 - drawCount);
                 }
-            }
 
-            if (Input.GetButtonDown("UseTool" + playerIdx))
-            {
-                handleSelectSlot(itemSelectIdx);
+                if (Input.GetButtonDown("AttackA" + playerIdx))
+                {
+                    handleSelectSlot(itemSelectIdx);
+                    MoveDelayRemaining = MoveDelay;
+                }
             }
         }
     }
@@ -131,8 +132,8 @@ public class ViewInventory : MonoBehaviour
     {
         Rect rect = getTruncatedInnerRect(150);
         int offsetLeft = 10;
-        int offsetTop = 100;
-        int offsetBottom = 100;
+        int offsetTop = 10;
+        int offsetBottom = 10;
         int widthPreview = 64;
         int widthInnerBorder = 10;
         int widthRight = (int) (rect.width - (2 * offsetLeft + widthPreview + widthInnerBorder));
@@ -140,11 +141,11 @@ public class ViewInventory : MonoBehaviour
         int heightInnerBorder = 10;
         for (int idx = 0; idx < Inventory.COUNT_SLOT; idx++)
         {
-            if ((offsetTop + heightItem) > (rect.bottom - offsetBottom))
+            if ((offsetTop + heightItem) > (rect.height - offsetBottom))
             {
                 return idx - 1;
             }
-    
+
             offsetTop += heightItem + heightInnerBorder;
         }
 
@@ -155,8 +156,8 @@ public class ViewInventory : MonoBehaviour
     {
         Rect rect = getTruncatedInnerRect(150);
         int offsetLeft = 10;
-        int offsetTop = 100;
-        int offsetBottom = 100;
+        int offsetTop = 10;
+        int offsetBottom = 10;
         int widthPreview = 64;
         int widthInnerBorder = 10;
         int widthRight = (int) (rect.width - (2 * offsetLeft + widthPreview + widthInnerBorder));
@@ -164,7 +165,7 @@ public class ViewInventory : MonoBehaviour
         int heightInnerBorder = 10;
         for (int idx = itemDrawOffset; idx < Inventory.COUNT_SLOT; idx++)
         {
-            if ((offsetTop + heightItem) < (rect.bottom - offsetBottom))
+            if ((offsetTop + heightItem) < (rect.height - offsetBottom))
             {
                 Rect previewRect = new Rect(rect.left + offsetLeft, rect.top + offsetTop, widthPreview,
                     heightItem);

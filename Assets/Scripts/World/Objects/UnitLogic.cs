@@ -140,11 +140,7 @@ public class UnitLogic : MonoBehaviour
     {
         if (IsDead())
             return;
-        if (AnyInventoryShown)
-        {
-            CloseInventories();
-            return;
-        }
+        
 
         var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
             new Vector2(0, 0));
@@ -383,10 +379,10 @@ public class UnitLogic : MonoBehaviour
         Debug.LogError("I Should be dead by now");
     }
 
-    public void SwitchTarget()
+    public bool SwitchTarget()
     {
         if (IsDead())
-            return;
+            return false;
 
         var range = GetMaxWeaponRange();
         var unitsInRange = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), range * 10,
@@ -420,7 +416,10 @@ public class UnitLogic : MonoBehaviour
         {
             int idx = (int) (Random.value * targets.length);
             SetTarget((GameObject) targets[idx]);
+            return true;
         }
+
+        return false;
     }
 
     public float GetWeaponRangeLeft()
@@ -502,27 +501,47 @@ public class UnitLogic : MonoBehaviour
         var price = item.Template.BasePrice * 0.75;
         Inventory.Drop(slot, 1);
     }
+    
+    public void Sell(int slot, Inventory other)
+    {
+        var item = Inventory.Items[slot];
+        if (item == null || item.Template == null)
+        {
+            return;
+        }
+        
+        other.Take(Inventory.Items[slot]);
+
+        var price = item.Template.BasePrice * 0.75;
+        Inventory.Drop(slot, 1);
+    }
 
     public void ShowInventory()
     {
+        if (AnyInventoryShown)
+        {
+            CloseInventories();
+            return;
+        }
+        
         CloseInventories();
         viewInventory.Show(Inventory);
         AnyInventoryShown = true;
     }
 
-    public void BuyInventory(UnitLogic other)
+    public void BuyInventory(Inventory iv)
     {
         CloseInventories();
 
-        buyInventory.Show(other.Inventory);
+        buyInventory.Show(iv);
         AnyInventoryShown = true;
     }
 
-    public void SellInventory(UnitLogic other)
+    public void SellInventory(Inventory iv)
     {
         CloseInventories();
 
-        sellInventory.Show(Inventory);
+        sellInventory.Show(Inventory, iv);
         AnyInventoryShown = true;
     }
 

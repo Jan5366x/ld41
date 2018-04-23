@@ -13,7 +13,7 @@ public class Inventory
     public const int OFFSET_SLOT = 6;
     public const int COUNT_SLOT = 20;
 
-    public InventoryItem[] Items ;
+    public InventoryItem[] Items;
 
     // Use this for initialization
     public Inventory()
@@ -24,7 +24,7 @@ public class Inventory
             Items[i] = new InventoryItem();
         }
     }
-    
+
     public void Equip(int slot)
     {
         if (slot < 0 || slot >= COUNT_SLOT)
@@ -46,6 +46,7 @@ public class Inventory
             {
                 continue;
             }
+
             Swap(slot, _slot);
             wasEquipped = true;
             break;
@@ -96,7 +97,7 @@ public class Inventory
                     continue;
                 }
             }
-            
+
             if (Items[slot].Quantity == 0)
             {
                 Items[slot].Obj = obj;
@@ -105,6 +106,34 @@ public class Inventory
             else
             {
                 if (Items[slot].Obj == obj)
+                {
+                    Items[slot].Quantity += 1;
+                }
+            }
+        }
+    }
+
+    public void Take(InventoryItem item)
+    {
+        for (int slot = 0; slot < COUNT_SLOT; slot++)
+        {
+            if (slot < OFFSET_SLOT)
+            {
+                var equip = item.Obj.GetComponentInChildren<EquipSlot>();
+                if (equip == null || !equip.CanEquip(slot))
+                {
+                    continue;
+                }
+            }
+
+            if (Items[slot].Quantity == 0)
+            {
+                Items[slot].Obj = item.Obj;
+                Items[slot].Quantity = 1;
+            }
+            else
+            {
+                if (Items[slot].Obj == item.Obj)
                 {
                     Items[slot].Quantity += 1;
                 }
@@ -122,7 +151,7 @@ public class Inventory
         Items[slot].Obj = null;
         Items[slot].Quantity = slot;
     }
-    
+
     public void Drop(int slot, int count)
     {
         if (slot < 0 || slot >= COUNT_SLOT)
@@ -167,7 +196,7 @@ public class Inventory
 
         return Items[slot].Quantity;
     }
-    
+
     public Inventory Copy()
     {
         Inventory iv = new Inventory();

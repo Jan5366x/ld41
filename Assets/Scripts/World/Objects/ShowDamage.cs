@@ -5,17 +5,19 @@ using UnityEngine.UI;
 
 public class ShowDamage : MonoBehaviour
 {
-    public float spreadX = 0.1f;
-    public float spreadY = 0.05f;
-    public float charWidth = 0.1f;
+    public float spreadX = 0.3f;
+    public float spreadY = 0.15f;
+    public float charWidth = 0.32f;
+    public float offsetX = 0.3f;
+    public float offsetY = 0.42f;
 
     public void Show(float damage)
     {
         string dmg = ((int) damage).ToString();
         float dx = Random.value * spreadX - spreadX / 2;
         float dy = Random.value * spreadY - spreadY / 2;
-        dx -= 0.1f;
-        dy += 0.14f;
+        dx -= offsetX;
+        dy += offsetY;
 
         foreach (var chr in dmg)
         {
