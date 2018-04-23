@@ -34,4 +34,6 @@ public class Unit : ScriptableObject
     public GameObject TargetMarker;
     public float HandRange = 0.32f;
     public float FollowRange = 1f;
+
+    public Item BaseBody;
 }

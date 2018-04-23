@@ -7,13 +7,14 @@ public class Inventory
     public const int HEAD_SLOT = 0;
     public const int BODY_SLOT = 1;
     public const int LEG_SLOT = 2;
-    public const int FOOT_SLOT = 3;
+    public const int BOOT_SLOT = 3;
     public const int HAND_LEFT_SLOT = 4;
     public const int HAND_RIGHT_SLOT = 5;
     public const int OFFSET_SLOT = 6;
     public const int COUNT_SLOT = 20;
 
-    public InventoryItem[] Items ;
+    public InventoryItem[] Items;
+    public bool PresentationChanged;
 
     // Use this for initialization
     public Inventory()
@@ -23,8 +24,10 @@ public class Inventory
         {
             Items[i] = new InventoryItem();
         }
+
+        PresentationChanged = false;
     }
-    
+
     public void Equip(int slot)
     {
         if (slot < 0 || slot >= COUNT_SLOT)
@@ -46,6 +49,7 @@ public class Inventory
             {
                 continue;
             }
+
             Swap(slot, _slot);
             wasEquipped = true;
             break;
@@ -64,6 +68,10 @@ public class Inventory
                 }
             }
         }
+        else
+        {
+            PresentationChanged = true;
+        }
     }
 
     public void Unequip(int slot)
@@ -80,6 +88,8 @@ public class Inventory
                 Items[_slot] = Items[slot].Copy();
                 Items[slot].Obj = null;
                 Items[slot].Quantity = 0;
+                PresentationChanged = true;
+                return;
             }
         }
     }
@@ -93,20 +103,55 @@ public class Inventory
                 var equip = obj.GetComponentInChildren<EquipSlot>();
                 if (equip == null || !equip.CanEquip(slot))
                 {
+                    Unequip(slot);
+                    Items[slot].Obj = obj;
+                    Items[slot].Quantity = 1;
                     continue;
                 }
             }
-            
+
             if (Items[slot].Quantity == 0)
             {
                 Items[slot].Obj = obj;
                 Items[slot].Quantity = 1;
+                return;
             }
             else
             {
                 if (Items[slot].Obj == obj)
                 {
                     Items[slot].Quantity += 1;
+                    return;
+                }
+            }
+        }
+    }
+
+    public void Take(InventoryItem item)
+    {
+        for (int slot = 0; slot < COUNT_SLOT; slot++)
+        {
+            if (slot < OFFSET_SLOT)
+            {
+                var equip = item.Obj.GetComponentInChildren<EquipSlot>();
+                if (equip == null || !equip.CanEquip(slot))
+                {
+                    continue;
+                }
+            }
+
+            if (Items[slot].Quantity == 0)
+            {
+                Items[slot].Obj = item.Obj;
+                Items[slot].Quantity = 1;
+                return;
+            }
+            else
+            {
+                if (Items[slot].Obj == item.Obj)
+                {
+                    Items[slot].Quantity += 1;
+                    return;
                 }
             }
         }
@@ -122,7 +167,7 @@ public class Inventory
         Items[slot].Obj = null;
         Items[slot].Quantity = slot;
     }
-    
+
     public void Drop(int slot, int count)
     {
         if (slot < 0 || slot >= COUNT_SLOT)
@@ -167,7 +212,7 @@ public class Inventory
 
         return Items[slot].Quantity;
     }
-    
+
     public Inventory Copy()
     {
         Inventory iv = new Inventory();

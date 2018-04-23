@@ -36,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
             if (useTool)
             {
                 logic.Interact();
-                logic.ShowInventory();
             }
             else if (attackA)
             {
@@ -48,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
             else if (attackB)
             {
                 logic.AttackRight();
+                logic.ShowInventory();
             }
         }
     }

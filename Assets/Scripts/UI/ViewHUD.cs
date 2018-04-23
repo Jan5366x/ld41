@@ -34,7 +34,6 @@ public class ViewHUD : MonoBehaviour
     {
         this.text = text;
         ShowTextDuration = duration;
-        print("UUUUUUUUUUUUUUUUUUUUUUUUUUuuuu");
     }
 
 
@@ -54,7 +53,6 @@ public class ViewHUD : MonoBehaviour
         if (ShowTextDuration >= 0)
         {
             DrawText();
-            print("TTTTTTTTTTTTTTTTTTTTTTTTtttttttttt");
         }
     }
 

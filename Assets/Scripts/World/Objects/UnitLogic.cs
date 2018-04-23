@@ -22,6 +22,16 @@ public class UnitLogic : MonoBehaviour
     public GameObject TargetMarker;
     public Inventory Inventory;
 
+    public const float AnimationFrameTime = 0.3f;
+    public float RemainingAnimationTime;
+    public SpriteAnimator baseAnimator;
+    public SpriteAnimator headAnimator;
+    public SpriteAnimator bodyAnimator;
+    public SpriteAnimator legsAnimator;
+    public SpriteAnimator bootsAnimator;
+    public SpriteAnimator handAAnimator;
+    public SpriteAnimator handBAnimator;
+
     public ViewHUD viewHUD;
     public ViewInventory viewInventory;
     public SellInventory sellInventory;
@@ -49,6 +59,21 @@ public class UnitLogic : MonoBehaviour
         MaxSpeed = Template.MaxSpeed;
         Stamina = Template.Stamina;
         SetTarget(null);
+
+        try
+        {
+            baseAnimator = Presentation.GetComponent<SpriteAnimator>();
+            headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
+            bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
+            legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
+            bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
+            handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
+            handBAnimator = Presentation.transform.Find("HandB").GetComponent<SpriteAnimator>();
+            UpdatePresentation();
+        }
+        catch (NullReferenceException ex)
+        {
+        }
     }
 
     // Update is called once per frame
@@ -76,6 +101,93 @@ public class UnitLogic : MonoBehaviour
         {
             StaminaEmpty = false;
         }
+
+        if (Inventory.PresentationChanged)
+        {
+            UpdatePresentation();
+            Inventory.PresentationChanged = false;
+        }
+
+        if (RemainingAnimationTime < 0)
+        {
+            UpdateAnimation();
+            RemainingAnimationTime = AnimationFrameTime;
+        }
+
+        RemainingAnimationTime -= Time.deltaTime;
+    }
+
+    private void UpdatePresentation()
+    {
+        UpdateAnimator(baseAnimator, Template.BaseBody);
+        UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
+        UpdateAnimator(bodyAnimator, Inventory.BODY_SLOT);
+        UpdateAnimator(legsAnimator, Inventory.LEG_SLOT);
+        UpdateAnimator(bootsAnimator, Inventory.BOOT_SLOT);
+        UpdateAnimator(handAAnimator, Inventory.HAND_LEFT_SLOT);
+        UpdateAnimator(handBAnimator, Inventory.HAND_RIGHT_SLOT);
+    }
+
+    private void UpdateAnimator(SpriteAnimator animator, int slot)
+    {
+        if (animator == null)
+            return;
+        var obj = Inventory.GetObject(slot);
+        Item item = null;
+        if (obj != null)
+        {
+            var itemlogic = obj.GetComponent<ItemLogic>();
+            if (itemlogic != null)
+            {
+                item = itemlogic.Template;
+            }
+        }
+
+        animator.SetItem(item);
+    }
+
+    private void UpdateAnimator(SpriteAnimator animator, Item item)
+    {
+        if (animator == null)
+            return;
+        animator.SetItem(item);
+    }
+
+    private void UpdateAnimationDirection(int direction)
+    {
+        if (baseAnimator)
+            baseAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (headAnimator)
+            headAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (bodyAnimator)
+            bodyAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (legsAnimator)
+            legsAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (bodyAnimator)
+            bootsAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (handAAnimator)
+            handAAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (handBAnimator)
+            handBAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+    }
+
+    private void UpdateAnimation()
+    {
+        if (baseAnimator)
+            baseAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (headAnimator)
+            headAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (bodyAnimator)
+            bodyAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (legsAnimator)
+            legsAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (bootsAnimator)
+            bootsAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (handAAnimator)
+            handAAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (handBAnimator)
+            handBAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        
     }
 
     public float GetArmorResistence()
@@ -106,11 +218,28 @@ public class UnitLogic : MonoBehaviour
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         if (Mathf.Abs(dx) > Mathf.Abs(dy))
         {
+            if (dx < 0)
+            {
+                UpdateAnimationDirection(2);
+            }
+            else
+            {
+                UpdateAnimationDirection(3);
+            }
+
             dy = 0;
         }
         else if (Mathf.Abs(dx) < Mathf.Abs(dy))
         {
             dx = 0;
+            if (dy < 0)
+            {
+                UpdateAnimationDirection(0);
+            }
+            else
+            {
+                UpdateAnimationDirection(1);
+            }
         }
 
         dx *= Template.Acceleration;
@@ -140,11 +269,7 @@ public class UnitLogic : MonoBehaviour
     {
         if (IsDead())
             return;
-        if (AnyInventoryShown)
-        {
-            CloseInventories();
-            return;
-        }
+
 
         var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
             new Vector2(0, 0));
@@ -383,10 +508,10 @@ public class UnitLogic : MonoBehaviour
         Debug.LogError("I Should be dead by now");
     }
 
-    public void SwitchTarget()
+    public bool SwitchTarget()
     {
         if (IsDead())
-            return;
+            return false;
 
         var range = GetMaxWeaponRange();
         var unitsInRange = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), range * 10,
@@ -420,7 +545,10 @@ public class UnitLogic : MonoBehaviour
         {
             int idx = (int) (Random.value * targets.length);
             SetTarget((GameObject) targets[idx]);
+            return true;
         }
+
+        return false;
     }
 
     public float GetWeaponRangeLeft()
@@ -503,26 +631,46 @@ public class UnitLogic : MonoBehaviour
         Inventory.Drop(slot, 1);
     }
 
+    public void Sell(int slot, Inventory other)
+    {
+        var item = Inventory.Items[slot];
+        if (item == null || item.Template == null)
+        {
+            return;
+        }
+
+        other.Take(Inventory.Items[slot]);
+
+        var price = item.Template.BasePrice * 0.75;
+        Inventory.Drop(slot, 1);
+    }
+
     public void ShowInventory()
     {
+        if (AnyInventoryShown)
+        {
+            CloseInventories();
+            return;
+        }
+
         CloseInventories();
         viewInventory.Show(Inventory);
         AnyInventoryShown = true;
     }
 
-    public void BuyInventory(UnitLogic other)
+    public void BuyInventory(Inventory iv)
     {
         CloseInventories();
 
-        buyInventory.Show(other.Inventory);
+        buyInventory.Show(iv);
         AnyInventoryShown = true;
     }
 
-    public void SellInventory(UnitLogic other)
+    public void SellInventory(Inventory iv)
     {
         CloseInventories();
 
-        sellInventory.Show(Inventory);
+        sellInventory.Show(Inventory, iv);
         AnyInventoryShown = true;
     }
 
