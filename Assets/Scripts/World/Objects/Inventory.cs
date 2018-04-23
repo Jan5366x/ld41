@@ -81,6 +81,7 @@ public class Inventory
                 Items[_slot] = Items[slot].Copy();
                 Items[slot].Obj = null;
                 Items[slot].Quantity = 0;
+                return;
             }
         }
     }
@@ -102,12 +103,14 @@ public class Inventory
             {
                 Items[slot].Obj = obj;
                 Items[slot].Quantity = 1;
+                return;
             }
             else
             {
                 if (Items[slot].Obj == obj)
                 {
                     Items[slot].Quantity += 1;
+                    return;
                 }
             }
         }
@@ -130,12 +133,14 @@ public class Inventory
             {
                 Items[slot].Obj = item.Obj;
                 Items[slot].Quantity = 1;
+                return;
             }
             else
             {
                 if (Items[slot].Obj == item.Obj)
                 {
                     Items[slot].Quantity += 1;
+                    return;
                 }
             }
         }
