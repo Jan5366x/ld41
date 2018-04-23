@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c063b5ba93e9bc4a9060a58b0c72ed8, type: 3}
+  m_Name: FancyNPC
+  m_EditorClassIdentifier: 
+  UnitName: FancyNPC
+  MaxHealth: 10
+  MaxMana: 10
+  HPRegeneration: 0
+  ManaRegeneration: 0
+  StaminaRegeneration: 0
+  StaminaUsage: 0
+  StaminaMinUsage: 0
+  Strength: 0
+  Intelligence: 0
+  Stamina: 0
+  Agility: 0
+  MaxSpeed: 0
+  Acceleration: 0
+  IsEnemy: 0
+  IsPlayer: 0
+  IsInteractable: 0
+  IsShowName: 0
+  Presentation: {fileID: 1831553195629150, guid: 0491b304ef14a41a49b08532b8ae119a,
+    type: 2}
+  DeathPrefab: {fileID: 0}
+  TargetMarker: {fileID: 0}
+  HandRange: 0.32
+  FollowRange: 1
+  BaseBody: {fileID: 11400000, guid: 5035255c213a84a5f9bd2cd9ff28b581, type: 2}
+  BaseHair: {fileID: 11400000, guid: 4c5f6aa93f62d425b846e700ab11d32f, type: 2}
+  DeathDrop: {fileID: 0}

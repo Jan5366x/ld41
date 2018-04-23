@@ -11,6 +11,7 @@ public class SpriteAnimator : MonoBehaviour
     private void Start()
     {
         renderer = GetComponent<SpriteRenderer>();
+        UpdateSprite();
     }
 
     public void SetItem(Item item)
