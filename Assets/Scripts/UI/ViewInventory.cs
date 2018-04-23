@@ -35,8 +35,8 @@ public class ViewInventory : MonoBehaviour
     private static readonly Color DarkGreen = new Color(0, 0.6f, 0f);
     private static readonly Color Blue = new Color(0, 0, 1f);
     private static readonly Color Brown = new Color(0.42f, 0.21f, 0.13f);
-    private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f);
-    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f);
+    private static readonly Color Grey = new Color(0.3f, 0.3f, 0.3f, 0.5f);
+    private static readonly Color LightGrey = new Color(0.6f, 0.6f, 0.6f, 0.5f    );
 
     private Inventory _inventory;
 
@@ -173,22 +173,31 @@ public class ViewInventory : MonoBehaviour
                 Rect previewRect = new Rect(rect.left + offsetLeft, rect.top + offsetTop, widthPreview,
                     heightItem);
                 IMUIHelper.DrawFilledRect(previewRect, idx == itemSelectIdx ? LightGrey : Grey);
-                if (idx < Inventory.OFFSET_SLOT && idx < reservedSlotsPreview.Length)
-                {
-                    GUI.DrawTexture(previewRect, reservedSlotsPreview[idx].texture, ScaleMode.ScaleAndCrop);
-                }
 
                 if (_inventory != null)
                 {
+                    bool didDrawPreview = false;
                     var previewItem = MyInventory.GetItem(idx);
                     if (previewItem)
                     {
                         var previewSprite = previewItem.PreviewSmall;
                         if (previewSprite)
                         {
-                            GUI.DrawTexture(previewRect, previewSprite.texture, ScaleMode.ScaleToFit);
+                            GUI.DrawTexture(previewRect, previewSprite.texture, ScaleMode.ScaleAndCrop);
+                            didDrawPreview = true;
                         }
+                    }
 
+                    if (!didDrawPreview)
+                    {
+                        if (idx < Inventory.OFFSET_SLOT && idx < reservedSlotsPreview.Length)
+                        {
+                            GUI.DrawTexture(previewRect, reservedSlotsPreview[idx].texture, ScaleMode.ScaleAndCrop);
+                        }
+                    }
+
+                    if (previewItem)
+                    {
                         GUI.Label(previewRect, "" + _inventory.GetQuantity(idx));
                     }
                 }

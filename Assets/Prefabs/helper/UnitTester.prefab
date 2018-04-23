@@ -58,32 +58,32 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: reservedSlotsPreview.Array.data[0]
       value: 
-      objectReference: {fileID: 21300000, guid: 98640d279c1db4a31b5c9fe35104a88c,
+      objectReference: {fileID: 21300000, guid: 170dc6e9952d886459b569f6c2fb33bf,
         type: 3}
     - target: {fileID: 0}
       propertyPath: reservedSlotsPreview.Array.data[1]
       value: 
-      objectReference: {fileID: 21300002, guid: 98640d279c1db4a31b5c9fe35104a88c,
+      objectReference: {fileID: 21300000, guid: b893f62cd810aec4a997580a1a4678bd,
         type: 3}
     - target: {fileID: 0}
       propertyPath: reservedSlotsPreview.Array.data[2]
       value: 
-      objectReference: {fileID: 21300004, guid: 98640d279c1db4a31b5c9fe35104a88c,
+      objectReference: {fileID: 21300000, guid: df98f739b241eb643a351af5abf7c3e9,
         type: 3}
     - target: {fileID: 0}
       propertyPath: reservedSlotsPreview.Array.data[3]
       value: 
-      objectReference: {fileID: 21300010, guid: 98640d279c1db4a31b5c9fe35104a88c,
+      objectReference: {fileID: 21300000, guid: 2caca25dfab9a2646a20b1869c407c6e,
         type: 3}
     - target: {fileID: 0}
       propertyPath: reservedSlotsPreview.Array.data[4]
       value: 
-      objectReference: {fileID: 21300006, guid: 98640d279c1db4a31b5c9fe35104a88c,
+      objectReference: {fileID: 21300000, guid: 0262563b4aedcc4408c60195e15d0291,
         type: 3}
     - target: {fileID: 0}
       propertyPath: reservedSlotsPreview.Array.data[5]
       value: 
-      objectReference: {fileID: 21300008, guid: 98640d279c1db4a31b5c9fe35104a88c,
+      objectReference: {fileID: 21300000, guid: d5f9e6ffd977ef0449a086bede1c344a,
         type: 3}
     - target: {fileID: 0}
       propertyPath: backgroundSprite
@@ -212,12 +212,12 @@ MonoBehaviour:
   MoveDelay: 0.5
   show: 0
   reservedSlotsPreview:
-  - {fileID: 21300000, guid: 98640d279c1db4a31b5c9fe35104a88c, type: 3}
-  - {fileID: 21300002, guid: 98640d279c1db4a31b5c9fe35104a88c, type: 3}
-  - {fileID: 21300004, guid: 98640d279c1db4a31b5c9fe35104a88c, type: 3}
-  - {fileID: 21300010, guid: 98640d279c1db4a31b5c9fe35104a88c, type: 3}
-  - {fileID: 21300006, guid: 98640d279c1db4a31b5c9fe35104a88c, type: 3}
-  - {fileID: 21300008, guid: 98640d279c1db4a31b5c9fe35104a88c, type: 3}
+  - {fileID: 21300000, guid: 170dc6e9952d886459b569f6c2fb33bf, type: 3}
+  - {fileID: 21300000, guid: b893f62cd810aec4a997580a1a4678bd, type: 3}
+  - {fileID: 21300000, guid: df98f739b241eb643a351af5abf7c3e9, type: 3}
+  - {fileID: 21300000, guid: 2caca25dfab9a2646a20b1869c407c6e, type: 3}
+  - {fileID: 21300000, guid: 0262563b4aedcc4408c60195e15d0291, type: 3}
+  - {fileID: 21300000, guid: d5f9e6ffd977ef0449a086bede1c344a, type: 3}
   backgroundSprite: {fileID: 21300000, guid: 0f7314bb7ee2ac04fb070613b0e26f7f, type: 3}
 --- !u!114 &114336905853933496
 MonoBehaviour:
