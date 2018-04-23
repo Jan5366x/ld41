@@ -15,11 +15,14 @@ public class EnemyMovement : MonoBehaviour
     private bool GoHome = false;
 
     private float durationStuck;
+    public PauseScreen pauseScreen;
+
 
     private void Start()
     {
         Self = GetComponentInChildren<UnitLogic>();
         SpawnPosition = new Vector2(transform.position.x, transform.position.y);
+        pauseScreen = GameObject.FindGameObjectWithTag("Finish").GetComponent<PauseScreen>();
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -30,6 +33,8 @@ public class EnemyMovement : MonoBehaviour
     private void OnCollisionStay2D(Collision2D other)
     {
         if (other == null)
+            return;
+        if (pauseScreen && pauseScreen.IsShow)
             return;
         var otherUnit = other.gameObject.GetComponent<UnitLogic>();
         if (otherUnit || !Self)
@@ -64,6 +69,9 @@ public class EnemyMovement : MonoBehaviour
         {
             return;
         }
+
+        if (pauseScreen && pauseScreen.IsShow)
+            return;
 
         if (Self.Template.IsEnemy && Self.CoolDown < 0)
         {
