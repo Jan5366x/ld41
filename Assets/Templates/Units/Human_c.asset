@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c0ec12943ebf84981bed0454661a91, type: 3}
   m_Name: Human_c
   m_EditorClassIdentifier: 
-  ItemName: 
+  ItemName: Human_c
   ItemEffect: {fileID: 0}
   BasePrice: 0
   Sprites:
