@@ -44,6 +44,9 @@ public class ViewInventory : MonoBehaviour
     public float MoveDelay = 0.1f;
     public bool show = false;
 
+    public Sprite[] reservedSlotsPreview;
+    public Sprite backgroundSprite;
+
     public Rect getTruncatedInnerRect(int border)
     {
         int w = (int) Mathf.Min(1024, ViewRect.width - 2 * border);
@@ -170,15 +173,20 @@ public class ViewInventory : MonoBehaviour
                 Rect previewRect = new Rect(rect.left + offsetLeft, rect.top + offsetTop, widthPreview,
                     heightItem);
                 IMUIHelper.DrawFilledRect(previewRect, idx == itemSelectIdx ? LightGrey : Grey);
+                if (idx < Inventory.OFFSET_SLOT && idx < reservedSlotsPreview.Length)
+                {
+                    GUI.DrawTexture(previewRect, reservedSlotsPreview[idx].texture, ScaleMode.ScaleAndCrop);
+                }
+
                 if (_inventory != null)
                 {
-                    var previewObj = MyInventory.GetObject(idx);
-                    if (previewObj)
+                    var previewItem = MyInventory.GetItem(idx);
+                    if (previewItem)
                     {
-                        var previewSpriteRenderer = previewObj.GetComponent<SpriteRenderer>();
-                        if (previewSpriteRenderer)
+                        var previewSprite = previewItem.PreviewSmall;
+                        if (previewSprite)
                         {
-                            GUI.DrawTexture(previewRect, previewSpriteRenderer.sprite.texture, ScaleMode.ScaleToFit);
+                            GUI.DrawTexture(previewRect, previewSprite.texture, ScaleMode.ScaleToFit);
                         }
 
                         GUI.Label(previewRect, "" + _inventory.GetQuantity(idx));
@@ -198,10 +206,11 @@ public class ViewInventory : MonoBehaviour
     private void DrawInventoryBorder()
     {
         Rect rect = getTruncatedInnerRect(150);
-        IMUIHelper.DrawFilledRect(
-            new Rect(
-                rect.left, rect.top, rect.width, rect.height
-            ), Brown);
+        IMUIHelper.DrawFilledRect(rect, Brown);
+        if (backgroundSprite != null)
+        {
+            GUI.DrawTexture(rect, backgroundSprite.texture, ScaleMode.ScaleAndCrop);
+        }
     }
 
     public void Show(Inventory iv)

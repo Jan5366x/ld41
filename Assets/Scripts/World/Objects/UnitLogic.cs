@@ -130,20 +130,7 @@ public class UnitLogic : MonoBehaviour
 
     private void UpdateAnimator(SpriteAnimator animator, int slot)
     {
-        if (animator == null)
-            return;
-        var obj = Inventory.GetObject(slot);
-        Item item = null;
-        if (obj != null)
-        {
-            var itemlogic = obj.GetComponent<ItemLogic>();
-            if (itemlogic != null)
-            {
-                item = itemlogic.Template;
-            }
-        }
-
-        animator.SetItem(item);
+        UpdateAnimator(animator, Inventory.GetItem(slot));
     }
 
     private void UpdateAnimator(SpriteAnimator animator, Item item)
@@ -187,7 +174,6 @@ public class UnitLogic : MonoBehaviour
             handAAnimator.GetComponent<SpriteAnimator>().NextSprite();
         if (handBAnimator)
             handBAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        
     }
 
     public float GetArmorResistence()
@@ -195,14 +181,10 @@ public class UnitLogic : MonoBehaviour
         float armorResistence = 1;
         for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
         {
-            var item = Inventory.GetObject(i);
+            var item = Inventory.GetItem(i);
             if (item != null)
             {
-                var iitem = item.GetComponentInChildren<Item>();
-                if (iitem)
-                {
-                    armorResistence += iitem.ArmorResistence;
-                }
+                armorResistence += item.ArmorResistence;
             }
         }
 

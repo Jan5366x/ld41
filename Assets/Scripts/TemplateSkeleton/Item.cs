@@ -11,4 +11,6 @@ public class Item : ScriptableObject {
     public int BasePrice;
     public Sprite[] Sprites;
     public float ArmorResistence;
+    public Sprite PreviewSmall;
+    public Sprite PreviewLarge;
 }

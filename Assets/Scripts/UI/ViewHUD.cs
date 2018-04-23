@@ -29,7 +29,7 @@ public class ViewHUD : MonoBehaviour
 
         return new Rect(cx - w / 2, cy - h / 2, w, h);
     }
-    
+
     public void ShowText(String text, float duration)
     {
         this.text = text;
@@ -76,20 +76,24 @@ public class ViewHUD : MonoBehaviour
 
     protected void DrawRightWeapon()
     {
-        IMUIHelper.DrawBorderRect(
-            new Rect(ViewRect.right - 100, ViewRect.bottom - 100, 100, 100),
-            1,
-            Black
-        );
+        var rect = new Rect(ViewRect.right - 100, ViewRect.bottom - 100, 100, 100);
+        IMUIHelper.DrawBorderRect(rect, 1, Black);
+        var item = unit.Inventory.GetItem(Inventory.HAND_RIGHT_SLOT);
+        if (item != null)
+        {
+            GUI.DrawTexture(rect, item.PreviewLarge.texture, ScaleMode.ScaleToFit);
+        }
     }
 
     protected void DrawLeftWeapon()
     {
-        IMUIHelper.DrawBorderRect(
-            new Rect(ViewRect.left, ViewRect.bottom - 100, 100, 100),
-            1,
-            Black
-        );
+        var rect = new Rect(ViewRect.left, ViewRect.bottom - 100, 100, 100);
+        IMUIHelper.DrawBorderRect(rect, 1, Black);
+        var item = unit.Inventory.GetItem(Inventory.HAND_LEFT_SLOT);
+        if (item != null)
+        {
+            GUI.DrawTexture(rect, item.PreviewLarge.texture, ScaleMode.ScaleToFit);
+        }
     }
 
     protected void DrawHPBar()
