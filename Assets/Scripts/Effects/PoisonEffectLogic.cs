@@ -14,6 +14,7 @@ public class PoisonEffectLogic : EffectLogic
 
     public override void apply(UnitLogic player, float duration)
     {
+        showPrefab("Effects\\PoisonEffect", duration);
         object[] param = new object[2] {player, duration};
         StartCoroutine("dealDamage", param);
     }

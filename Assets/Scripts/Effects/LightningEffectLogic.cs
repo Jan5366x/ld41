@@ -14,6 +14,7 @@ public class LightningEffectLogic : EffectLogic
 
     public override void apply(UnitLogic player, float duration)
     {
+        showPrefab("Effects\\LightningEffect", duration);
         player.ReceiveDamage(Random.value * (MaxDamage - MinDamage) + MinDamage);
         player.Stamina = 0;
     }
