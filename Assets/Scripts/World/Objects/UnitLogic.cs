@@ -40,7 +40,6 @@ public class UnitLogic : MonoBehaviour
 
     public bool AnyInventoryShown = false;
 
-    private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
     public int Money;
 
     // Use this for initialization
@@ -81,14 +80,6 @@ public class UnitLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (var effect in activeEffects.Keys)
-        {
-            effect.apply(this);
-            activeEffects[effect] -= Time.deltaTime;
-        }
-
-        activeEffects = activeEffects.Where(pair => pair.Value > 0)
-            .ToDictionary(item => item.Key, value => value.Value);
         CoolDown -= Time.deltaTime;
 
         HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);
@@ -583,12 +574,7 @@ public class UnitLogic : MonoBehaviour
     {
         if (weaponEffect && weaponEffectDuration > 0)
         {
-            if (!activeEffects.ContainsKey(weaponEffect))
-            {
-                activeEffects.Add(weaponEffect, 0);
-            }
-
-            activeEffects[weaponEffect] += weaponEffectDuration;
+            weaponEffect.apply(this, weaponEffectDuration);
         }
     }
 
