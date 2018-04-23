@@ -22,6 +22,11 @@ public class UnitLogic : MonoBehaviour
     public GameObject TargetMarker;
     public Inventory Inventory;
 
+    public ViewHUD viewHUD;
+    public ViewInventory viewInventory;
+    public SellInventory sellInventory;
+    public BuyInventory buyInventory;
+
     private Dictionary<EffectLogic, float> activeEffects = new Dictionary<EffectLogic, float>();
     public int Money;
 
@@ -440,7 +445,6 @@ public class UnitLogic : MonoBehaviour
 
     public void Buy(InventoryItem item)
     {
-        
         if (item == null || item.Template == null)
         {
             return;
@@ -464,5 +468,20 @@ public class UnitLogic : MonoBehaviour
 
         var price = item.Template.BasePrice * 0.75;
         Inventory.Drop(slot, 1);
+    }
+
+    public void ShowInventory()
+    {
+        viewInventory.Show(Inventory);
+    }
+
+    public void BuyInventory(UnitLogic other)
+    {
+        buyInventory.Show(other.Inventory);
+    }
+
+    public void SellInventory(UnitLogic other)
+    {
+        sellInventory.Show(Inventory);
     }
 }

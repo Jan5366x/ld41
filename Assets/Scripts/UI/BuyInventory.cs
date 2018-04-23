@@ -96,7 +96,7 @@ public class BuyInventory : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!show)
+        if (show)
         {
             DrawInventoryBorder();
             DrawInventory();

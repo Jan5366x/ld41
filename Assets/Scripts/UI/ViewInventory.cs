@@ -109,7 +109,7 @@ public class ViewInventory : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!show)
+        if (show)
         {
             DrawInventoryBorder();
             DrawInventory();
