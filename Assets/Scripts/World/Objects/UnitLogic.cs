@@ -300,7 +300,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
         Attack(item);
     }
 
@@ -309,7 +309,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
         Attack(item);
     }
 
@@ -318,7 +318,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
         Attack(unit, item);
     }
 
@@ -327,7 +327,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
         Attack(unit, item);
     }
 
@@ -547,7 +547,7 @@ public class UnitLogic : MonoBehaviour
 
     public float GetWeaponRangeLeft()
     {
-        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
         var weapon = item != null ? item.GetComponent<Weapon>() : null;
         var range = weapon != null ? weapon.Range : Template.HandRange;
         return range;
@@ -555,7 +555,7 @@ public class UnitLogic : MonoBehaviour
 
     public float GetWeaponRangeRight()
     {
-        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
         var weapon = item != null ? item.GetComponent<Weapon>() : null;
         var range = weapon != null ? weapon.Range : Template.HandRange;
         return range;

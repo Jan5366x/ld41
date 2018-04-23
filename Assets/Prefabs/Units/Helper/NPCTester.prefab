@@ -114,11 +114,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1926039875531326}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3b615063104b4abbd718ef96be02d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseScreen: {fileID: 0}
 --- !u!114 &114508918490997528
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -134,11 +135,28 @@ MonoBehaviour:
   HP: 0
   Mana: 0
   MaxSpeed: 0
+  Stamina: 0
+  StaminaEmpty: 0
   CoolDown: 0
   Presentation: {fileID: 0}
   Target: {fileID: 0}
   TargetMarker: {fileID: 0}
-  Inventory: {fileID: 0}
+  RemainingAnimationTime: 0
+  baseAnimator: {fileID: 0}
+  hairAnimator: {fileID: 0}
+  headAnimator: {fileID: 0}
+  bodyAnimator: {fileID: 0}
+  legsAnimator: {fileID: 0}
+  bootsAnimator: {fileID: 0}
+  handAAnimator: {fileID: 0}
+  handBAnimator: {fileID: 0}
+  viewHUD: {fileID: 0}
+  viewInventory: {fileID: 0}
+  sellInventory: {fileID: 0}
+  buyInventory: {fileID: 0}
+  AnyInventoryShown: 0
+  Money: 0
+  pauseScreen: {fileID: 0}
 --- !u!114 &114546825835061382
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -153,3 +171,5 @@ MonoBehaviour:
   spreadX: 0.1
   spreadY: 0.05
   charWidth: 0.1
+  offsetX: 0.3
+  offsetY: 0.42
