@@ -421,7 +421,7 @@ public class UnitLogic : MonoBehaviour
     private UnitLogic[] getHitUnits(Weapon weapon)
     {
         Array hitUnits = new Array();
-        if (weapon != null && weapon.Magic)
+        if (weapon != null && weapon.Magic && Target != null)
         {
             hitUnits.Add(Target);
         }

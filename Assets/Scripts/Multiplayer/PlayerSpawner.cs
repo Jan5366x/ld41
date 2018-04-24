@@ -60,7 +60,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private int NumPanes()
     {
-        return Mathf.Max(2, controllers.Length);
+        return Mathf.Max(1, controllers.Length);
     }
 
     void SetupPanes(int numPanes)
