@@ -3,7 +3,7 @@
 public class SpriteAnimator : MonoBehaviour
 {
     public Item item;
-    public int direction;
+    public UnitLogic.MoveDirection direction;
     public int sprite;
     public static int spriteCount = 3;
     public SpriteRenderer renderer;
@@ -21,7 +21,7 @@ public class SpriteAnimator : MonoBehaviour
         UpdateSprite();
     }
 
-    public void SetDirection(int direction)
+    public void SetDirection(UnitLogic.MoveDirection direction)
     {
         this.direction = direction;
         UpdateSprite();
@@ -37,7 +37,7 @@ public class SpriteAnimator : MonoBehaviour
     {
         if (item != null)
         {
-            int idx = direction * spriteCount + sprite;
+            int idx = (int) direction * spriteCount + sprite;
             if (idx < item.Sprites.Length)
             {
                 renderer.sprite = item.Sprites[idx];
@@ -50,6 +50,22 @@ public class SpriteAnimator : MonoBehaviour
         else
         {
             renderer.sprite = null;
+        }
+    }
+
+    public void Idle()
+    {
+
+        int idleFrame = 0;
+
+        // select idle frame based of dicection
+        if (direction == UnitLogic.MoveDirection.Left || direction == UnitLogic.MoveDirection.Right)
+            idleFrame = 1;
+        
+        if (sprite != idleFrame)
+        {
+            sprite = idleFrame;
+            UpdateSprite();
         }
     }
 }

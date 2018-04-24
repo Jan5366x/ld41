@@ -32,7 +32,7 @@ public class Unit : ScriptableObject
     public GameObject Presentation;
     public GameObject DeathPrefab;
     public GameObject TargetMarker;
-    public float HandRange = 0.32f;
+    public float HandRange = 0.4f;
     public float FollowRange = 1f;
 
     public Item BaseBody;

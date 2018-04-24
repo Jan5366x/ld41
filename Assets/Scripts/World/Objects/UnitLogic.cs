@@ -32,6 +32,7 @@ public class UnitLogic : MonoBehaviour
     public SpriteAnimator bootsAnimator;
     public SpriteAnimator handAAnimator;
     public SpriteAnimator handBAnimator;
+    
 
     public ViewHUD viewHUD;
     public ViewInventory viewInventory;
@@ -43,11 +44,24 @@ public class UnitLogic : MonoBehaviour
     public int Money;
     public PauseScreen pauseScreen;
 
+    private bool standingStill = true;
+
+    private List<SpriteAnimator> animationHelper;
 
     // Use this for initialization
 
+    public enum MoveDirection
+    {
+        Up = 0,
+        Down = 1,
+        Left = 2,
+        Right = 3
+    }
+  
     void Start()
     {
+        
+        
         // instantiate the presentation object
         Presentation = Instantiate(Template.Presentation, transform);
         TargetMarker = Instantiate(Template.TargetMarker, transform);
@@ -73,11 +87,26 @@ public class UnitLogic : MonoBehaviour
             bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
             handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
             handBAnimator = Presentation.transform.Find("HandB").GetComponent<SpriteAnimator>();
+            SetupAnimationHelper();
             UpdatePresentation();
         }
         catch (NullReferenceException ex)
         {
         }
+    }
+    private void SetupAnimationHelper()
+    {
+        animationHelper= new List<SpriteAnimator>
+        {
+            baseAnimator,
+            hairAnimator,
+            headAnimator,
+            bodyAnimator,
+            legsAnimator,
+            bootsAnimator,
+            handAAnimator,
+            handBAnimator
+        };
     }
 
     // Update is called once per frame
@@ -152,44 +181,36 @@ public class UnitLogic : MonoBehaviour
         animator.SetItem(item);
     }
 
-    private void UpdateAnimationDirection(int direction)
+    private void UpdateAnimationDirection(MoveDirection direction)
     {
-        if (baseAnimator)
-            baseAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (hairAnimator)
-            hairAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (headAnimator)
-            headAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (bodyAnimator)
-            bodyAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (legsAnimator)
-            legsAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (bodyAnimator)
-            bootsAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (handAAnimator)
-            handAAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
-        if (handBAnimator)
-            handBAnimator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        if (animationHelper == null)
+            return;
+
+        foreach (var animator in animationHelper)
+        {
+            animator.GetComponent<SpriteAnimator>().SetDirection(direction);
+        }
     }
 
     private void UpdateAnimation()
     {
-        if (baseAnimator)
-            baseAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (hairAnimator)
-            hairAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (headAnimator)
-            headAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (bodyAnimator)
-            bodyAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (legsAnimator)
-            legsAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (bootsAnimator)
-            bootsAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (handAAnimator)
-            handAAnimator.GetComponent<SpriteAnimator>().NextSprite();
-        if (handBAnimator)
-            handBAnimator.GetComponent<SpriteAnimator>().NextSprite();
+        if (animationHelper == null)
+            return;
+
+        foreach (SpriteAnimator animator in animationHelper) 
+        {
+            if (!animator)
+                continue;
+  
+            if (standingStill)
+            {
+                animator.GetComponent<SpriteAnimator>().Idle();
+            }
+            else
+            {
+                animator.GetComponent<SpriteAnimator>().NextSprite();   
+            }
+        }
     }
 
     public float GetArmorResistence()
@@ -220,11 +241,11 @@ public class UnitLogic : MonoBehaviour
         {
             if (dx < 0)
             {
-                UpdateAnimationDirection(2);
+                UpdateAnimationDirection( MoveDirection.Left);
             }
             else
             {
-                UpdateAnimationDirection(3);
+                UpdateAnimationDirection( MoveDirection.Right);
             }
 
             dy = 0;
@@ -234,11 +255,11 @@ public class UnitLogic : MonoBehaviour
             dx = 0;
             if (dy < 0)
             {
-                UpdateAnimationDirection(0);
+                UpdateAnimationDirection(MoveDirection.Up);
             }
             else
             {
-                UpdateAnimationDirection(1);
+                UpdateAnimationDirection(MoveDirection.Down);
             }
         }
 
@@ -256,13 +277,19 @@ public class UnitLogic : MonoBehaviour
             }
         }
 
-        body.AddForce(new Vector2(dx, dy));
+        Vector2 forceVec = new Vector2(dx, dy);
+        body.AddForce(forceVec);
+
+        standingStill = false;
+
     }
 
+ 
     public void StopMovement()
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
         body.velocity = new Vector2(0, 0);
+        standingStill = true;
     }
 
     public void Interact()
@@ -286,6 +313,8 @@ public class UnitLogic : MonoBehaviour
             float dx = transform.position.x - collider.transform.position.x;
             float dy = transform.position.y - collider.transform.position.y;
             float d = Mathf.Sqrt(dx * dx + dy * dy);
+            
+            Debug.DrawLine(gameObject.transform.position, hit.transform.position, Color.gray);
             if (d < minDist && interactable != null)
             {
                 minDist = d;
@@ -298,9 +327,11 @@ public class UnitLogic : MonoBehaviour
 
         if (minIdx >= 0 && bestInteractable != null)
         {
+            Debug.DrawLine(gameObject.transform.position, bestInteractable.transform.position, Color.cyan);
             if (bestInteractable.CanInteract(this))
             {
                 bestInteractable.interact(this);
+             
             }
         }
         else

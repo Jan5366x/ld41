@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Mathf.Abs(horizontal) > 1e-6 || Mathf.Abs(vertical) > 1e-6)
                 {
                     logic.Move(horizontal, vertical, sprint);
+               
                 }
                 else
                 {
@@ -54,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
                 else if (attackB)
                 {
                     logic.AttackRight();
+                    
+                    // TODO fix that !
                     logic.ShowInventory();
                 }
             }
