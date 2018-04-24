@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1261128000169898}
+  m_IsPrefabParent: 1
+--- !u!1 &1261128000169898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4859498748558436}
+  - component: {fileID: 114190372871943750}
+  - component: {fileID: 114478732161968632}
+  - component: {fileID: 114933475234802882}
+  - component: {fileID: 114052877087726654}
+  - component: {fileID: 50971087862486058}
+  - component: {fileID: 70596533898886844}
+  - component: {fileID: 70333802886439580}
+  m_Layer: 0
+  m_Name: BasicEnemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4859498748558436
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50971087862486058
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 30
+  m_AngularDrag: 999999
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!70 &70333802886439580
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.5}
+  m_Size: {x: 0.4, y: 0.14}
+  m_Direction: 1
+--- !u!70 &70596533898886844
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.5}
+  m_Size: {x: 0.4, y: 0.1}
+  m_Direction: 1
+--- !u!114 &114052877087726654
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db4e2338e9684e6483f884073526ac66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spreadX: 0.1
+  spreadY: 0.05
+  charWidth: 0.1
+  offsetX: 0.3
+  offsetY: 0.42
+--- !u!114 &114190372871943750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d8db790baa4c0b4b80d1f4111d1876b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Template: {fileID: 11400000, guid: c8539cb053eb545c0beb9821c212cc49, type: 2}
+  HP: 10
+  Mana: 10
+  MaxSpeed: 0
+  Stamina: 0
+  StaminaEmpty: 0
+  CoolDown: 0
+  Presentation: {fileID: 0}
+  Target: {fileID: 0}
+  TargetMarker: {fileID: 0}
+  RemainingAnimationTime: 0
+  baseAnimator: {fileID: 0}
+  hairAnimator: {fileID: 0}
+  headAnimator: {fileID: 0}
+  bodyAnimator: {fileID: 0}
+  legsAnimator: {fileID: 0}
+  bootsAnimator: {fileID: 0}
+  handAAnimator: {fileID: 0}
+  handBAnimator: {fileID: 0}
+  viewHUD: {fileID: 0}
+  viewInventory: {fileID: 0}
+  sellInventory: {fileID: 0}
+  buyInventory: {fileID: 0}
+  AnyInventoryShown: 0
+  Money: 0
+  pauseScreen: {fileID: 0}
+--- !u!114 &114478732161968632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3b615063104b4abbd718ef96be02d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseScreen: {fileID: 0}
+--- !u!114 &114933475234802882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1261128000169898}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 693d0b93986c4f5abe1ac02fbbe45568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: -10
