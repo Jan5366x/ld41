@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Events;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
@@ -24,6 +23,14 @@ public class PlayerSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetJoystickNames().Length == 0)
+        {
+            if (!isInitialized)
+            {
+                SetupPanes();
+                isInitialized = true;
+            }
+        }
         if (Input.GetButton("Start"))
         {
             if (!isInitialized)
@@ -150,6 +157,7 @@ public class PlayerSpawner : MonoBehaviour
                     var viewHUD = panes[idx].GetComponentInChildren<ViewHUD>();
                     viewHUD.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);
                     viewHUD.unit = unit;
+                 
 
                     var viewInventory = panes[idx].GetComponentInChildren<ViewInventory>();
                     viewInventory.ViewRect = new Rect(xx * width, yy * height, ww * width, hh * height);

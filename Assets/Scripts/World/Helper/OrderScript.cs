@@ -9,7 +9,7 @@ public class OrderScript : MonoBehaviour
 
     public void Awake()
     {
-        SetPosition();
+        SetPosition(); 
     }
 
     public void Update()
@@ -19,6 +19,10 @@ public class OrderScript : MonoBehaviour
 
     public void SetPosition()
     {
-        GetComponent<SpriteRenderer>().sortingOrder = (int) -((transform.position.y + offset) * 100);
+        var renderer = GetComponent<SpriteRenderer>();
+        if (renderer != null)
+        {
+            renderer.sortingOrder = (int) -((transform.position.y + offset) * 100);
+        }
     }
 }

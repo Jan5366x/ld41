@@ -89,7 +89,7 @@ public class PauseScreen : MonoBehaviour
 
     private void DrawBackground()
     {
-        Rect rect = getTruncatedInnerRect(160, 150);
+        Rect rect = getTruncatedInnerRect(160, 200);
         IMUIHelper.DrawFilledRect(rect, Brown);
         if (backgroundSprite != null)
         {
@@ -99,15 +99,18 @@ public class PauseScreen : MonoBehaviour
 
     private void DrawMenu()
     {
-        Rect rect = getTruncatedInnerRect(150, 140);
+        Rect rect = getTruncatedInnerRect(150, 190);
         int dy = 25;
 
         Rect upperRect = new Rect(rect.left, rect.top + dy, rect.width, dy);
         Rect lowerRect = new Rect(rect.left, rect.top + 3 * dy, rect.width, dy);
+        Rect lowerRect2 = new Rect(rect.left, rect.top + 5 * dy, rect.width, dy);
 
         IMUIHelper.DrawFilledRect(upperRect, SelectedMenuEntry == 0 ? LightGrey : Grey);
         IMUIHelper.DrawFilledRect(lowerRect, SelectedMenuEntry == 1 ? LightGrey : Grey);
         GUI.Label(upperRect, "Back to Game");
         GUI.Label(lowerRect, "Main Menu");
+        GUI.Label(lowerRect2, "Press Enter to Start");
+        
     }
 }
