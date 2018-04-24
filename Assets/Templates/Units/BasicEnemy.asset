@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c063b5ba93e9bc4a9060a58b0c72ed8, type: 3}
+  m_Name: BasicEnemy
+  m_EditorClassIdentifier: 
+  UnitName: BasicEnemy
+  MaxHealth: 10
+  MaxMana: 10
+  HPRegeneration: 1
+  ManaRegeneration: 0
+  StaminaRegeneration: 0
+  StaminaUsage: 0
+  StaminaMinUsage: 0
+  Strength: 1
+  Intelligence: 80
+  Stamina: 10
+  Agility: 5
+  MaxSpeed: 10
+  Acceleration: 8
+  IsEnemy: 1
+  IsPlayer: 0
+  IsInteractable: 0
+  IsShowName: 0
+  Presentation: {fileID: 1170885817967060, guid: d8781d1ef6e1f4238934063ea979040b,
+    type: 2}
+  DeathPrefab: {fileID: 0}
+  TargetMarker: {fileID: 0}
+  HandRange: 0.32
+  FollowRange: 10
+  BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
+  BaseHair: {fileID: 11400000, guid: 6962daebeca1b4d8b8c3751cd14c13c1, type: 2}
+  DeathDrop: {fileID: 1705684068255876, guid: 376bb9595e31b42a088dbdb7d948c02b, type: 2}
