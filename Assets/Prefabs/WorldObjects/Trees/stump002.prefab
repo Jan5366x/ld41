@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114201761848616824}
   - component: {fileID: 70262788877748230}
   m_Layer: 0
-  m_Name: stomp002
+  m_Name: stump002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
