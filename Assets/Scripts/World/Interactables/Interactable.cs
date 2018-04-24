@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour {
-	public abstract void interact(UnitLogic player);
+public abstract class Interactable : MonoBehaviour
+{
+    public abstract void interact(UnitLogic player);
 
-	public virtual bool CanInteract(UnitLogic obj)
-	{
-		return (transform.position - obj.transform.position).sqrMagnitude < 1;
-	}
+    public virtual bool CanInteract(UnitLogic obj)
+    {
+        float dx = transform.position.x - obj.transform.position.x;
+        float dy = transform.position.y - obj.transform.position.y;
+        float d = Mathf.Sqrt(dx * dx + dy * dy);
+        return d < obj.Template.HandRange;
+    }
 }

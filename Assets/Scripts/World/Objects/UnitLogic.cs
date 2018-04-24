@@ -283,10 +283,12 @@ public class UnitLogic : MonoBehaviour
         {
             var collider = hit.gameObject;
             var interactable = collider.GetComponentInChildren<Interactable>();
-            float dist = (collider.transform.position - transform.position).sqrMagnitude;
-            if (dist < minDist && interactable != null)
+            float dx = transform.position.x - collider.transform.position.x;
+            float dy = transform.position.y - collider.transform.position.y;
+            float d = Mathf.Sqrt(dx * dx + dy * dy);
+            if (d < minDist && interactable != null)
             {
-                minDist = dist;
+                minDist = d;
                 minIdx = idx;
                 bestInteractable = interactable;
             }
