@@ -8,15 +8,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1884237758781818}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1884237758781818
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4454391933854030}
   - component: {fileID: 114121495287988922}
@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 50646250875465974}
   - component: {fileID: 70904155848965818}
   - component: {fileID: 70312844853092708}
+  - component: {fileID: 114956217582925178}
   m_Layer: 0
   m_Name: FancyNPC
   m_TagString: Untagged
@@ -36,7 +37,7 @@ GameObject:
 --- !u!4 &4454391933854030
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -50,7 +51,7 @@ Transform:
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_BodyType: 0
@@ -69,7 +70,7 @@ Rigidbody2D:
 --- !u!70 &70312844853092708
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_Enabled: 1
@@ -84,7 +85,7 @@ CapsuleCollider2D:
 --- !u!70 &70904155848965818
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_Enabled: 1
@@ -99,7 +100,7 @@ CapsuleCollider2D:
 --- !u!114 &114121495287988922
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_Enabled: 1
@@ -136,7 +137,7 @@ MonoBehaviour:
 --- !u!114 &114148723731968688
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_Enabled: 1
@@ -152,7 +153,7 @@ MonoBehaviour:
 --- !u!114 &114854637296372116
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_Enabled: 0
@@ -164,7 +165,7 @@ MonoBehaviour:
 --- !u!114 &114916577572795344
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1884237758781818}
   m_Enabled: 0
@@ -173,3 +174,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseScreen: {fileID: 0}
+--- !u!114 &114956217582925178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1884237758781818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f1891d72f1f4e81a3bd9fbb1d0dd2b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstInteraction: Hope you loke my new fancy dress.
+  laterInteraction: Hi there again.
+  interactionCount: 0

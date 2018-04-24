@@ -8,15 +8,15 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1316886166209418}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1316886166209418
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4370801968351486}
   - component: {fileID: 114953411028363762}
@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 50653536980871886}
   - component: {fileID: 70036933827747062}
   - component: {fileID: 70881617306398736}
+  - component: {fileID: 114574818142664880}
   m_Layer: 0
   m_Name: BoringNPC
   m_TagString: Untagged
@@ -36,7 +37,7 @@ GameObject:
 --- !u!4 &4370801968351486
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -50,7 +51,7 @@ Transform:
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_BodyType: 0
@@ -69,7 +70,7 @@ Rigidbody2D:
 --- !u!70 &70036933827747062
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_Enabled: 1
@@ -84,7 +85,7 @@ CapsuleCollider2D:
 --- !u!70 &70881617306398736
 CapsuleCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_Enabled: 1
@@ -99,7 +100,7 @@ CapsuleCollider2D:
 --- !u!114 &114139738972446800
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_Enabled: 0
@@ -111,7 +112,7 @@ MonoBehaviour:
 --- !u!114 &114167374832590598
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_Enabled: 1
@@ -123,7 +124,7 @@ MonoBehaviour:
 --- !u!114 &114172975452091642
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_Enabled: 1
@@ -136,10 +137,24 @@ MonoBehaviour:
   charWidth: 0.1
   offsetX: 0.3
   offsetY: 0.42
+--- !u!114 &114574818142664880
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1316886166209418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f1891d72f1f4e81a3bd9fbb1d0dd2b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstInteraction: Hi
+  laterInteraction: Welcome Again
+  interactionCount: 0
 --- !u!114 &114953411028363762
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1316886166209418}
   m_Enabled: 1
