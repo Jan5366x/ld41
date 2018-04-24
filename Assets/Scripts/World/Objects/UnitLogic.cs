@@ -88,6 +88,15 @@ public class UnitLogic : MonoBehaviour
             return;
         }
 
+        if (IsDead())
+        {
+            if (Template.IsEnemy)
+            {
+                Destroy(gameObject);
+            }
+
+            return;
+        }
         CoolDown -= Time.deltaTime;
 
         HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);
@@ -103,7 +112,7 @@ public class UnitLogic : MonoBehaviour
             StaminaEmpty = false;
         }
 
-        if (Inventory.PresentationChanged)
+        if (Inventory != null && Inventory.PresentationChanged)
         {
             UpdatePresentation();
             Inventory.PresentationChanged = false;
@@ -185,6 +194,8 @@ public class UnitLogic : MonoBehaviour
     public float GetArmorResistence()
     {
         float armorResistence = 1;
+        if (Inventory == null)
+            return armorResistence;
         for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
         {
             var item = Inventory.GetItem(i);
@@ -238,8 +249,8 @@ public class UnitLogic : MonoBehaviour
             var usage = Template.StaminaUsage / Template.Strength * Time.deltaTime;
             if (!StaminaEmpty)
             {
-                dx *= (1 + Random.value * 0.2f);
-                dy *= (1 + Random.value * 0.2f);
+                dx *= 1.5f;
+                dy *= 1.5f;
                 Stamina -= usage;
             }
         }
@@ -300,7 +311,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
         Attack(item);
     }
 
@@ -309,7 +320,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
         Attack(item);
     }
 
@@ -318,7 +329,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
         Attack(unit, item);
     }
 
@@ -327,7 +338,7 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
         Attack(unit, item);
     }
 
@@ -386,11 +397,11 @@ public class UnitLogic : MonoBehaviour
 
     private void HitMeele(Weapon weapon, UnitLogic target)
     {
-        if (target)
+        if (target && target != this)
         {
-            float damage = weapon != null ? weapon.Damage : 1;
-            EffectLogic effect = weapon != null ? weapon.Effect : null;
-            float effectDuration = weapon != null ? weapon.EffectDuration : 0;
+            float damage = weapon != null ? weapon.Damage : Template.Strength;
+            EffectLogic effect = weapon != null ? weapon.Effect : null;//target.gameObject.AddComponent<PoisonEffectLogic>();
+            float effectDuration = weapon != null ? weapon.EffectDuration : 2;
             target.ReceiveDamage(damage);
             target.ReceiveEffect(effect, effectDuration);
         }
@@ -494,11 +505,11 @@ public class UnitLogic : MonoBehaviour
 
     public void Die()
     {
-        Presentation = Instantiate(Template.DeathPrefab, transform);
+        Presentation = Instantiate(Template.DeathPrefab);
         Debug.LogError("I Should be dead by now");
         if (Template.DeathDrop)
         {
-            Instantiate(Template.DeathDrop, transform);
+            Instantiate(Template.DeathDrop);
         }
     }
 
@@ -547,7 +558,7 @@ public class UnitLogic : MonoBehaviour
 
     public float GetWeaponRangeLeft()
     {
-        var item = Inventory.GetObject(Inventory.HAND_LEFT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
         var weapon = item != null ? item.GetComponent<Weapon>() : null;
         var range = weapon != null ? weapon.Range : Template.HandRange;
         return range;
@@ -555,7 +566,7 @@ public class UnitLogic : MonoBehaviour
 
     public float GetWeaponRangeRight()
     {
-        var item = Inventory.GetObject(Inventory.HAND_RIGHT_SLOT);
+        var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
         var weapon = item != null ? item.GetComponent<Weapon>() : null;
         var range = weapon != null ? weapon.Range : Template.HandRange;
         return range;

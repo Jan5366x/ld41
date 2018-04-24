@@ -9,7 +9,13 @@ public abstract class EffectLogic : MonoBehaviour
 
     public void showPrefab(string name, float duration)
     {
-        var obj = Instantiate(Resources.Load(name), transform) as GameObject;
+        var res = Resources.Load(name);
+        if (res == null)
+        {
+            return;
+        }
+
+        var obj = Instantiate(res, transform) as GameObject;
         var autoDestruct = obj.GetComponentInChildren<AutoDestruct>();
         if (autoDestruct)
         {

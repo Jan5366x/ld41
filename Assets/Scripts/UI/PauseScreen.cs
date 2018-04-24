@@ -25,7 +25,7 @@ public class PauseScreen : MonoBehaviour
     {
         if (MoveDelayRemaining < 0)
         {
-            if (Input.GetButton("Cancel"))
+            if (Input.GetButtonDown("Cancel"))
             {
                 IsShow = !IsShow;
                 MoveDelayRemaining = MoveDelay;
@@ -33,7 +33,7 @@ public class PauseScreen : MonoBehaviour
 
             if (IsShow)
             {
-                if (Input.GetButton("Submit"))
+                if (Input.GetButtonDown("Submit"))
                 {
                     switch (SelectedMenuEntry)
                     {
