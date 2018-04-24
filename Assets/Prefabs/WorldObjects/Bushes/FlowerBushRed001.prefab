@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212281514593120784}
   - component: {fileID: 114356900376420728}
   m_Layer: 0
-  m_Name: FlowerBushRed
+  m_Name: FlowerBushRed001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
