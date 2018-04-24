@@ -35,7 +35,8 @@ MonoBehaviour:
     type: 2}
   TargetMarker: {fileID: 1876147113329590, guid: f63e0a823537f463c84b01965ff98807,
     type: 2}
-  HandRange: 1
+  HandRange: 10
   FollowRange: 3
   BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
   BaseHair: {fileID: 11400000, guid: ee76d568886f14956815e716b53bcc06, type: 2}
+  DeathDrop: {fileID: 0}

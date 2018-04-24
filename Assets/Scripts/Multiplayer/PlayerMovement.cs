@@ -47,9 +47,9 @@ public class PlayerMovement : MonoBehaviour
                 else if (attackA)
                 {
                     logic.AttackLeft();
-                    logic.ShowMessage(
+                    /*logic.ShowMessage(
                         "Hallo ich bin ein Text\r\nUnd ich kann auch über mehrere Zeilen gehen\r\n\t Leider kann ich keine Bilder, aber das ist okay.",
-                        10);
+                        10);*/
                 }
                 else if (attackB)
                 {
