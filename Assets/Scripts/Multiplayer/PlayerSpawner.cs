@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Events;
 using UnityEngine;
 
 public class PlayerSpawner : MonoBehaviour
