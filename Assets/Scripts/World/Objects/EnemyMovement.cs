@@ -103,8 +103,8 @@ public class EnemyMovement : MonoBehaviour
             }
             else
             {
-                var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y),
-                    Self.Template.Intelligence, new Vector2(0, 0));
+                var hits = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y),
+                    Self.Template.Intelligence);
 
                 if (Target != null)
                 {
@@ -128,11 +128,11 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void SetNewTarget(RaycastHit2D[] hits, float doubleminded)
+    private void SetNewTarget(Collider2D[] hits, float doubleminded)
     {
         foreach (var hit in hits)
         {
-            var player = hit.collider.GetComponentInChildren<PlayerMovement>();
+            var player = hit.GetComponentInChildren<PlayerMovement>();
             if (player == null)
             {
                 continue;
@@ -143,20 +143,20 @@ public class EnemyMovement : MonoBehaviour
             if (distance < Self.Template.FollowRange && distanceSpawn < Self.Template.FollowRange &&
                 Random.value < Self.Template.Intelligence / doubleminded)
             {
-                Target = hit.collider.GetComponentInChildren<UnitLogic>();
+                Target = hit.GetComponentInChildren<UnitLogic>();
                 return;
             }
         }
     }
 
-    private bool AttackPlayerInRange(RaycastHit2D[] players)
+    private bool AttackPlayerInRange(Collider2D[] players)
     {
         bool didAttack = false;
         //Attack a random player in range
         foreach (var hit in players)
         {
-            var player = hit.collider.GetComponentInChildren<PlayerMovement>();
-            var playerUnit = hit.collider.GetComponentInChildren<UnitLogic>();
+            var player = hit.GetComponentInChildren<PlayerMovement>();
+            var playerUnit = hit.GetComponentInChildren<UnitLogic>();
             if (player == null || playerUnit == null)
             {
                 continue;

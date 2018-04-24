@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114005991180303852}
   - component: {fileID: 114506310991544908}
   - component: {fileID: 61287158223970074}
+  - component: {fileID: 114483423170241018}
   m_Layer: 0
   m_Name: FireWeapon
   m_TagString: Untagged
@@ -95,14 +96,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 10
-  Range: 5
+  Range: 10
   CoolDown: 10
   Effect: {fileID: 114577184038822088}
   EffectDuration: 5
   Multi: 0
-  Magic: 1
-  Projectile: {fileID: 1756854637042788, guid: 32d62e5ed0e9c42daa09f7e81d1225e7, type: 2}
+  Magic: 0
+  Projectile: {fileID: 1395596599996192}
   ProjectileSpeed: 1
+--- !u!114 &114483423170241018
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1395596599996192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d3191497c249fb813ed8f6b9810eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  Weapon: {fileID: 114187999199084374}
 --- !u!114 &114506310991544908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7edb0dacf19e4c0aa77543a049a119e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamagePerTick: 3
+  DamagePerTick: 5000
   TickRate: 0.2
 --- !u!114 &114958709406714386
 MonoBehaviour:
