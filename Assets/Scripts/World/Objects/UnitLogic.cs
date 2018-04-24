@@ -97,6 +97,7 @@ public class UnitLogic : MonoBehaviour
 
             return;
         }
+
         CoolDown -= Time.deltaTime;
 
         HP = Mathf.Min(HP + Template.HPRegeneration * Time.deltaTime, Template.MaxHealth);
@@ -270,8 +271,8 @@ public class UnitLogic : MonoBehaviour
             return;
 
 
-        var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), Template.HandRange,
-            new Vector2(0, 0));
+        var hits = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y),
+            Template.HandRange);
 
         int minIdx = -1;
         float minDist = 99999;
@@ -280,7 +281,7 @@ public class UnitLogic : MonoBehaviour
 
         foreach (var hit in hits)
         {
-            var collider = hit.collider;
+            var collider = hit.gameObject;
             var interactable = collider.GetComponentInChildren<Interactable>();
             float dist = (collider.transform.position - transform.position).sqrMagnitude;
             if (dist < minDist && interactable != null)
@@ -400,7 +401,8 @@ public class UnitLogic : MonoBehaviour
         if (target && target != this)
         {
             float damage = weapon != null ? weapon.Damage : Template.Strength;
-            EffectLogic effect = weapon != null ? weapon.Effect : null;//target.gameObject.AddComponent<PoisonEffectLogic>();
+            EffectLogic
+                effect = weapon != null ? weapon.Effect : null; //target.gameObject.AddComponent<PoisonEffectLogic>();
             float effectDuration = weapon != null ? weapon.EffectDuration : 2;
             target.ReceiveDamage(damage);
             target.ReceiveEffect(effect, effectDuration);
@@ -429,14 +431,13 @@ public class UnitLogic : MonoBehaviour
         {
             var range = weapon != null ? weapon.Range : Template.HandRange;
             var multipleHits = weapon != null ? weapon.Multi : false;
-            var hits = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), range,
-                new Vector2(0, 0));
+            var hits = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), range);
 
             float minDist = 99999;
             UnitLogic nearestUnit = null;
             foreach (var hit in hits)
             {
-                var collider = hit.collider;
+                var collider = hit.gameObject;
                 var hitUnit = collider.GetComponentInChildren<UnitLogic>();
                 float dist = (collider.transform.position - transform.position).sqrMagnitude;
 
@@ -491,7 +492,7 @@ public class UnitLogic : MonoBehaviour
             resistence = 1;
         }
 
-        damage /= resistence;
+        damage -= resistence;
         HP -= damage;
         if (IsDead())
         {
@@ -519,14 +520,14 @@ public class UnitLogic : MonoBehaviour
             return false;
 
         var range = GetMaxWeaponRange();
-        var unitsInRange = Physics2D.CircleCastAll(new Vector2(transform.position.x, transform.position.y), range * 10,
-            new Vector2(0, 0));
+        var unitsInRange =
+            Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), range * 10);
         Array targets = new Array();
 
 
         for (int i = 0; i < unitsInRange.Length; i++)
         {
-            var collider = unitsInRange[i].collider;
+            var collider = unitsInRange[i].gameObject;
             var hitUnit = collider.GetComponentInChildren<UnitLogic>();
             if (!hitUnit)
             {
