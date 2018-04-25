@@ -16,6 +16,8 @@ public abstract class EffectLogic : MonoBehaviour
         }
 
         var obj = Instantiate(res, transform) as GameObject;
+        if (obj == null) 
+            return;
         var autoDestruct = obj.GetComponentInChildren<AutoDestruct>();
         if (autoDestruct)
         {

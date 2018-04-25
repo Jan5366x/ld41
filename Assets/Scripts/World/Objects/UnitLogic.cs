@@ -169,6 +169,7 @@ public class UnitLogic : MonoBehaviour
         {
             print("dummy");
         }
+
         UpdateAnimator(baseAnimator, Template.BaseBody);
         UpdateAnimator(hairAnimator, Template.BaseHair);
         UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
@@ -524,6 +525,7 @@ public class UnitLogic : MonoBehaviour
             if (!multipleHits)
             {
                 hitUnits.Add(nearestUnit);
+                SetTarget(new[] {nearestUnit.gameObject});
             }
         }
 
@@ -573,7 +575,7 @@ public class UnitLogic : MonoBehaviour
 
         var range = GetMaxWeaponRange();
         var unitsInRange =
-            Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), range * 10);
+            Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), range * 1.5f);
         Array targets = new Array();
 
 
@@ -586,7 +588,7 @@ public class UnitLogic : MonoBehaviour
                 continue;
             }
 
-            if (!hitUnit.Template.IsEnemy)
+            if (Template.IsPlayer ^ hitUnit.Template.IsEnemy)
             {
                 continue;
             }
@@ -601,8 +603,7 @@ public class UnitLogic : MonoBehaviour
 
         if (targets.length > 0)
         {
-            int idx = (int) (Random.value * targets.length);
-            SetTarget((GameObject) targets[idx]);
+            SetTarget(targets.Cast<GameObject>().ToArray());
             return true;
         }
 
@@ -630,20 +631,45 @@ public class UnitLogic : MonoBehaviour
         return Mathf.Max(GetWeaponRangeLeft(), GetWeaponRangeRight());
     }
 
-    public void SetTarget(GameObject target)
+    public void SetTarget(GameObject[] target)
     {
-        Target = target;
-        if (TargetMarker)
+        if (target != null)
         {
             if (Target)
             {
-                TargetMarker.transform.SetParent(Target.transform, false);
-                TargetMarker.SetActive(true);
+                Target = target[(int) (Random.value * target.Length)];
             }
             else
             {
-                TargetMarker.SetActive(false);
+                GameObject best = null;
+                float bestDist = 99999999;
+                foreach (var t in target)
+                {
+                    if (!t)
+                        continue;
+                    var dist = Distance2D.getDistance(gameObject, t);
+                    if (dist < bestDist)
+                    {
+                        best = t;
+                        bestDist = dist;
+                    }
+                }
+
+                Target = best;
             }
+        }
+
+
+        if (!TargetMarker)
+            return;
+        if (Target)
+        {
+            TargetMarker.transform.SetParent(Target.transform, false);
+            TargetMarker.SetActive(true);
+        }
+        else
+        {
+            TargetMarker.SetActive(false);
         }
     }
 
