@@ -12,4 +12,9 @@ public class GiveMoneyUseSlot : UseSlot
             player.Money += money;
         }
     }
+
+    private void Update()
+    {
+        
+    }
 }

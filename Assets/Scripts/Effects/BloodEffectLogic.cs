@@ -13,6 +13,6 @@ public class BloodEffectLogic : EffectLogic
 
     public override void apply(UnitLogic player, float duration)
     {
-        showPrefab("Effects\\BloodEffect", duration);
+        player.ShowPrefab("Effects\\BloodEffect", duration);
     }
 }

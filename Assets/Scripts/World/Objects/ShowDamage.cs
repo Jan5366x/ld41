@@ -30,4 +30,8 @@ public class ShowDamage : MonoBehaviour
             }
         }
     }
+
+    private void Update()
+    {
+    }
 }

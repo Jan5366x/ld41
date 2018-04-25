@@ -12,4 +12,9 @@ public class GiveHealthUseSlot : UseSlot
             player.HP = Mathf.Max(player.HP + health, player.Template.MaxHealth);
         }
     }
+
+    private void Update()
+    {
+        
+    }
 }

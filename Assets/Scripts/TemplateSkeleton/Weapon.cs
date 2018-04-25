@@ -15,4 +15,9 @@ public class Weapon : MonoBehaviour
     public GameObject Projectile;
     public float ProjectileSpeed = 1;
     public float ManaUsage = 0;
+
+    private void Start()
+    {
+        
+    }
 }

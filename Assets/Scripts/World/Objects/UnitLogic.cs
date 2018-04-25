@@ -21,7 +21,7 @@ public class UnitLogic : MonoBehaviour
     public GameObject Presentation;
     public GameObject Target;
     public GameObject TargetMarker;
-    public Inventory Inventory;
+    public Inventory Inventory = new Inventory();
 
     public const float AnimationFrameTime = 0.3f;
     public float RemainingAnimationTime;
@@ -67,12 +67,6 @@ public class UnitLogic : MonoBehaviour
         {
             TargetMarker = Instantiate(Template.TargetMarker, transform);
         }
-
-        if (Template.IsPlayer)
-        {
-            Inventory = new Inventory();
-        }
-
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
         MaxSpeed = Template.MaxSpeed;
@@ -165,11 +159,6 @@ public class UnitLogic : MonoBehaviour
 
     private void UpdatePresentation()
     {
-        if (Template.IsPlayer)
-        {
-            print("dummy");
-        }
-
         UpdateAnimator(baseAnimator, Template.BaseBody);
         UpdateAnimator(hairAnimator, Template.BaseHair);
         UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
@@ -524,8 +513,11 @@ public class UnitLogic : MonoBehaviour
 
             if (!multipleHits)
             {
-                hitUnits.Add(nearestUnit);
-                SetTarget(new[] {nearestUnit.gameObject});
+                if (nearestUnit)
+                {
+                    hitUnits.Add(nearestUnit);
+                    SetTarget(new[] {nearestUnit.gameObject});
+                }
             }
         }
 
@@ -560,8 +552,13 @@ public class UnitLogic : MonoBehaviour
 
     public void Die()
     {
-        Presentation = Instantiate(Template.DeathPrefab);
         Debug.LogError("I Should be dead by now");
+
+        if (Template.DeathPrefab)
+        {
+            Presentation = Instantiate(Template.DeathPrefab);
+        }
+
         if (Template.DeathDrop)
         {
             Instantiate(Template.DeathDrop);
@@ -771,5 +768,52 @@ public class UnitLogic : MonoBehaviour
         buyInventory.Hide();
         sellInventory.Hide();
         viewHUD.ShowText("", -1);
+    }
+    
+    public void ShowPrefab(string name, float duration)
+    {
+        var res = Resources.Load(name);
+        if (res == null)
+        {
+            return;
+        }
+
+        var obj = Instantiate(res, transform) as GameObject;
+        if (obj == null) 
+            return;
+        var autoDestruct = obj.GetComponentInChildren<AutoDestruct>();
+        if (autoDestruct)
+        {
+            autoDestruct.Fire(obj, duration);
+        }
+    }
+
+    public void ProxyCoroutine(string name, object[] param)
+    {
+        StartCoroutine(name, param);
+    }
+    
+    private IEnumerator DealDamageOverTime(object[] param)
+    {
+        float duration = (float) param[0];
+        float tickRate = (float) param[1];
+        float damagePerTick = (float) param[2];
+        
+        int numTicks = (int) (duration / tickRate);
+        for (int i = 0; i < numTicks; i++)
+        {
+            ReceiveDamage(damagePerTick);
+            yield return new WaitForSeconds(tickRate);
+        }
+    }
+    private IEnumerator Freeze(object[] param)
+    {
+        float duration = (float) param[0];
+        var oldCooldown = CoolDown;
+        CoolDown = 999999;
+        MaxSpeed = 0;
+        yield return new WaitForSeconds(duration);
+        CoolDown = oldCooldown - duration;
+        MaxSpeed = Template.MaxSpeed;
     }
 }

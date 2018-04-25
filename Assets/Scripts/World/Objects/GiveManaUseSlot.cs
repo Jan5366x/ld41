@@ -11,4 +11,9 @@ public class GiveManaUseSlot : UseSlot
             player.Mana = Mathf.Max(player.Mana + mana, player.Template.MaxMana);
         }
     }
+
+    private void Update()
+    {
+        
+    }
 }

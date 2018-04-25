@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class AutoDestruct : MonoBehaviour
 {
-    public void Fire(float duration)
+    private GameObject obj;
+    public void Fire(GameObject obj, float duration)
     {
+        this.obj = obj;
         StartCoroutine("Nuke", duration);
     }
 
     IEnumerator Nuke(float duration)
     {
         yield return new WaitForSeconds(duration);
-        Destroy(gameObject);
+        Destroy(obj);
+    }
+
+    private void Update()
+    {
+        
     }
 }

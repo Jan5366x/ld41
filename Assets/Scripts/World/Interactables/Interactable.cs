@@ -13,4 +13,8 @@ public abstract class Interactable : MonoBehaviour
         float d = Mathf.Sqrt(dx * dx + dy * dy);
         return d < obj.Template.HandRange;
     }
+
+    private void Start()
+    {
+    }
 }
