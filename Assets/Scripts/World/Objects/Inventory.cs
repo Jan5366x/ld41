@@ -42,25 +42,26 @@ public class Inventory
         }
 
         bool wasEquipped = false;
-        for (int _slot = 0; _slot < OFFSET_SLOT; _slot++)
+        var equippable = obj.Obj.GetComponentInChildren<EquipSlot>();
+        if (equippable)
         {
-            var equip = obj.Obj.GetComponentInChildren<EquipSlot>();
-            if (equip == null || !equip.CanEquip(_slot))
+            for (int _slot = 0; _slot < OFFSET_SLOT; _slot++)
             {
-                continue;
+                if (equippable.CanEquip(_slot))
+                {
+                    Swap(slot, _slot);
+                    wasEquipped = true;
+                    break;
+                }
             }
-
-            Swap(slot, _slot);
-            wasEquipped = true;
-            break;
         }
 
         if (!wasEquipped)
         {
-            var use = obj.Obj.GetComponentInChildren<UseSlot>();
-            if (use != null)
+            var useable = obj.Obj.GetComponentInChildren<UseSlot>();
+            if (useable != null)
             {
-                use.OnUse(player);
+                useable.OnUse(player);
                 obj.Quantity -= 1;
                 if (obj.Quantity == 0)
                 {
@@ -201,12 +202,13 @@ public class Inventory
         }
 
         var obj = Items[slot].Obj;
-        if (obj == null)
+        if (!obj)
             return null;
 
         var script = obj.GetComponent<ItemLogic>();
-        if (script == null)
+        if (!script)
             return null;
+        
         return script.Template;
     }
 

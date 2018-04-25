@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using Array = UnityScript.Lang.Array;
 using Random = UnityEngine.Random;
@@ -32,7 +33,7 @@ public class UnitLogic : MonoBehaviour
     public SpriteAnimator bootsAnimator;
     public SpriteAnimator handAAnimator;
     public SpriteAnimator handBAnimator;
-    
+
 
     public ViewHUD viewHUD;
     public ViewInventory viewInventory;
@@ -57,15 +58,17 @@ public class UnitLogic : MonoBehaviour
         Left = 2,
         Right = 3
     }
-  
+
     void Start()
     {
-        
-        
         // instantiate the presentation object
         Presentation = Instantiate(Template.Presentation, transform);
-        TargetMarker = Instantiate(Template.TargetMarker, transform);
-        if (Inventory == null)
+        if (Template.TargetMarker)
+        {
+            TargetMarker = Instantiate(Template.TargetMarker, transform);
+        }
+
+        if (Template.IsPlayer)
         {
             Inventory = new Inventory();
         }
@@ -79,24 +82,27 @@ public class UnitLogic : MonoBehaviour
         try
         {
             pauseScreen = GameObject.FindGameObjectWithTag("Finish").GetComponent<PauseScreen>();
-            baseAnimator = Presentation.GetComponent<SpriteAnimator>();
-            hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
-            headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
-            bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
-            legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
-            bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
-            handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
-            handBAnimator = Presentation.transform.Find("HandB").GetComponent<SpriteAnimator>();
             SetupAnimationHelper();
             UpdatePresentation();
         }
         catch (NullReferenceException ex)
         {
+            print("FUZUUUUUUUUUUUUU");
         }
     }
+
     private void SetupAnimationHelper()
     {
-        animationHelper= new List<SpriteAnimator>
+        baseAnimator = Presentation.GetComponent<SpriteAnimator>();
+        hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
+        headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
+        bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
+        legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
+        bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
+        handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
+        handBAnimator = Presentation.transform.Find("HandB").GetComponent<SpriteAnimator>();
+
+        animationHelper = new List<SpriteAnimator>
         {
             baseAnimator,
             hairAnimator,
@@ -159,6 +165,10 @@ public class UnitLogic : MonoBehaviour
 
     private void UpdatePresentation()
     {
+        if (Template.IsPlayer)
+        {
+            print("dummy");
+        }
         UpdateAnimator(baseAnimator, Template.BaseBody);
         UpdateAnimator(hairAnimator, Template.BaseHair);
         UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
@@ -188,7 +198,7 @@ public class UnitLogic : MonoBehaviour
 
         foreach (var animator in animationHelper)
         {
-            animator.GetComponent<SpriteAnimator>().SetDirection(direction);
+            animator.SetDirection(direction);
         }
     }
 
@@ -197,25 +207,25 @@ public class UnitLogic : MonoBehaviour
         if (animationHelper == null)
             return;
 
-        foreach (SpriteAnimator animator in animationHelper) 
+        foreach (SpriteAnimator animator in animationHelper)
         {
             if (!animator)
                 continue;
-  
+
             if (standingStill)
             {
-                animator.GetComponent<SpriteAnimator>().Idle();
+                animator.Idle();
             }
             else
             {
-                animator.GetComponent<SpriteAnimator>().NextSprite();   
+                animator.NextSprite();
             }
         }
     }
 
     public float GetArmorResistence()
     {
-        float armorResistence = 1;
+        float armorResistence = 0;
         if (Inventory == null)
             return armorResistence;
         for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
@@ -241,11 +251,11 @@ public class UnitLogic : MonoBehaviour
         {
             if (dx < 0)
             {
-                UpdateAnimationDirection( MoveDirection.Left);
+                UpdateAnimationDirection(MoveDirection.Left);
             }
             else
             {
-                UpdateAnimationDirection( MoveDirection.Right);
+                UpdateAnimationDirection(MoveDirection.Right);
             }
 
             dy = 0;
@@ -281,10 +291,9 @@ public class UnitLogic : MonoBehaviour
         body.AddForce(forceVec);
 
         standingStill = false;
-
     }
 
- 
+
     public void StopMovement()
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
@@ -297,9 +306,8 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-
         var hits = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y),
-            Template.HandRange);
+            10 * Template.HandRange);
 
         int minIdx = -1;
         float minDist = 99999;
@@ -313,8 +321,7 @@ public class UnitLogic : MonoBehaviour
             float dx = transform.position.x - collider.transform.position.x;
             float dy = transform.position.y - collider.transform.position.y;
             float d = Mathf.Sqrt(dx * dx + dy * dy);
-            
-            Debug.DrawLine(gameObject.transform.position, hit.transform.position, Color.gray);
+
             if (d < minDist && interactable != null)
             {
                 minDist = d;
@@ -331,7 +338,6 @@ public class UnitLogic : MonoBehaviour
             if (bestInteractable.CanInteract(this))
             {
                 bestInteractable.interact(this);
-             
             }
         }
         else
@@ -444,13 +450,22 @@ public class UnitLogic : MonoBehaviour
 
     private void FireProjectile(Weapon weapon, UnitLogic target)
     {
-        if (weapon == null)
+        if (weapon == null || target == null)
             return;
 
+        if (Mana < weapon.ManaUsage)
+        {
+            return;
+        }
+
         var projectile = Instantiate(weapon.Projectile, transform);
+        projectile.transform.SetParent(null, true);
         var projectileScript = projectile.GetComponentInChildren<ProjectileLogic>();
-        projectileScript.Target = target.gameObject;
-        projectileScript.Weapon = weapon;
+        if (projectileScript)
+        {
+            projectileScript.Fire(target, weapon);
+            Mana -= weapon.ManaUsage;
+        }
     }
 
     private UnitLogic[] getHitUnits(Weapon weapon)
@@ -458,7 +473,8 @@ public class UnitLogic : MonoBehaviour
         Array hitUnits = new Array();
         if (weapon != null && weapon.Magic && Target != null)
         {
-            hitUnits.Add(Target);
+            var unitLogic = Target.GetComponent<UnitLogic>();
+            hitUnits.Add(unitLogic);
         }
         else
         {
@@ -520,12 +536,12 @@ public class UnitLogic : MonoBehaviour
             return;
 
         var resistence = GetArmorResistence();
-        if (resistence < 1)
+        if (resistence < 0)
         {
-            resistence = 1;
+            resistence = 0;
         }
 
-        damage -= resistence;
+        damage = Mathf.Max(0, damage - resistence);
         HP -= damage;
         if (IsDead())
         {
@@ -533,8 +549,11 @@ public class UnitLogic : MonoBehaviour
         }
 
         GetComponentInChildren<ShowDamage>().Show(damage);
-        var blood = gameObject.AddComponent<BloodEffectLogic>();
-        blood.apply(this, 1);
+        if (!Mathf.Approximately(damage, 0))
+        {
+            var blood = gameObject.AddComponent<BloodEffectLogic>();
+            blood.apply(this, 1);
+        }
     }
 
     public void Die()
@@ -614,14 +633,17 @@ public class UnitLogic : MonoBehaviour
     public void SetTarget(GameObject target)
     {
         Target = target;
-        if (Target != null)
+        if (TargetMarker)
         {
-            TargetMarker.transform.SetParent(Target.transform, false);
-            TargetMarker.SetActive(true);
-        }
-        else
-        {
-            TargetMarker.SetActive(false);
+            if (Target)
+            {
+                TargetMarker.transform.SetParent(Target.transform, false);
+                TargetMarker.SetActive(true);
+            }
+            else
+            {
+                TargetMarker.SetActive(false);
+            }
         }
     }
 
