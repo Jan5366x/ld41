@@ -6,7 +6,7 @@ public class MarkerSpriteLogic : MonoBehaviour
 {
     public float time = 0;
 
-    public const float range = 0.001f;
+    public const float range = 0.01f;
 
     // Use this for initialization
     void Start()
