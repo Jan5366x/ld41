@@ -31,9 +31,9 @@ MonoBehaviour:
   IsShowName: 1
   Presentation: {fileID: 1067876819364298, guid: db783c857c27abe408f2b1c07782fc6c,
     type: 2}
-  DeathPrefab: {fileID: 1595415496569820, guid: a30113be39f66479f9c25b1b13182ddf,
+  DeathPrefab: {fileID: 1743508061544092, guid: 313c04b9c0b17f943866365f50a32e7c,
     type: 2}
-  TargetMarker: {fileID: 1876147113329590, guid: f63e0a823537f463c84b01965ff98807,
+  TargetMarker: {fileID: 1962343515395048, guid: 55e9dbdff513c4ccfaaa5eb255673d18,
     type: 2}
   HandRange: 1
   FollowRange: 3

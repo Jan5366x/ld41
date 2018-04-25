@@ -58,20 +58,6 @@ public class ViewInventory : MonoBehaviour
         return new Rect(cx - w / 2, cy - h / 2, w, h);
     }
 
-    public Inventory MyInventory
-    {
-        get
-        {
-            if (_inventory != null)
-            {
-                return _inventory.Copy();
-            }
-
-            return null;
-        }
-        set { _inventory = value.Copy(); }
-    }
-
     // Use this for initialization
     void Start()
     {
@@ -170,7 +156,7 @@ public class ViewInventory : MonoBehaviour
         {
             if ((offsetTop + heightItem) < (rect.height - offsetBottom))
             {
-                var item = MyInventory.GetItem(idx);
+                var item = _inventory.GetItem(idx);
                 if (item != null)
                 {
                 }
@@ -182,7 +168,7 @@ public class ViewInventory : MonoBehaviour
                 if (_inventory != null)
                 {
                     bool didDrawPreview = false;
-                    var previewItem = MyInventory.GetItem(idx);
+                    var previewItem = _inventory.GetItem(idx);
                     if (previewItem)
                     {
                         var previewSprite = previewItem.PreviewSmall;
@@ -217,7 +203,7 @@ public class ViewInventory : MonoBehaviour
                 if (item)
                 {
                     string text = "" + item.ItemName;
-                    var obj = MyInventory.GetObject(idx);
+                    var obj = _inventory.GetObject(idx);
                     if (obj)
                     {
                         var weapon = obj.GetComponent<Weapon>();
@@ -265,13 +251,13 @@ public class ViewInventory : MonoBehaviour
 
     public void Show(Inventory iv)
     {
-        MyInventory = iv;
+        _inventory = iv;
         show = true;
     }
 
     public Inventory Hide()
     {
         show = false;
-        return MyInventory;
+        return _inventory;
     }
 }

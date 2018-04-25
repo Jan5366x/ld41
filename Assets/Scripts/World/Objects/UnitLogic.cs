@@ -447,6 +447,8 @@ public class UnitLogic : MonoBehaviour
         if (weapon == null || target == null)
             return;
 
+        SetTarget(new[] {target.gameObject});
+        
         if (Mana < weapon.ManaUsage)
         {
             return;
@@ -560,7 +562,10 @@ public class UnitLogic : MonoBehaviour
 
         if (Template.DeathPrefab)
         {
-            Presentation = Instantiate(Template.DeathPrefab);
+            Presentation = Instantiate(Template.DeathPrefab, transform);
+            Presentation.transform.SetParent(null, true);
+            gameObject.SetActive(false);
+            return;
         }
 
         if (Template.DeathDrop)
@@ -660,9 +665,14 @@ public class UnitLogic : MonoBehaviour
             }
         }
 
-
         if (!TargetMarker)
-            return;
+        {
+            if (Template.TargetMarker)
+            {
+                TargetMarker = Instantiate(Template.TargetMarker, transform);
+            }
+        }
+
         if (Target)
         {
             TargetMarker.transform.SetParent(Target.transform, false);

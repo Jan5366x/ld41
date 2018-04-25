@@ -37,4 +37,4 @@ MonoBehaviour:
   FollowRange: 10
   BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
   BaseHair: {fileID: 11400000, guid: 6962daebeca1b4d8b8c3751cd14c13c1, type: 2}
-  DeathDrop: {fileID: 1705684068255876, guid: 376bb9595e31b42a088dbdb7d948c02b, type: 2}
+  DeathDrop: {fileID: 1282524100218932, guid: 4da0fd481829a4530ab44ab3b40ebd1c, type: 2}
