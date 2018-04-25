@@ -75,7 +75,6 @@ public class EnemyMovement : MonoBehaviour
 
         if (Self.Template.IsEnemy && Self.CoolDown < 0)
         {
-            float distance = (SpawnPosition - transform.position).magnitude;
             if (Target)
             {
                 if (Target.IsDead())
@@ -85,12 +84,13 @@ public class EnemyMovement : MonoBehaviour
                 }
             }
 
-            if (distance > Self.Template.FollowRange)
+            float distanceFromHome = Distance2D.getDistance(SpawnPosition, gameObject);
+            if (distanceFromHome > Self.Template.FollowRange)
             {
                 Target = null;
                 GoHome = true;
             }
-            else if (Mathf.Abs(distance) < 1e-6)
+            else if (Mathf.Abs(distanceFromHome) < Self.Template.HandRange)
             {
                 GoHome = false;
                 Self.StopMovement();
@@ -108,15 +108,11 @@ public class EnemyMovement : MonoBehaviour
 
                 if (Target != null)
                 {
-                    bool didAttack = AttackPlayerInRange(hits);
-                    if (!didAttack)
-                    {
-                        SetNewTarget(hits, 1000 * Time.deltaTime);
-                    }
+                    AttackPlayerInRange(hits);
                 }
                 else
                 {
-                    SetNewTarget(hits, 100f);
+                    SetNewTarget(hits);
                 }
 
                 if (Target != null)
@@ -128,7 +124,7 @@ public class EnemyMovement : MonoBehaviour
         }
     }
 
-    private void SetNewTarget(Collider2D[] hits, float doubleminded)
+    private void SetNewTarget(Collider2D[] hits)
     {
         foreach (var hit in hits)
         {
@@ -140,8 +136,7 @@ public class EnemyMovement : MonoBehaviour
 
             float distance = (player.transform.position - transform.position).magnitude;
             float distanceSpawn = (SpawnPosition - transform.position).magnitude;
-            if (distance < Self.Template.FollowRange && distanceSpawn < Self.Template.FollowRange &&
-                Random.value < Self.Template.Intelligence / doubleminded)
+            if (distance < Self.Template.FollowRange && distanceSpawn < Self.Template.FollowRange)
             {
                 Target = hit.GetComponentInChildren<UnitLogic>();
                 return;
@@ -162,7 +157,7 @@ public class EnemyMovement : MonoBehaviour
                 continue;
             }
 
-            float distance = (player.transform.position - transform.position).magnitude;
+            float distance = Distance2D.getDistance(player.gameObject, gameObject);
             if (distance < Self.GetWeaponRangeLeft())
             {
                 Self.AttackLeft(playerUnit);

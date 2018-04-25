@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using Array = UnityScript.Lang.Array;
 using Random = UnityEngine.Random;
@@ -20,7 +21,7 @@ public class UnitLogic : MonoBehaviour
     public GameObject Presentation;
     public GameObject Target;
     public GameObject TargetMarker;
-    public Inventory Inventory;
+    public Inventory Inventory = new Inventory();
 
     public const float AnimationFrameTime = 0.3f;
     public float RemainingAnimationTime;
@@ -32,7 +33,7 @@ public class UnitLogic : MonoBehaviour
     public SpriteAnimator bootsAnimator;
     public SpriteAnimator handAAnimator;
     public SpriteAnimator handBAnimator;
-    
+
 
     public ViewHUD viewHUD;
     public ViewInventory viewInventory;
@@ -57,19 +58,15 @@ public class UnitLogic : MonoBehaviour
         Left = 2,
         Right = 3
     }
-  
+
     void Start()
     {
-        
-        
         // instantiate the presentation object
         Presentation = Instantiate(Template.Presentation, transform);
-        TargetMarker = Instantiate(Template.TargetMarker, transform);
-        if (Inventory == null)
+        if (Template.TargetMarker)
         {
-            Inventory = new Inventory();
+            TargetMarker = Instantiate(Template.TargetMarker, transform);
         }
-
         HP = Template.MaxHealth;
         Mana = Template.MaxMana;
         MaxSpeed = Template.MaxSpeed;
@@ -79,24 +76,27 @@ public class UnitLogic : MonoBehaviour
         try
         {
             pauseScreen = GameObject.FindGameObjectWithTag("Finish").GetComponent<PauseScreen>();
-            baseAnimator = Presentation.GetComponent<SpriteAnimator>();
-            hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
-            headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
-            bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
-            legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
-            bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
-            handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
-            handBAnimator = Presentation.transform.Find("HandB").GetComponent<SpriteAnimator>();
             SetupAnimationHelper();
             UpdatePresentation();
         }
         catch (NullReferenceException ex)
         {
+            print("FUZUUUUUUUUUUUUU");
         }
     }
+
     private void SetupAnimationHelper()
     {
-        animationHelper= new List<SpriteAnimator>
+        baseAnimator = Presentation.GetComponent<SpriteAnimator>();
+        hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
+        headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
+        bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
+        legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
+        bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
+        handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
+        handBAnimator = Presentation.transform.Find("HandB").GetComponent<SpriteAnimator>();
+
+        animationHelper = new List<SpriteAnimator>
         {
             baseAnimator,
             hairAnimator,
@@ -188,7 +188,7 @@ public class UnitLogic : MonoBehaviour
 
         foreach (var animator in animationHelper)
         {
-            animator.GetComponent<SpriteAnimator>().SetDirection(direction);
+            animator.SetDirection(direction);
         }
     }
 
@@ -197,25 +197,25 @@ public class UnitLogic : MonoBehaviour
         if (animationHelper == null)
             return;
 
-        foreach (SpriteAnimator animator in animationHelper) 
+        foreach (SpriteAnimator animator in animationHelper)
         {
             if (!animator)
                 continue;
-  
+
             if (standingStill)
             {
-                animator.GetComponent<SpriteAnimator>().Idle();
+                animator.Idle();
             }
             else
             {
-                animator.GetComponent<SpriteAnimator>().NextSprite();   
+                animator.NextSprite();
             }
         }
     }
 
     public float GetArmorResistence()
     {
-        float armorResistence = 1;
+        float armorResistence = 0;
         if (Inventory == null)
             return armorResistence;
         for (int i = 0; i < Inventory.OFFSET_SLOT; i++)
@@ -241,11 +241,11 @@ public class UnitLogic : MonoBehaviour
         {
             if (dx < 0)
             {
-                UpdateAnimationDirection( MoveDirection.Left);
+                UpdateAnimationDirection(MoveDirection.Left);
             }
             else
             {
-                UpdateAnimationDirection( MoveDirection.Right);
+                UpdateAnimationDirection(MoveDirection.Right);
             }
 
             dy = 0;
@@ -281,10 +281,9 @@ public class UnitLogic : MonoBehaviour
         body.AddForce(forceVec);
 
         standingStill = false;
-
     }
 
- 
+
     public void StopMovement()
     {
         Rigidbody2D body = GetComponent<Rigidbody2D>();
@@ -297,9 +296,8 @@ public class UnitLogic : MonoBehaviour
         if (IsDead())
             return;
 
-
         var hits = Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y),
-            Template.HandRange);
+            10 * Template.HandRange);
 
         int minIdx = -1;
         float minDist = 99999;
@@ -313,8 +311,7 @@ public class UnitLogic : MonoBehaviour
             float dx = transform.position.x - collider.transform.position.x;
             float dy = transform.position.y - collider.transform.position.y;
             float d = Mathf.Sqrt(dx * dx + dy * dy);
-            
-            Debug.DrawLine(gameObject.transform.position, hit.transform.position, Color.gray);
+
             if (d < minDist && interactable != null)
             {
                 minDist = d;
@@ -331,7 +328,6 @@ public class UnitLogic : MonoBehaviour
             if (bestInteractable.CanInteract(this))
             {
                 bestInteractable.interact(this);
-             
             }
         }
         else
@@ -444,13 +440,22 @@ public class UnitLogic : MonoBehaviour
 
     private void FireProjectile(Weapon weapon, UnitLogic target)
     {
-        if (weapon == null)
+        if (weapon == null || target == null)
             return;
 
+        if (Mana < weapon.ManaUsage)
+        {
+            return;
+        }
+
         var projectile = Instantiate(weapon.Projectile, transform);
+        projectile.transform.SetParent(null, true);
         var projectileScript = projectile.GetComponentInChildren<ProjectileLogic>();
-        projectileScript.Target = target.gameObject;
-        projectileScript.Weapon = weapon;
+        if (projectileScript)
+        {
+            projectileScript.Fire(target, weapon);
+            Mana -= weapon.ManaUsage;
+        }
     }
 
     private UnitLogic[] getHitUnits(Weapon weapon)
@@ -458,7 +463,8 @@ public class UnitLogic : MonoBehaviour
         Array hitUnits = new Array();
         if (weapon != null && weapon.Magic && Target != null)
         {
-            hitUnits.Add(Target);
+            var unitLogic = Target.GetComponent<UnitLogic>();
+            hitUnits.Add(unitLogic);
         }
         else
         {
@@ -507,7 +513,11 @@ public class UnitLogic : MonoBehaviour
 
             if (!multipleHits)
             {
-                hitUnits.Add(nearestUnit);
+                if (nearestUnit)
+                {
+                    hitUnits.Add(nearestUnit);
+                    SetTarget(new[] {nearestUnit.gameObject});
+                }
             }
         }
 
@@ -520,12 +530,12 @@ public class UnitLogic : MonoBehaviour
             return;
 
         var resistence = GetArmorResistence();
-        if (resistence < 1)
+        if (resistence < 0)
         {
-            resistence = 1;
+            resistence = 0;
         }
 
-        damage -= resistence;
+        damage = Mathf.Max(0, damage - resistence);
         HP -= damage;
         if (IsDead())
         {
@@ -533,14 +543,22 @@ public class UnitLogic : MonoBehaviour
         }
 
         GetComponentInChildren<ShowDamage>().Show(damage);
-        var blood = gameObject.AddComponent<BloodEffectLogic>();
-        blood.apply(this, 1);
+        if (!Mathf.Approximately(damage, 0))
+        {
+            var blood = gameObject.AddComponent<BloodEffectLogic>();
+            blood.apply(this, 1);
+        }
     }
 
     public void Die()
     {
-        Presentation = Instantiate(Template.DeathPrefab);
         Debug.LogError("I Should be dead by now");
+
+        if (Template.DeathPrefab)
+        {
+            Presentation = Instantiate(Template.DeathPrefab);
+        }
+
         if (Template.DeathDrop)
         {
             Instantiate(Template.DeathDrop);
@@ -554,7 +572,7 @@ public class UnitLogic : MonoBehaviour
 
         var range = GetMaxWeaponRange();
         var unitsInRange =
-            Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), range * 10);
+            Physics2D.OverlapCircleAll(new Vector2(transform.position.x, transform.position.y), range * 1.5f);
         Array targets = new Array();
 
 
@@ -567,7 +585,7 @@ public class UnitLogic : MonoBehaviour
                 continue;
             }
 
-            if (!hitUnit.Template.IsEnemy)
+            if (Template.IsPlayer ^ hitUnit.Template.IsEnemy)
             {
                 continue;
             }
@@ -582,8 +600,7 @@ public class UnitLogic : MonoBehaviour
 
         if (targets.length > 0)
         {
-            int idx = (int) (Random.value * targets.length);
-            SetTarget((GameObject) targets[idx]);
+            SetTarget(targets.Cast<GameObject>().ToArray());
             return true;
         }
 
@@ -611,10 +628,38 @@ public class UnitLogic : MonoBehaviour
         return Mathf.Max(GetWeaponRangeLeft(), GetWeaponRangeRight());
     }
 
-    public void SetTarget(GameObject target)
+    public void SetTarget(GameObject[] target)
     {
-        Target = target;
-        if (Target != null)
+        if (target != null)
+        {
+            if (Target)
+            {
+                Target = target[(int) (Random.value * target.Length)];
+            }
+            else
+            {
+                GameObject best = null;
+                float bestDist = 99999999;
+                foreach (var t in target)
+                {
+                    if (!t)
+                        continue;
+                    var dist = Distance2D.getDistance(gameObject, t);
+                    if (dist < bestDist)
+                    {
+                        best = t;
+                        bestDist = dist;
+                    }
+                }
+
+                Target = best;
+            }
+        }
+
+
+        if (!TargetMarker)
+            return;
+        if (Target)
         {
             TargetMarker.transform.SetParent(Target.transform, false);
             TargetMarker.SetActive(true);
@@ -723,5 +768,52 @@ public class UnitLogic : MonoBehaviour
         buyInventory.Hide();
         sellInventory.Hide();
         viewHUD.ShowText("", -1);
+    }
+    
+    public void ShowPrefab(string name, float duration)
+    {
+        var res = Resources.Load(name);
+        if (res == null)
+        {
+            return;
+        }
+
+        var obj = Instantiate(res, transform) as GameObject;
+        if (obj == null) 
+            return;
+        var autoDestruct = obj.GetComponentInChildren<AutoDestruct>();
+        if (autoDestruct)
+        {
+            autoDestruct.Fire(obj, duration);
+        }
+    }
+
+    public void ProxyCoroutine(string name, object[] param)
+    {
+        StartCoroutine(name, param);
+    }
+    
+    private IEnumerator DealDamageOverTime(object[] param)
+    {
+        float duration = (float) param[0];
+        float tickRate = (float) param[1];
+        float damagePerTick = (float) param[2];
+        
+        int numTicks = (int) (duration / tickRate);
+        for (int i = 0; i < numTicks; i++)
+        {
+            ReceiveDamage(damagePerTick);
+            yield return new WaitForSeconds(tickRate);
+        }
+    }
+    private IEnumerator Freeze(object[] param)
+    {
+        float duration = (float) param[0];
+        var oldCooldown = CoolDown;
+        CoolDown = 999999;
+        MaxSpeed = 0;
+        yield return new WaitForSeconds(duration);
+        CoolDown = oldCooldown - duration;
+        MaxSpeed = Template.MaxSpeed;
     }
 }

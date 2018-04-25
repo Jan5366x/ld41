@@ -11,4 +11,8 @@ public class EquipSlot : MonoBehaviour
             return false;
         return PossibleSlots.Any(possibleSlot => possibleSlot == slot);
     }
+
+    private void Update()
+    {
+    }
 }

@@ -33,7 +33,7 @@ MonoBehaviour:
     type: 2}
   DeathPrefab: {fileID: 0}
   TargetMarker: {fileID: 0}
-  HandRange: 0.32
+  HandRange: 1
   FollowRange: 10
   BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
   BaseHair: {fileID: 11400000, guid: 6962daebeca1b4d8b8c3751cd14c13c1, type: 2}

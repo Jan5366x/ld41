@@ -14,4 +14,10 @@ public class Weapon : MonoBehaviour
     public bool Magic = false;
     public GameObject Projectile;
     public float ProjectileSpeed = 1;
+    public float ManaUsage = 0;
+
+    private void Start()
+    {
+        
+    }
 }

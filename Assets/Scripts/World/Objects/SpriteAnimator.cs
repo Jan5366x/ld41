@@ -4,7 +4,7 @@ public class SpriteAnimator : MonoBehaviour
 {
     public Item item;
     public UnitLogic.MoveDirection direction;
-    public int sprite;
+    public int currentSpriteIndex;
     public static int spriteCount = 3;
     public SpriteRenderer renderer;
 
@@ -17,7 +17,7 @@ public class SpriteAnimator : MonoBehaviour
     public void SetItem(Item item)
     {
         this.item = item;
-        sprite = 0;
+        currentSpriteIndex = 0;
         UpdateSprite();
     }
 
@@ -29,23 +29,25 @@ public class SpriteAnimator : MonoBehaviour
 
     public void NextSprite()
     {
-        sprite = (sprite + 1) % spriteCount;
+        currentSpriteIndex = (currentSpriteIndex + 1) % spriteCount;
         UpdateSprite();
     }
 
     private void UpdateSprite()
     {
-        if (item != null)
+        if(!renderer)
+            return;
+        
+        if (item == null)
         {
-            int idx = (int) direction * spriteCount + sprite;
-            if (idx < item.Sprites.Length)
-            {
-                renderer.sprite = item.Sprites[idx];
-            }
-            else
-            {
-                renderer.sprite = null;
-            }
+            renderer.sprite = null;
+            return;
+        }
+        
+        int idx = (int) direction * spriteCount + currentSpriteIndex;
+        if (idx < item.Sprites.Length)
+        {
+            renderer.sprite = item.Sprites[idx];
         }
         else
         {
@@ -55,16 +57,15 @@ public class SpriteAnimator : MonoBehaviour
 
     public void Idle()
     {
-
         int idleFrame = 0;
 
         // select idle frame based of dicection
         if (direction == UnitLogic.MoveDirection.Left || direction == UnitLogic.MoveDirection.Right)
             idleFrame = 1;
         
-        if (sprite != idleFrame)
+        if (currentSpriteIndex != idleFrame)
         {
-            sprite = idleFrame;
+            currentSpriteIndex = idleFrame;
             UpdateSprite();
         }
     }

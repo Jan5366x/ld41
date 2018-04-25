@@ -15,6 +15,6 @@ public class PickupInteractable : Interactable
         }
         
         player.Inventory.Take(obj);
-        gameObject.SetActive(false);
+        Destroy(gameObject); //.SetActive(false));
     }
 }
