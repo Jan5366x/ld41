@@ -21,7 +21,7 @@ public class UnitLogic : MonoBehaviour
     public GameObject Presentation;
     public GameObject Target;
     public GameObject TargetMarker;
-    public Inventory Inventory = new Inventory();
+    public Inventory Inventory;
 
     public const float AnimationFrameTime = 0.3f;
     public float RemainingAnimationTime;
@@ -61,6 +61,10 @@ public class UnitLogic : MonoBehaviour
 
     void Start()
     {
+        if (Template.IsPlayer)
+        {
+            Inventory = new Inventory();
+        }
         // instantiate the presentation object
         Presentation = Instantiate(Template.Presentation, transform);
         if (Template.TargetMarker)
