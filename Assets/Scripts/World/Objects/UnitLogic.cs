@@ -492,24 +492,19 @@ namespace World.Objects
                     float dist = (collider.transform.position - transform.position).sqrMagnitude;
 
                     if (!hitUnit)
-                    {
                         continue;
-                    }
+              
 
                     if (!hitUnit.Template.IsEnemy)
-                    {
                         continue;
-                    }
+            
 
                     if (Random.value < hitUnit.Template.Agility / 100f)
-                    {
                         continue;
-                    }
+           
 
                     if (hitUnit == this)
-                    {
                         continue;
-                    }
 
                     if (multipleHits)
                     {
@@ -522,13 +517,10 @@ namespace World.Objects
                     }
                 }
 
-                if (!multipleHits)
+                if (!multipleHits && nearestUnit)
                 {
-                    if (nearestUnit)
-                    {
-                        hitUnits.Add(nearestUnit);
-                        SetTarget(new[] {nearestUnit.gameObject});
-                    }
+                    hitUnits.Add(nearestUnit);
+                    SetTarget(new[] {nearestUnit.gameObject});
                 }
             }
 
@@ -542,9 +534,7 @@ namespace World.Objects
 
             var resistence = GetArmorResistence();
             if (resistence < 0)
-            {
                 resistence = 0;
-            }
 
             damage = Mathf.Max(0, damage - resistence);
             HP -= damage;
@@ -595,19 +585,13 @@ namespace World.Objects
                 var collider = unitsInRange[i].gameObject;
                 var hitUnit = collider.GetComponentInChildren<UnitLogic>();
                 if (!hitUnit)
-                {
                     continue;
-                }
 
                 if (Template.IsPlayer ^ hitUnit.Template.IsEnemy)
-                {
                     continue;
-                }
 
                 if (hitUnit.gameObject == this || hitUnit.gameObject == Target)
-                {
                     continue;
-                }
 
                 targets.Add(collider.gameObject);
             }
@@ -712,9 +696,7 @@ namespace World.Objects
         public void Buy(InventoryItem item)
         {
             if (item == null || item.Template == null)
-            {
                 return;
-            }
 
             var price = item.Template.BasePrice;
             if (price <= Money)
@@ -728,9 +710,7 @@ namespace World.Objects
         {
             var item = Inventory.Items[slot];
             if (item == null || item.Template == null)
-            {
                 return;
-            }
 
             var price = item.Template.BasePrice * Item.SellModifier;
             Inventory.Drop(slot, 1);
@@ -740,9 +720,7 @@ namespace World.Objects
         {
             var item = Inventory.Items[slot];
             if (item == null || item.Template == null)
-            {
                 return;
-            }
 
             other.Take(Inventory.Items[slot]);
 
@@ -800,9 +778,7 @@ namespace World.Objects
         {
             var res = Resources.Load(name);
             if (res == null)
-            {
                 return;
-            }
 
             var obj = Instantiate(res, transform) as GameObject;
             if (obj == null) 
@@ -821,12 +797,12 @@ namespace World.Objects
     
         private IEnumerator DealDamageOverTime(object[] param)
         {
-            float duration = (float) param[0];
-            float tickRate = (float) param[1];
-            float damagePerTick = (float) param[2];
+            var duration = (float) param[0];
+            var tickRate = (float) param[1];
+            var damagePerTick = (float) param[2];
         
-            int numTicks = (int) (duration / tickRate);
-            for (int i = 0; i < numTicks; i++)
+            var numTicks = (int) (duration / tickRate);
+            for (var i = 0; i < numTicks; i++)
             {
                 ReceiveDamage(damagePerTick);
                 yield return new WaitForSeconds(tickRate);
@@ -834,7 +810,7 @@ namespace World.Objects
         }
         private IEnumerator Freeze(object[] param)
         {
-            float duration = (float) param[0];
+            var duration = (float) param[0];
             var oldCooldown = CoolDown;
             CoolDown = 999999;
             MaxSpeed = 0;
