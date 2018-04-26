@@ -15,7 +15,9 @@ public class ProjectileLogic : MonoBehaviour
 
     private void Update()
     {
-        var delta = (_target.transform.position - transform.position);
+        if (!_target || !_weapon)
+            return;
+        var delta = _target.transform.position - transform.position;
         var dir = delta.normalized;
         if (delta.sqrMagnitude < _weapon.ProjectileSpeed * Time.deltaTime)
         {
@@ -36,9 +38,13 @@ public class ProjectileLogic : MonoBehaviour
 
     private void onHit()
     {
-        UnitLogic unit = _target.GetComponent<UnitLogic>();
-        unit.ReceiveDamage(_weapon.Damage);
-        unit.ReceiveEffect(_weapon.Effect, _weapon.EffectDuration);
+        if (_target && _weapon)
+        {
+            UnitLogic unit = _target.GetComponent<UnitLogic>();
+            unit.ReceiveDamage(_weapon.Damage);
+            unit.ReceiveEffect(_weapon.Effect, _weapon.EffectDuration);
+        }
+
         Destroy(gameObject);
     }
 }
