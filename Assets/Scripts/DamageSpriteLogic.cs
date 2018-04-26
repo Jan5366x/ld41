@@ -8,17 +8,10 @@ public class DamageSpriteLogic : MonoBehaviour
     public float delta = 0.01f;
     public float wait = 0.1f;
 
-
-    // Use this for initialization
     void Start()
     {
         StartCoroutine("MoveUp");
         StartCoroutine("Fade");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 
     IEnumerator MoveUp()

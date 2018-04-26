@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using UnityEngine;
+using World.Objects;
 
-public class PickupInteractable : Interactable
+namespace World.Interactables
 {
-    public GameObject obj;
-    public override void interact(UnitLogic player)
+    public class PickupInteractable : Interactable
     {
-        if (!CanInteract(player))
+        public GameObject obj;
+        public override void Interact(UnitLogic player)
         {
-            return;
-        }
+            if (!CanInteract(player))
+            {
+                return;
+            }
         
-        player.Inventory.Take(obj);
-        Destroy(gameObject); //.SetActive(false));
+            player.Inventory.Take(obj);
+            Destroy(gameObject); //.SetActive(false));
+        }
     }
 }

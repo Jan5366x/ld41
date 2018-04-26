@@ -1,28 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[ExecuteInEditMode]
-public class OrderScript : MonoBehaviour
+namespace World.Helper
 {
-    public float offset;
-
-    public void Awake()
+    [ExecuteInEditMode]
+    public class OrderScript : MonoBehaviour
     {
-        SetPosition(); 
-    }
+        public float offset;
 
-    public void Update()
-    {
-        SetPosition();
-    }
-
-    public void SetPosition()
-    {
-        var renderer = GetComponent<SpriteRenderer>();
-        if (renderer != null)
+        public void Awake()
         {
-            renderer.sortingOrder = (int) -((transform.position.y + offset) * 100);
+            SetPosition(); 
+        }
+
+        public void Update()
+        {
+            SetPosition();
+        }
+
+        public void SetPosition()
+        {
+            var renderer = GetComponent<SpriteRenderer>();
+            if (renderer != null)
+            {
+                renderer.sortingOrder = (int) -((transform.position.y + offset) * 100);
+            }
         }
     }
 }

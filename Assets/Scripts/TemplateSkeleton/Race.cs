@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Race", menuName = "Template/Race")]
-public class Race : ScriptableObject
+namespace TemplateSkeleton
 {
-    public GameObject StartPoint;
-    public float TimeLimit;
+    [CreateAssetMenu(fileName = "New Race", menuName = "Template/Race")]
+    public class Race : ScriptableObject
+    {
+        public GameObject StartPoint;
+        public float TimeLimit;
+    }
 }

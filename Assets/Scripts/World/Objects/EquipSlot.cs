@@ -1,18 +1,17 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-public class EquipSlot : MonoBehaviour
+namespace World.Objects
 {
-    public int[] PossibleSlots;
-
-    public bool CanEquip(int slot)
+    public class EquipSlot : MonoBehaviour
     {
-        if (PossibleSlots == null)
-            return false;
-        return PossibleSlots.Any(possibleSlot => possibleSlot == slot);
-    }
+        public int[] PossibleSlots;
 
-    private void Update()
-    {
+        public bool CanEquip(int slot)
+        {
+            if (PossibleSlots == null)
+                return false;
+            return PossibleSlots.Any(possibleSlot => possibleSlot == slot);
+        }
     }
 }

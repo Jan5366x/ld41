@@ -1,28 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenuScript : MonoBehaviour
+namespace UI
 {
-	public string GameScene = "MainGame";
-	public string CreditsScene = "Credits";
-	
-	public void StartGame()
+	public class MainMenuScript : MonoBehaviour
 	{
-		SceneManager.LoadScene(GameScene);
-	}
+		public string GameScene = "MainGame";
+		public string CreditsScene = "Credits";
+	
+		public void StartGame()
+		{
+			SceneManager.LoadScene(GameScene);
+		}
 
-	public void ShowCredits()
-	{
-		SceneManager.LoadScene(CreditsScene);
-	}
+		public void ShowCredits()
+		{
+			SceneManager.LoadScene(CreditsScene);
+		}
 	
-	public void ExitGame()
-	{
-		Application.Quit();
+		public void ExitGame()
+		{
+			Application.Quit();
 #if UNITY_EDITOR
-		UnityEditor.EditorApplication.isPlaying = false;
+			UnityEditor.EditorApplication.isPlaying = false;
 #endif
+		}
 	}
 }

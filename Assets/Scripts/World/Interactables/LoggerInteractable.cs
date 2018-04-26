@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using World.Objects;
 
-public class LoggerInteractable : Interactable
+namespace World.Interactables
 {
-    public override void interact(UnitLogic player)
+    public class LoggerInteractable : Interactable
     {
-        if (CanInteract(player))
+        public override void Interact(UnitLogic player)
         {
-            Debug.Log(player);
+            if (CanInteract(player))
+            {
+                Debug.Log(player);
+            }
         }
     }
 }

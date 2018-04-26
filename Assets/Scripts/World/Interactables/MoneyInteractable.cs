@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using World.Objects;
 
-public class MoneyInteractable : Interactable
+namespace World.Interactables
 {
-    public int Money;
-
-    public override void interact(UnitLogic player)
+    public class MoneyInteractable : Interactable
     {
-        if (!CanInteract(player))
-        {
-            return;
-        }
+        public int Money;
 
-        player.Money += Money;
-        Destroy(gameObject);
+        public override void Interact(UnitLogic player)
+        {
+            if (!CanInteract(player))
+            {
+                return;
+            }
+
+            player.Money += Money;
+            Destroy(gameObject);
+        }
     }
 }

@@ -1,41 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Unit", menuName = "Template/Unit")]
-public class Unit : ScriptableObject
+namespace TemplateSkeleton
 {
-    public string UnitName;
+    [CreateAssetMenu(fileName = "New Unit", menuName = "Template/Unit")]
+    public class Unit : ScriptableObject
+    {
+        public string UnitName;
     
-    public int MaxHealth;
-    public int MaxMana;
+        public int MaxHealth;
+        public int MaxMana;
 
-    public float HPRegeneration;
-    public float ManaRegeneration;
-    public float StaminaRegeneration;
-    public float StaminaUsage;
-    public float StaminaMinUsage;
+        public float HPRegeneration;
+        public float ManaRegeneration;
+        public float StaminaRegeneration;
+        public float StaminaUsage;
+        public float StaminaMinUsage;
     
-    public int Strength;
-    public int Intelligence;
-    public int Stamina;
-    public int Agility;
+        public int Strength;
+        public int Intelligence;
+        public int Stamina;
+        public int Agility;
     
-    public float MaxSpeed;
-    public float Acceleration;
+        public float MaxSpeed;
+        public float Acceleration;
     
-    public bool IsEnemy;
-    public bool IsPlayer;
-    public bool IsInteractable;
-    public bool IsShowName;
+        public bool IsEnemy;
+        public bool IsPlayer;
+        public bool IsInteractable;
+        public bool IsShowName;
     
-    public GameObject Presentation;
-    public GameObject DeathPrefab;
-    public GameObject TargetMarker;
-    public float HandRange = 0.4f;
-    public float FollowRange = 1f;
+        public GameObject Presentation;
+        public GameObject DeathPrefab;
+        public GameObject TargetMarker;
+        public float HandRange = 0.4f;
+        public float FollowRange = 1f;
 
-    public Item BaseBody;
-    public Item BaseHair;
-    public GameObject DeathDrop;
+        public Item BaseBody;
+        public Item BaseHair;
+        public GameObject DeathDrop;
+    }
 }

@@ -1,18 +1,20 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using World.Objects;
 
-public class BloodEffectLogic : EffectLogic
+namespace Effects
 {
-    public float DamagePerTick = 3;
-    public float TickRate = 0.2f;
-
-    public override string getName()
+    public class BloodEffectLogic : EffectLogic
     {
-        return "Blood";
-    }
+        public float DamagePerTick = 3;
+        public float TickRate = 0.2f;
 
-    public override void apply(UnitLogic player, float duration)
-    {
-        player.ShowPrefab("Effects\\BloodEffect", duration);
+        public override string getName()
+        {
+            return "Blood";
+        }
+
+        public override void apply(UnitLogic player, float duration)
+        {
+            player.ShowPrefab("Effects\\BloodEffect", duration);
+        }
     }
 }

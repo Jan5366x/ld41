@@ -2,66 +2,70 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using World.Objects;
 using Random = UnityEngine.Random;
 
-[Serializable]
-public struct RandomDrop
+namespace World.Interactables
 {
-    public GameObject item;
-    public float probability;
-}
-
-public class DropperInteractable : Interactable
-{
-    public GameObject[] GuaranteedDrop;
-    public RandomDrop[] RandomDrop;
-    public int TriggerCount = 1;
-    public float SpreadX = 0.32f;
-    public float SpreadY = 0.32f;
-
-    public override void interact(UnitLogic player)
+    [Serializable]
+    public struct RandomDrop
     {
-        if (!CanInteract(player))
-        {
-            return;
-        }
+        public GameObject item;
+        public float probability;
+    }
 
-        if (GuaranteedDrop != null)
+    public class DropperInteractable : Interactable
+    {
+        public GameObject[] GuaranteedDrop;
+        public RandomDrop[] RandomDrop;
+        public int TriggerCount = 1;
+        public float SpreadX = 0.32f;
+        public float SpreadY = 0.32f;
+
+        public override void Interact(UnitLogic player)
         {
-            foreach (var drop in GuaranteedDrop)
+            if (!CanInteract(player))
             {
-                SpawnItem(drop);
+                return;
             }
-        }
 
-        if (RandomDrop != null)
-        {
-            foreach (var drop in RandomDrop)
+            if (GuaranteedDrop != null)
             {
-                if (Random.value < drop.probability)
+                foreach (var drop in GuaranteedDrop)
                 {
-                    SpawnItem(drop.item);
+                    SpawnItem(drop);
                 }
             }
+
+            if (RandomDrop != null)
+            {
+                foreach (var drop in RandomDrop)
+                {
+                    if (Random.value < drop.probability)
+                    {
+                        SpawnItem(drop.item);
+                    }
+                }
+            }
+
+            TriggerCount -= 1;
         }
 
-        TriggerCount -= 1;
-    }
-
-    public override bool CanInteract(UnitLogic obj)
-    {
-        return base.CanInteract(obj) && TriggerCount >= 0;
-    }
-
-    private void SpawnItem(GameObject obj)
-    {
-        if (obj)
+        public override bool CanInteract(UnitLogic obj)
         {
-            float dx = (Random.value * SpreadX) - SpreadX / 2f;
-            float dy = (Random.value * SpreadY) - SpreadY / 2f;
+            return base.CanInteract(obj) && TriggerCount >= 0;
+        }
 
-            var i = Instantiate(obj, transform);
-            i.transform.Translate(dx, dy, 0);
+        private void SpawnItem(GameObject obj)
+        {
+            if (obj)
+            {
+                float dx = (Random.value * SpreadX) - SpreadX / 2f;
+                float dy = (Random.value * SpreadY) - SpreadY / 2f;
+
+                var i = Instantiate(obj, transform);
+                i.transform.Translate(dx, dy, 0);
+            }
         }
     }
 }

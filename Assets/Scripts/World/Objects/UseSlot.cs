@@ -1,7 +1,9 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
-public abstract class UseSlot : MonoBehaviour
+namespace World.Objects
 {
-    public abstract void OnUse(UnitLogic player);
+    public abstract class UseSlot : MonoBehaviour
+    {
+        public abstract void OnUse(UnitLogic player);
+    }
 }

@@ -1,21 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TemplateSkeleton;
 using UnityEngine;
 
-public class InventoryItem
+namespace World.Objects
 {
-	public GameObject Obj;
-	public int Quantity;
-	public Item Template;
-
-	public InventoryItem Copy()
+	public class InventoryItem
 	{
-		InventoryItem ii = new InventoryItem
+		public GameObject Obj;
+		public int Quantity;
+		public Item Template;
+
+		public InventoryItem Copy()
 		{
-			Obj = Obj,
-			Quantity = Quantity,
-			Template = Template
-		};
-		return ii;
+			InventoryItem ii = new InventoryItem
+			{
+				Obj = Obj,
+				Quantity = Quantity,
+				Template = Template
+			};
+			return ii;
+		}
 	}
 }

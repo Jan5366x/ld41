@@ -1,32 +1,32 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
+using World.Objects;
 
-public class MessageInteractable : Interactable
+namespace World.Interactables
 {
-    public String firstInteraction;
-    public String laterInteraction;
-
-    public int interactionCount = 0;
-
-    public override void interact(UnitLogic player)
+    public class MessageInteractable : Interactable
     {
-        if (!CanInteract(player))
-        {
-            return;
-        }
+        public String firstInteraction;
+        public String laterInteraction;
 
-        if (interactionCount == 0)
-        {
-            player.ShowMessage(firstInteraction, 10);
-        }
-        else
-        {
-            player.ShowMessage(firstInteraction, 10);
-        }
+        public int interactionCount = 0;
 
-        interactionCount++;
+        public override void Interact(UnitLogic player)
+        {
+            if (!CanInteract(player))
+            {
+                return;
+            }
+
+            if (interactionCount == 0)
+            {
+                player.ShowMessage(firstInteraction, 10);
+            }
+            else
+            {
+                player.ShowMessage(firstInteraction, 10);
+            }
+
+            interactionCount++;
+        }
     }
 }

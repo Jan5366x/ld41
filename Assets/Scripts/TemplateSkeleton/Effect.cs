@@ -1,20 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Effect", menuName = "Template/Effect")]
-public class Effect : ScriptableObject {
+namespace TemplateSkeleton
+{
+	[CreateAssetMenu(fileName = "New Effect", menuName = "Template/Effect")]
+	public class Effect : ScriptableObject {
 
-    public int AdjustHealth;
-    public int AdjustMana;
-    public int AdjustMaxSpeed;
-    public int AdjustAcceleration;
+		public int AdjustHealth;
+		public int AdjustMana;
+		public int AdjustMaxSpeed;
+		public int AdjustAcceleration;
 	
-    public int AdjustStrength;
-    public int AdjustIntelligence;
-    public int AdjustStamina;
-    public int AdjustAgility;
+		public int AdjustStrength;
+		public int AdjustIntelligence;
+		public int AdjustStamina;
+		public int AdjustAgility;
 	
-    public float Duration;
-    public float IsPermanent;
+		public float Duration;
+		public float IsPermanent;
+	}
 }

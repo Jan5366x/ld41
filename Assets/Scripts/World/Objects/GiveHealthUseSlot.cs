@@ -1,20 +1,17 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GiveHealthUseSlot : UseSlot
+namespace World.Objects
 {
-    public float health;
-
-    public override void OnUse(UnitLogic player)
+    public class GiveHealthUseSlot : UseSlot
     {
-        if (player)
+        public float health;
+
+        public override void OnUse(UnitLogic player)
         {
-            player.HP = Mathf.Max(player.HP + health, player.Template.MaxHealth);
+            if (player)
+            {
+                player.HP = Mathf.Max(player.HP + health, player.Template.MaxHealth);
+            }
         }
-    }
-
-    private void Update()
-    {
-        
     }
 }

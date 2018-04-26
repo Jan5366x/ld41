@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using World.Objects;
 
-public class SellInteractable : Interactable
+namespace World.Interactables
 {
-    public Inventory inventory;
-
-    public override void interact(UnitLogic player)
+    public class SellInteractable : Interactable
     {
-        if (!CanInteract(player))
-        {
-            return;
-        }
+        public Inventory inventory;
 
-        player.SellInventory(inventory);
+        public override void Interact(UnitLogic player)
+        {
+            if (!CanInteract(player))
+            {
+                return;
+            }
+
+            player.SellInventory(inventory);
+        }
     }
 }

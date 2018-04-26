@@ -1,20 +1,15 @@
-﻿using System.Linq;
-using UnityEngine;
-
-public class GiveMoneyUseSlot : UseSlot
+﻿namespace World.Objects
 {
-    public int money;
-
-    public override void OnUse(UnitLogic player)
+    public class GiveMoneyUseSlot : UseSlot
     {
-        if (player)
+        public int money;
+
+        public override void OnUse(UnitLogic player)
         {
-            player.Money += money;
+            if (player)
+            {
+                player.Money += money;
+            }
         }
-    }
-
-    private void Update()
-    {
-        
     }
 }

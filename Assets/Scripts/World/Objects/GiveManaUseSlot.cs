@@ -1,19 +1,16 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class GiveManaUseSlot : UseSlot
+namespace World.Objects
 {
-    public float mana;
-    public override void OnUse(UnitLogic player)
+    public class GiveManaUseSlot : UseSlot
     {
-        if (player)
+        public float mana;
+        public override void OnUse(UnitLogic player)
         {
-            player.Mana = Mathf.Max(player.Mana + mana, player.Template.MaxMana);
+            if (player)
+            {
+                player.Mana = Mathf.Max(player.Mana + mana, player.Template.MaxMana);
+            }
         }
-    }
-
-    private void Update()
-    {
-        
     }
 }

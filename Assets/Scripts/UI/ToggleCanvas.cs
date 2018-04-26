@@ -1,20 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ToggleCanvas : MonoBehaviour
+namespace UI
 {
-
-	public void Toggle()
+	public class ToggleCanvas : MonoBehaviour
 	{
-		Canvas can = GetComponent<Canvas>();
 
-		if (can == null)
+		public void Toggle()
 		{
-			Debug.LogWarning("no cavans found for toggle!");
-			return;
-		}
+			Canvas can = GetComponent<Canvas>();
 
-		can.enabled = !can.enabled;
+			if (can == null)
+			{
+				Debug.LogWarning("no cavans found for toggle!");
+				return;
+			}
+
+			can.enabled = !can.enabled;
+		}
 	}
 }

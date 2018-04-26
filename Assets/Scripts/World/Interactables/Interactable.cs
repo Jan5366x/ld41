@@ -1,20 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using World.Objects;
 
-public abstract class Interactable : MonoBehaviour
+namespace World.Interactables
 {
-    public abstract void interact(UnitLogic player);
-
-    public virtual bool CanInteract(UnitLogic obj)
+    public abstract class Interactable : MonoBehaviour
     {
-        float dx = transform.position.x - obj.transform.position.x;
-        float dy = transform.position.y - obj.transform.position.y;
-        float d = Mathf.Sqrt(dx * dx + dy * dy);
-        return d < obj.Template.HandRange;
-    }
+        public abstract void Interact(UnitLogic player);
 
-    private void Start()
-    {
+        public virtual bool CanInteract(UnitLogic obj)
+        {
+            float dx = transform.position.x - obj.transform.position.x;
+            float dy = transform.position.y - obj.transform.position.y;
+            float d = Mathf.Sqrt(dx * dx + dy * dy);
+            return d < obj.Template.HandRange;
+        }
     }
 }
