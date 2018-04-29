@@ -1,18 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
+using World.Objects;
 
 namespace TemplateSkeleton
 {
-    
-    public enum ItemSlot
-    {
-        Head = 0,
-        Armor = 1,
-        LeftHand = 2,
-        RightHand = 3,
-        Pants = 4,
-        Shoes = 5
-    }
-    
     [CreateAssetMenu(fileName = "New Item", menuName = "Template/Item")]
     public class Item : ScriptableObject {
 		 public static float SellModifier = 0.75f;
@@ -28,8 +19,7 @@ namespace TemplateSkeleton
         public Sprite[] Sprites;
         
         public float ArmorResistence;
-        
-        // TODO implement usage in game
+       
         public ItemSlot[] PossibleSlots;
     }
 }

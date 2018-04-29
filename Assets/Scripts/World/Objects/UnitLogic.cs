@@ -170,12 +170,12 @@ namespace World.Objects
         {
             UpdateAnimator(baseAnimator, Template.BaseBody);
             UpdateAnimator(hairAnimator, Template.BaseHair);
-            UpdateAnimator(headAnimator, Inventory.HEAD_SLOT);
-            UpdateAnimator(bodyAnimator, Inventory.BODY_SLOT);
-            UpdateAnimator(legsAnimator, Inventory.LEG_SLOT);
-            UpdateAnimator(bootsAnimator, Inventory.BOOT_SLOT);
-            UpdateAnimator(handAAnimator, Inventory.HAND_LEFT_SLOT);
-            UpdateAnimator(handBAnimator, Inventory.HAND_RIGHT_SLOT);
+            UpdateAnimator(headAnimator, (int) ItemSlot.Head);
+            UpdateAnimator(bodyAnimator, (int) ItemSlot.Armor);
+            UpdateAnimator(legsAnimator, (int) ItemSlot.Pants);
+            UpdateAnimator(bootsAnimator, (int) ItemSlot.Shoes);
+            UpdateAnimator(handAAnimator, (int) ItemSlot.LeftHand);
+            UpdateAnimator(handBAnimator, (int) ItemSlot.RightHand);
         }
 
         private void UpdateAnimator(SpriteAnimator animator, int slot)
@@ -350,7 +350,7 @@ namespace World.Objects
             if (IsDead())
                 return;
 
-            var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
+            var item = Inventory != null ? Inventory.GetObject(ItemSlot.LeftHand) : null;
             Attack(item);
         }
 
@@ -359,7 +359,7 @@ namespace World.Objects
             if (IsDead())
                 return;
 
-            var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
+            var item = Inventory != null ? Inventory.GetObject(ItemSlot.RightHand) : null;
             Attack(item);
         }
 
@@ -368,7 +368,7 @@ namespace World.Objects
             if (IsDead())
                 return;
 
-            var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
+            var item = Inventory != null ? Inventory.GetObject(ItemSlot.LeftHand) : null;
             Attack(unit, item);
         }
 
@@ -377,7 +377,7 @@ namespace World.Objects
             if (IsDead())
                 return;
 
-            var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
+            var item = Inventory != null ? Inventory.GetObject(ItemSlot.RightHand) : null;
             Attack(unit, item);
         }
 
@@ -607,7 +607,7 @@ namespace World.Objects
 
         public float GetWeaponRangeLeft()
         {
-            var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_LEFT_SLOT) : null;
+            var item = Inventory != null ? Inventory.GetObject(ItemSlot.LeftHand) : null;
             var weapon = item != null ? item.GetComponent<Weapon>() : null;
             var range = weapon != null ? weapon.Range : Template.HandRange;
             return range;
@@ -615,7 +615,7 @@ namespace World.Objects
 
         public float GetWeaponRangeRight()
         {
-            var item = Inventory != null ? Inventory.GetObject(Inventory.HAND_RIGHT_SLOT) : null;
+            var item = Inventory != null ? Inventory.GetObject(ItemSlot.RightHand) : null;
             var weapon = item != null ? item.GetComponent<Weapon>() : null;
             var range = weapon != null ? weapon.Range : Template.HandRange;
             return range;

@@ -1,4 +1,5 @@
-﻿using TemplateSkeleton;
+﻿using System.Linq;
+using TemplateSkeleton;
 using UnityEngine;
 
 namespace World.Objects
@@ -6,15 +7,12 @@ namespace World.Objects
 	public class ItemLogic : MonoBehaviour
 	{
 		public Item Template;
-
-		// Use this for initialization
-		void Start () {
 		
-		}
-	
-		// Update is called once per frame
-		void Update () {
-		
+		public bool CanEquip(ItemSlot slot)
+		{
+			if (Template.PossibleSlots == null)
+				return false;
+			return Template.PossibleSlots.Any(possibleSlot => possibleSlot == slot);
 		}
 	}
 }

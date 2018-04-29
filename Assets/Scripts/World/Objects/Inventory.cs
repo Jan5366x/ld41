@@ -3,14 +3,20 @@ using UnityEngine;
 
 namespace World.Objects
 {
+    
+    public enum ItemSlot
+    {
+        Head = 0,
+        Armor = 1,
+        Pants = 2,
+        Shoes = 3,
+        LeftHand = 4,
+        RightHand = 5
+    }
+
+    
     public class Inventory
     {
-        public const int HEAD_SLOT = 0;
-        public const int BODY_SLOT = 1;
-        public const int LEG_SLOT = 2;
-        public const int BOOT_SLOT = 3;
-        public const int HAND_LEFT_SLOT = 4;
-        public const int HAND_RIGHT_SLOT = 5;
         public const int OFFSET_SLOT = 6;
         public const int COUNT_SLOT = 20;
 
@@ -43,12 +49,12 @@ namespace World.Objects
             }
 
             bool wasEquipped = false;
-            var equippable = obj.Obj.GetComponentInChildren<EquipSlot>();
+            var equippable = obj.Obj.GetComponentInChildren<ItemLogic>();
             if (equippable)
             {
                 for (int _slot = 0; _slot < OFFSET_SLOT; _slot++)
                 {
-                    if (equippable.CanEquip(_slot))
+                    if (equippable.CanEquip((ItemSlot) _slot))
                     {
                         Swap(slot, _slot);
                         wasEquipped = true;
@@ -102,31 +108,32 @@ namespace World.Objects
             {
                 if (slot < OFFSET_SLOT)
                 {
-                    var equip = obj.GetComponentInChildren<EquipSlot>();
-                    if (equip == null || !equip.CanEquip(slot))
+                    var equip = obj.GetComponentInChildren<ItemLogic>();
+                    if (equip == null || !equip.CanEquip((ItemSlot) slot))
                     {
                         continue;
                     }
 
-                    if (equip.CanEquip(slot))
+                    if (equip.CanEquip((ItemSlot) slot))
                     {
                         Unequip(slot);
                     }
                 }
 
-                if (Items[slot].Quantity == 0)
+                switch (Items[slot].Quantity)
                 {
-                    Items[slot].Obj = obj;
-                    Items[slot].Quantity = 1;
-                    return;
-                }
-                else
-                {
-                    if (Items[slot].Obj == obj)
-                    {
-                        Items[slot].Quantity += 1;
+                    case 0:
+                        Items[slot].Obj = obj;
+                        Items[slot].Quantity = 1;
                         return;
-                    }
+                    default:
+                        if (Items[slot].Obj == obj)
+                        {
+                            Items[slot].Quantity += 1;
+                            return;
+                        }
+
+                        break;
                 }
             }
         }
@@ -175,14 +182,14 @@ namespace World.Objects
             Items[slotB].Quantity = quantity;
         }
 
-        public GameObject GetObject(int slot)
+        public GameObject GetObject(ItemSlot slot)
         {
-            if (slot < 0 || slot >= COUNT_SLOT)
+            if ((int) slot < 0 || (int) slot >= COUNT_SLOT)
             {
                 return null;
             }
 
-            return Items[slot].Obj;
+            return Items[(int) slot].Obj;
         }
 
         public int GetQuantity(int slot)
@@ -197,7 +204,7 @@ namespace World.Objects
 
         public Item GetItem(int slot)
         {
-            if (slot < 0 || slot >= COUNT_SLOT)
+            if ( slot < 0 || slot >= COUNT_SLOT)
             {
                 return null;
             }

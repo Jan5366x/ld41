@@ -113,7 +113,7 @@ namespace UI
         {
             var rect = new Rect(ViewRect.right - 100, ViewRect.bottom - 100, 100, 100);
             IMUIHelper.DrawBorderRect(rect, 1, Black);
-            var item = unit.Inventory.GetItem(Inventory.HAND_RIGHT_SLOT);
+            var item = unit.Inventory.GetItem((int) ItemSlot.RightHand);
             if (item != null)
             {
                 GUI.DrawTexture(rect, item.PreviewLarge.texture, ScaleMode.ScaleToFit);
@@ -124,7 +124,7 @@ namespace UI
         {
             var rect = new Rect(ViewRect.left, ViewRect.bottom - 100, 100, 100);
             IMUIHelper.DrawBorderRect(rect, 1, Black);
-            var item = unit.Inventory.GetItem(Inventory.HAND_LEFT_SLOT);
+            var item = unit.Inventory.GetItem((int) ItemSlot.LeftHand);
             if (item != null)
             {
                 GUI.DrawTexture(rect, item.PreviewLarge.texture, ScaleMode.ScaleToFit);

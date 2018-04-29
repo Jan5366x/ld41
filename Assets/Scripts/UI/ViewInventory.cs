@@ -14,14 +14,14 @@ namespace UI
 
         public void handleSelectSlot(int slot)
         {
-            switch (slot)
+            switch ((ItemSlot) slot)
             {
-                case Inventory.HEAD_SLOT:
-                case Inventory.BODY_SLOT:
-                case Inventory.LEG_SLOT:
-                case Inventory.BOOT_SLOT:
-                case Inventory.HAND_LEFT_SLOT:
-                case Inventory.HAND_RIGHT_SLOT:
+                case ItemSlot.Head:
+                case ItemSlot.Armor:
+                case ItemSlot.Pants:
+                case ItemSlot.Shoes:
+                case ItemSlot.LeftHand:
+                case ItemSlot.RightHand:
                     _inventory.Unequip(slot);
                     break;
                 default:
@@ -204,7 +204,7 @@ namespace UI
                     if (item)
                     {
                         string text = "" + item.ItemName;
-                        var obj = _inventory.GetObject(idx);
+                        var obj = _inventory.GetObject((ItemSlot) idx);
                         if (obj)
                         {
                             var weapon = obj.GetComponent<Weapon>();
