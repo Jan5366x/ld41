@@ -16,6 +16,6 @@ MonoBehaviour:
   PreviewSmall: {fileID: 21300000, guid: bbb9a9daf5d43c6458bab004b8dadbc1, type: 3}
   PreviewLarge: {fileID: 21300000, guid: d3e15f5370b425c4f8499d31a1925aa7, type: 3}
   ItemEffect: {fileID: 0}
-  Sprites: []
   ArmorResistence: 1
-  PossibleSlots: 00000000
+  PossibleSlots: 01000000
+  Texture: {fileID: 2800000, guid: 7c2925eef240e7d45b0ca06ef5748306, type: 3}

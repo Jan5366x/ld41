@@ -5,10 +5,10 @@ namespace World.Objects
 {
     public class SpriteAnimator : MonoBehaviour
     {
-        public Item item;
-        public UnitLogic.MoveDirection direction;
-        public int currentSpriteIndex;
-        public static int spriteCount = 3;
+        public Item Item;
+        public UnitLogic.MoveDirection Direction;
+        public int CurrentSpriteIndex;
+        public static int SpriteCount = 3;
         public SpriteRenderer renderer; // TODO fix naming since it collide with "UnityEngine.Component.renderer" !!
 
         private void Start()
@@ -19,20 +19,20 @@ namespace World.Objects
 
         public void SetItem(Item item)
         {
-            this.item = item;
-            currentSpriteIndex = 0;
+            this.Item = item;
+            CurrentSpriteIndex = 0;
             UpdateSprite();
         }
 
         public void SetDirection(UnitLogic.MoveDirection direction)
         {
-            this.direction = direction;
+            this.Direction = direction;
             UpdateSprite();
         }
 
         public void NextSprite()
         {
-            currentSpriteIndex = (currentSpriteIndex + 1) % spriteCount;
+            CurrentSpriteIndex = (CurrentSpriteIndex + 1) % SpriteCount;
             UpdateSprite();
         }
 
@@ -41,16 +41,16 @@ namespace World.Objects
             if(!renderer)
                 return;
         
-            if (item == null)
+            if (Item == null)
             {
                 renderer.sprite = null;
                 return;
             }
         
-            int idx = (int) direction * spriteCount + currentSpriteIndex;
-            if (idx < item.Sprites.Length)
+            int idx = (int) Direction * SpriteCount + CurrentSpriteIndex;
+            if (idx < Item.GetSprites().Length)
             {
-                renderer.sprite = item.Sprites[idx];
+                renderer.sprite = Item.GetSprites()[idx];
             }
             else
             {
@@ -63,12 +63,12 @@ namespace World.Objects
             int idleFrame = 0;
 
             // select idle frame based of dicection
-            if (direction == UnitLogic.MoveDirection.Left || direction == UnitLogic.MoveDirection.Right)
+            if (Direction == UnitLogic.MoveDirection.Left || Direction == UnitLogic.MoveDirection.Right)
                 idleFrame = 1;
         
-            if (currentSpriteIndex != idleFrame)
+            if (CurrentSpriteIndex != idleFrame)
             {
-                currentSpriteIndex = idleFrame;
+                CurrentSpriteIndex = idleFrame;
                 UpdateSprite();
             }
         }

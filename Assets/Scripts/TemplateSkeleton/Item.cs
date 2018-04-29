@@ -15,11 +15,28 @@ namespace TemplateSkeleton
         public Sprite PreviewLarge;
         public Effect ItemEffect;
 
-        // TODO replace with a easier to use solution since this takes to much time and can cause issues
-        public Sprite[] Sprites;
+    
         
         public float ArmorResistence;
        
         public ItemSlot[] PossibleSlots;
+        
+        
+        public Texture2D Texture;
+
+
+        private Sprite[] _cachedSprites;
+
+        public Sprite[] GetSprites()
+        {
+
+            if (_cachedSprites != null)
+                return _cachedSprites;
+
+            _cachedSprites = Resources.LoadAll<Sprite>(Texture.name);
+            return _cachedSprites;
+
+        }
+        
     }
 }
