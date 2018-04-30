@@ -5,21 +5,31 @@ namespace World.Objects
 {
     public class SpriteAnimator : MonoBehaviour
     {
-        public Item Item;
+
         public UnitLogic.MoveDirection Direction;
         public int CurrentSpriteIndex;
         public static int SpriteCount = 3;
         public SpriteRenderer renderer; // TODO fix naming since it collide with "UnityEngine.Component.renderer" !!
-
+        private Sprite[] _sprites;
         private void Start()
         {
             renderer = GetComponent<SpriteRenderer>();
             UpdateSprite();
         }
 
-        public void SetItem(Item item)
+        
+        public void SetSprites(Sprite[] sprites)
         {
-            this.Item = item;
+
+            this._sprites = sprites;
+            CurrentSpriteIndex = 0;
+            UpdateSprite();
+        }
+
+        public void SetByItem(Item item)
+        {
+
+            this._sprites = item.GetSprites();
             CurrentSpriteIndex = 0;
             UpdateSprite();
         }
@@ -38,19 +48,13 @@ namespace World.Objects
 
         private void UpdateSprite()
         {
-            if(!renderer)
+            if(!renderer || _sprites == null || _sprites.Length == 0)
                 return;
-        
-            if (Item == null)
-            {
-                renderer.sprite = null;
-                return;
-            }
-        
+
             int idx = (int) Direction * SpriteCount + CurrentSpriteIndex;
-            if (idx < Item.GetSprites().Length)
+            if (idx < _sprites.Length)
             {
-                renderer.sprite = Item.GetSprites()[idx];
+                renderer.sprite = _sprites[idx];
             }
             else
             {

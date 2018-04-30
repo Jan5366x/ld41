@@ -37,6 +37,6 @@ MonoBehaviour:
     type: 2}
   HandRange: 1
   FollowRange: 3
-  BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
-  BaseHair: {fileID: 11400000, guid: 146be4e872da0407fb36a3f06b94705d, type: 2}
   DeathDrop: {fileID: 0}
+  BodyTexture: {fileID: 2800000, guid: bef4701bae60fad40aba9758470ba9d1, type: 3}
+  AttachmentTexture: {fileID: 2800000, guid: caa90ccabd0a82b46b655a7f9c24dcf3, type: 3}

@@ -35,8 +35,35 @@ namespace TemplateSkeleton
         public float HandRange = 0.4f;
         public float FollowRange = 1f;
 
-        public Item BaseBody;
-        public Item BaseHair;
         public GameObject DeathDrop;
+        
+        
+        public Texture2D BodyTexture;
+        public Texture2D AttachmentTexture;
+
+        private Sprite[] _cachedBodySprites;
+        private Sprite[] _cachedAttachmentSprites;
+        
+        public Sprite[] GetBodySprites()
+        {
+
+            if (_cachedBodySprites != null)
+                return _cachedBodySprites;
+
+            _cachedBodySprites = Resources.LoadAll<Sprite>(BodyTexture.name);
+            return _cachedBodySprites;
+
+        }
+        
+        public Sprite[] GetAttachmentSprites()
+        {
+
+            if (_cachedAttachmentSprites != null)
+                return _cachedAttachmentSprites;
+
+            _cachedAttachmentSprites = Resources.LoadAll<Sprite>(AttachmentTexture.name);
+            return _cachedAttachmentSprites;
+
+        }
     }
 }

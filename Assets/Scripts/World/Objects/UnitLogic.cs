@@ -31,9 +31,9 @@ namespace World.Objects
         public const float AnimationFrameTime = 0.3f;
         public float RemainingAnimationTime;
         public SpriteAnimator baseAnimator;
-        public SpriteAnimator hairAnimator;
+        public SpriteAnimator attachmentAnimator;
         public SpriteAnimator headAnimator;
-        public SpriteAnimator bodyAnimator;
+        public SpriteAnimator armorAnimator;
         public SpriteAnimator legsAnimator;
         public SpriteAnimator bootsAnimator;
         public SpriteAnimator handAAnimator;
@@ -70,12 +70,14 @@ namespace World.Objects
             {
                 Inventory = new Inventory();
             }
+
             // instantiate the presentation object
             Presentation = Instantiate(Template.Presentation, transform);
             if (Template.TargetMarker)
             {
                 TargetMarker = Instantiate(Template.TargetMarker, transform);
             }
+
             HP = Template.MaxHealth;
             Mana = Template.MaxMana;
             MaxSpeed = Template.MaxSpeed;
@@ -97,9 +99,9 @@ namespace World.Objects
         private void SetupAnimationHelper()
         {
             baseAnimator = Presentation.GetComponent<SpriteAnimator>();
-            hairAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
+            attachmentAnimator = Presentation.transform.Find("Hair").GetComponent<SpriteAnimator>();
             headAnimator = Presentation.transform.Find("Head").GetComponent<SpriteAnimator>();
-            bodyAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
+            armorAnimator = Presentation.transform.Find("Body").GetComponent<SpriteAnimator>();
             legsAnimator = Presentation.transform.Find("Legs").GetComponent<SpriteAnimator>();
             bootsAnimator = Presentation.transform.Find("Boots").GetComponent<SpriteAnimator>();
             handAAnimator = Presentation.transform.Find("HandA").GetComponent<SpriteAnimator>();
@@ -108,9 +110,9 @@ namespace World.Objects
             animationHelper = new List<SpriteAnimator>
             {
                 baseAnimator,
-                hairAnimator,
+                attachmentAnimator,
                 headAnimator,
-                bodyAnimator,
+                armorAnimator,
                 legsAnimator,
                 bootsAnimator,
                 handAAnimator,
@@ -168,10 +170,10 @@ namespace World.Objects
 
         private void UpdatePresentation()
         {
-            UpdateAnimator(baseAnimator, Template.BaseBody);
-            UpdateAnimator(hairAnimator, Template.BaseHair);
+            UpdateAnimator(baseAnimator, Template.GetBodySprites());
+            UpdateAnimator(attachmentAnimator, Template.GetAttachmentSprites());
             UpdateAnimator(headAnimator, (int) ItemSlot.Head);
-            UpdateAnimator(bodyAnimator, (int) ItemSlot.Armor);
+            UpdateAnimator(armorAnimator, (int) ItemSlot.Armor);
             UpdateAnimator(legsAnimator, (int) ItemSlot.Pants);
             UpdateAnimator(bootsAnimator, (int) ItemSlot.Shoes);
             UpdateAnimator(handAAnimator, (int) ItemSlot.LeftHand);
@@ -187,7 +189,14 @@ namespace World.Objects
         {
             if (animator == null)
                 return;
-            animator.SetItem(item);
+            animator.SetByItem(item);
+        }
+
+        private void UpdateAnimator(SpriteAnimator animator, Sprite[] sprites)
+        {
+            if (animator == null)
+                return;
+            animator.SetSprites(sprites);
         }
 
         private void UpdateAnimationDirection(MoveDirection direction)
