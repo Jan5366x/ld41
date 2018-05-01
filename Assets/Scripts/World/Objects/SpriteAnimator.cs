@@ -56,14 +56,7 @@ namespace World.Objects
                 return;
 
             int idx = (int) Direction * SpriteCount + CurrentSpriteIndex;
-            if (idx < _sprites.Length)
-            {
-                renderer.sprite = _sprites[idx];
-            }
-            else
-            {
-                renderer.sprite = null;
-            }
+            renderer.sprite = idx < _sprites.Length ? _sprites[idx] : null;
         }
 
         public void Idle()
