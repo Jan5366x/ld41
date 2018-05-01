@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -16,6 +16,9 @@ MonoBehaviour:
   MaxMana: 0
   HPRegeneration: 0
   ManaRegeneration: 0
+  StaminaRegeneration: 0
+  StaminaUsage: 0
+  StaminaMinUsage: 0
   Strength: 10
   Intelligence: 10
   Stamina: 10
@@ -28,10 +31,11 @@ MonoBehaviour:
   IsShowName: 0
   Presentation: {fileID: 1576983682462062, guid: 2651d9af8b91e467a9e8fc0625104c12,
     type: 2}
-  DamageSprite: {fileID: 1282524100218932, guid: 4da0fd481829a4530ab44ab3b40ebd1c,
-    type: 2}
-  DieSprite: {fileID: 1282524100218932, guid: 4da0fd481829a4530ab44ab3b40ebd1c, type: 2}
+  DeathPrefab: {fileID: 0}
   TargetMarker: {fileID: 1282524100218932, guid: 4da0fd481829a4530ab44ab3b40ebd1c,
     type: 2}
   HandRange: 0.32
   FollowRange: 10
+  DeathDrop: {fileID: 0}
+  BodyTexture: {fileID: 2800000, guid: bef4701bae60fad40aba9758470ba9d1, type: 3}
+  AttachmentTexture: {fileID: 2800000, guid: 4e18d7a24d48f2048b8df3a99928cb88, type: 3}

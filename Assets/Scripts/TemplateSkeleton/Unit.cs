@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.ConstrainedExecution;
+using UnityEngine;
 
 namespace TemplateSkeleton
 {
@@ -47,23 +48,38 @@ namespace TemplateSkeleton
         public Sprite[] GetBodySprites()
         {
 
-            if (_cachedBodySprites != null)
+           /* if (_cachedBodySprites.Length > 0)
                 return _cachedBodySprites;
-
-            _cachedBodySprites = Resources.LoadAll<Sprite>(BodyTexture.name);
+ */
+            _cachedBodySprites = GetByTexture(BodyTexture);
             return _cachedBodySprites;
 
         }
         
         public Sprite[] GetAttachmentSprites()
         {
+            /*if (_cachedAttachmentSprites.Length > 0)
+                return _cachedAttachmentSprites; */
 
-            if (_cachedAttachmentSprites != null)
-                return _cachedAttachmentSprites;
-
-            _cachedAttachmentSprites = Resources.LoadAll<Sprite>(AttachmentTexture.name);
+            _cachedAttachmentSprites = GetByTexture(AttachmentTexture);
             return _cachedAttachmentSprites;
 
         }
+
+
+
+
+        public static Sprite[] GetByTexture(Texture2D texture2D)
+        {
+            var sprites = new Sprite[12];
+            for (int i = 0; i < 12; i++)
+            {
+                sprites[i] = Sprite.Create(texture2D, new Rect(i*32, 0, 32, 32), new Vector2(0.5f, 0.5f),32);
+            }
+
+            return sprites;
+        }
+
+       
     }
 }

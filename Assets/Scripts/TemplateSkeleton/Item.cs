@@ -29,8 +29,10 @@ namespace TemplateSkeleton
 
         public Sprite[] GetSprites()
         {
+            if (Texture == null)
+                return new Sprite[12];
 
-            if (_cachedSprites != null)
+            if (_cachedSprites.Length > 0)
                 return _cachedSprites;
 
             _cachedSprites = Resources.LoadAll<Sprite>(Texture.name);

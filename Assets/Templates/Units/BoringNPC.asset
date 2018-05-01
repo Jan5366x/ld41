@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -35,6 +35,6 @@ MonoBehaviour:
   TargetMarker: {fileID: 0}
   HandRange: 0.32
   FollowRange: 1
-  BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
-  BaseHair: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
   DeathDrop: {fileID: 0}
+  BodyTexture: {fileID: 2800000, guid: bef4701bae60fad40aba9758470ba9d1, type: 3}
+  AttachmentTexture: {fileID: 2800000, guid: b4f45df6a4f94754a9dcf9e0b70d2a94, type: 3}

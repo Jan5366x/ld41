@@ -35,6 +35,6 @@ MonoBehaviour:
   TargetMarker: {fileID: 0}
   HandRange: 1
   FollowRange: 10
-  BaseBody: {fileID: 11400000, guid: 99e69dc0623684ab9950c5e4831bfae6, type: 2}
-  BaseHair: {fileID: 11400000, guid: 6962daebeca1b4d8b8c3751cd14c13c1, type: 2}
   DeathDrop: {fileID: 1282524100218932, guid: 4da0fd481829a4530ab44ab3b40ebd1c, type: 2}
+  BodyTexture: {fileID: 2800000, guid: bef4701bae60fad40aba9758470ba9d1, type: 3}
+  AttachmentTexture: {fileID: 2800000, guid: 861c8fded1b6b46459ad9c1233a62a22, type: 3}

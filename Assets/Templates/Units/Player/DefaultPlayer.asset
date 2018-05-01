@@ -39,4 +39,4 @@ MonoBehaviour:
   FollowRange: 3
   DeathDrop: {fileID: 0}
   BodyTexture: {fileID: 2800000, guid: bef4701bae60fad40aba9758470ba9d1, type: 3}
-  AttachmentTexture: {fileID: 2800000, guid: caa90ccabd0a82b46b655a7f9c24dcf3, type: 3}
+  AttachmentTexture: {fileID: 2800000, guid: f756f52806140854184d2d8fa571c51a, type: 3}

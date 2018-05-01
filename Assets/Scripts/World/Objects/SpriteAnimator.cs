@@ -28,6 +28,10 @@ namespace World.Objects
 
         public void SetByItem(Item item)
         {
+            if (item == null)
+            {
+                return;
+            }
 
             this._sprites = item.GetSprites();
             CurrentSpriteIndex = 0;
